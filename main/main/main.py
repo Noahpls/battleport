@@ -32,9 +32,5 @@ def program():
         #Flip the screen
         pygame.display.flip()
 
-        #flip the screen again
-        pygame.display.flip()
-        pygame.display.flip()
-
 # Start the program
 program()

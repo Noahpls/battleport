@@ -1,5 +1,5 @@
 """ PROJECT 2 : TEAM 1"""
-#imports
+#IMPORT
 import pygame
 import math
 
@@ -34,5 +34,3 @@ def program():
 
 # Start the program
 program()
-
-    

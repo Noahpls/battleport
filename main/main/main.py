@@ -9,6 +9,12 @@ green = (0,200,0)
 red = (200,0,0)
 bright_green = (0,255,0)
 bright_red = (255,0,0)
+
+#quit functie
+def quitgame():
+    pygame.quit()
+    quit ()
+
 # Handle pygame events
 def process_events():
     for event in pygame.event.get():
@@ -21,11 +27,14 @@ def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
-def button (screen,msg,x,y,w,h,ic,ac):
+def button (screen,msg,x,y,w,h,ic,ac, action = None):
     mouse =pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
 
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         pygame.draw.rect(screen,ac,(x,y,w,h))
+        if click[0] == 1 and action != None:
+            action()
     else:
         pygame.draw.rect(screen,ic,(x,y,w,h))
 
@@ -35,6 +44,24 @@ def button (screen,msg,x,y,w,h,ic,ac):
     screen.blit(textSurf, textRect)
 
 #Main Program Logic
+def play_screen():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.fill((0,0,0))
+        
+        #Flip the screen
+        pygame.display.flip()
+
 def program():
     width = 1280
     height = 720
@@ -51,7 +78,8 @@ def program():
         screen.fill((0,0,0))
 
         #button
-        button (screen,"Start!",640-150,360-50,300,100,green,bright_green)
+        button (screen,"Start!",640-150,360-50,300,100,green,bright_green, play_screen)
+        button (screen,"Quit",640-150,576-50,300,100,red,bright_red, quitgame)
 
         #Flip the screen
         pygame.display.flip()

@@ -3,8 +3,12 @@
 import pygame
 import math
 
+black=(0,0,0)
 white=(255,255,255)
-
+green = (0,200,0)
+red = (200,0,0)
+bright_green = (0,255,0)
+bright_red = (255,0,0)
 # Handle pygame events
 def process_events():
     for event in pygame.event.get():
@@ -13,14 +17,22 @@ def process_events():
             return True
     return False
 
-class Button:
-    def __init__(self,x,y,z,q):
-        self.x=x
-        self.y=y
-        self.z=z
-        self.q=q
-    def draw(self,screen):
-        pygame.draw.rect(screen,white,((int(self.x-(int(self.z)/2))),(int(self.y-(int(self.q)/2))),int(self.z),int(self.q)))
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+
+def button (screen,msg,x,y,w,h,ic,ac):
+    mouse =pygame.mouse.get_pos()
+
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+        pygame.draw.rect(screen,ac,(x,y,w,h))
+    else:
+        pygame.draw.rect(screen,ic,(x,y,w,h))
+
+    smallText = pygame.font.Font("freesansbold.ttf",20)
+    textSurf, textRect = text_objects(msg, smallText)
+    textRect.center = ( (x+(w/2)), (y+(h/2)))
+    screen.blit(textSurf, textRect)
 
 #Main Program Logic
 def program():
@@ -34,17 +46,12 @@ def program():
     #set a resolution
     screen = pygame.display.set_mode(size)
 
-    #Button aanmaken
-    button1 = Button((width * 0.5),(height * 0.5),300,100)
-    button2 = Button((width * 0.5),(height * 0.7),300,100)
-
     while not process_events():
         # Clear Screen
         screen.fill((0,0,0))
 
         #button
-        button1.draw(screen)
-        button2.draw(screen)
+        button (screen,"Start!",640-150,360-50,300,100,green,bright_green)
 
         #Flip the screen
         pygame.display.flip()

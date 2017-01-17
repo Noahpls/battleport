@@ -1,5 +1,5 @@
 """ PROJECT 2 : TEAM 1"""
-#IMPORT
+#IMPOR
 import pygame
 import math
 

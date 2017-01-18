@@ -3,7 +3,8 @@
 import pygame
 import math
 
-#golbal image files
+#global image files
+radar = pygame.image.load('radar.jpg')
 background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
 black=(0,0,0)
@@ -32,18 +33,18 @@ def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
-def button (screen,msg,x,y,w,h,ic,ac, action = None):
+def button (screen,msg,x,y,w,h,ic,ac,ilw,alw,fs,action = None):
     mouse =pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
-        pygame.draw.rect(screen,ac,(x,y,w,h),5)
+        pygame.draw.rect(screen,ac,(x,y,w,h),ilw)
         if click[0] == 1 and action != None:
             action()
     else:
-        pygame.draw.rect(screen,ic,(x,y,w,h),1)
+        pygame.draw.rect(screen,ic,(x,y,w,h),alw)
 
-    smallText = pygame.font.Font("freesansbold.ttf",20)
+    smallText = pygame.font.Font("freesansbold.ttf",fs)
     textSurf, textRect = text_objects(msg, smallText)
     textRect.center = ( (x+(w/2)), (y+(h/2)))
     screen.blit(textSurf, textRect)
@@ -63,10 +64,10 @@ def play_screen():
 
     while not process_events():
         # Clear Screen
-        screen.blit(background_startscherm,[0,0])
+        screen.blit(radar,[0,0])
 
-        button (screen,"Help",1000,50,200,75,red,bright_red)
-
+        button (screen,"Menu",1160,20,100,50,red,bright_red,0,0,20)
+        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
         
         #Flip the screen
         pygame.display.flip()
@@ -84,10 +85,10 @@ def instructions_screen():
 
     while not process_events():
         # Clear Screen
-        screen.blit(background_startscherm,[0,0])
+        screen.blit(radar,[0,0])
         
         #TESTBUTTON
-        button (screen,"Back",640-100,576-37.5,200,75,red,bright_red, program)
+        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
 
         #Flip the screen
         pygame.display.flip()
@@ -105,10 +106,10 @@ def highsccores_screen():
 
     while not process_events():
         # Clear Screen
-        screen.blit(background_startscherm,[0,0])
+        screen.blit(radar,[0,0])
         
         #TESTBUTTON
-        button (screen,"Back",640-100,576-37.5,200,75,red,bright_red, program)
+        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
 
         #Flip the screen
         pygame.display.flip()
@@ -130,10 +131,10 @@ def program():
         screen.blit(background_startscherm,[0,0])
 
         #button
-        button (screen,"Start!",250,200,200,75,green,bright_green, play_screen)
-        button (screen,"Instructions",900,400,200,75,green,bright_green, instructions_screen)
-        button (screen,"Highscores",680,160,200,75,green,bright_green, highsccores_screen)
-        button (screen,"Quit",640-100,576-37.5,200,75,red,bright_red, quitgame)
+        button (screen,"Start!",350,200,200,75,green,bright_green,5,1,30, play_screen)
+        button (screen,"Instructions",670,580,200,75,green,bright_green,5,1,30, instructions_screen)
+        button (screen,"Highscores",930,300,200,75,green,bright_green,5,1,30, highsccores_screen)
+        button (screen,"Quit",20,650,100,50,red,bright_red,0,0,20, quitgame)
 
         #Flip the screen
         pygame.display.flip()

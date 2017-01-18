@@ -5,10 +5,12 @@ import math
 
 black=(0,0,0)
 white=(255,255,255)
-green = (0,200,0)
 red = (200,0,0)
-bright_green = (0,255,0)
+green = (0,200,0)
+blue = (0,0,200)
 bright_red = (255,0,0)
+bright_green = (0,255,0)
+bright_blue = (0,0,255)
 
 #quit functie
 def quitgame():
@@ -62,6 +64,27 @@ def play_screen():
         #Flip the screen
         pygame.display.flip()
 
+def instructions_screen():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.fill((0,0,0))
+        
+        #TESTBUTTON
+        button (screen,"Quit",640-150,576-50,300,100,red,bright_red, quitgame)
+
+        #Flip the screen
+        pygame.display.flip()
+
 def program():
     width = 1280
     height = 720
@@ -78,7 +101,8 @@ def program():
         screen.fill((0,0,0))
 
         #button
-        button (screen,"Start!",640-150,360-50,300,100,green,bright_green, play_screen)
+        button (screen,"Start!",640-150,160-50,300,100,green,bright_green, play_screen)
+        button (screen,"Instructions",640-150,360-50,300,100,blue,bright_blue, instructions_screen)
         button (screen,"Quit",640-150,576-50,300,100,red,bright_red, quitgame)
 
         #Flip the screen

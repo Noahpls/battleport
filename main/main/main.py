@@ -3,6 +3,9 @@
 import pygame
 import math
 
+#golbal image files
+background_startscherm = pygame.image.load('boten achtergrond.jpg')
+
 black=(0,0,0)
 white=(255,255,255)
 red = (200,0,0)
@@ -77,10 +80,10 @@ def instructions_screen():
 
     while not process_events():
         # Clear Screen
-        screen.fill((0,0,0))
+        screen.blit(background_startscherm,[0,0])
         
         #TESTBUTTON
-        button (screen,"Quit",640-150,576-50,300,100,red,bright_red, quitgame)
+        button (screen,"Back",640-150,576-50,300,100,red,bright_red, program)
 
         #Flip the screen
         pygame.display.flip()
@@ -95,7 +98,7 @@ def program():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
-    background_startscherm = pygame.image.load('boten achtergrond.jpg')
+    
 
     while not process_events():
         # Clear Screen

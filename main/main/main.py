@@ -4,7 +4,7 @@ import pygame
 import math
 
 #golbal image files
-background_startscherm = pygame.image.load('boten achtergrond.jpg')
+background_startscherm = pygame.image.load('radar background.jpg')
 
 black=(0,0,0)
 white=(255,255,255)
@@ -37,11 +37,11 @@ def button (screen,msg,x,y,w,h,ic,ac, action = None):
     click = pygame.mouse.get_pressed()
 
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
-        pygame.draw.rect(screen,ac,(x,y,w,h))
+        pygame.draw.rect(screen,ac,(x,y,w,h),5)
         if click[0] == 1 and action != None:
             action()
     else:
-        pygame.draw.rect(screen,ic,(x,y,w,h))
+        pygame.draw.rect(screen,ic,(x,y,w,h),1)
 
     smallText = pygame.font.Font("freesansbold.ttf",20)
     textSurf, textRect = text_objects(msg, smallText)
@@ -104,8 +104,8 @@ def program():
         screen.blit(background_startscherm,[0,0])
 
         #button
-        button (screen,"Start!",640-100,160-37.5,200,75,green,bright_green, play_screen)
-        button (screen,"Instructions",640-100,360-37.5,200,75,blue,bright_blue, instructions_screen)
+        button (screen,"Start!",200,100,200,75,green,bright_green, play_screen)
+        button (screen,"Instructions",900,200,200,75,green,bright_green, instructions_screen)
         button (screen,"Quit",640-100,576-37.5,200,75,red,bright_red, quitgame)
 
         #Flip the screen

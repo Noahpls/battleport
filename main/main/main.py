@@ -5,7 +5,7 @@ import math
 
 #golbal image files
 background_startscherm = pygame.image.load('radar background.jpg')
-
+boten = pygame.image.load('boten achtergrond.jpg')
 black=(0,0,0)
 white=(255,255,255)
 red = (200,0,0)
@@ -60,9 +60,13 @@ def play_screen():
     #set a resolution
     screen = pygame.display.set_mode(size)
 
+
     while not process_events():
         # Clear Screen
-        screen.fill((0,0,0))
+        screen.blit(background_startscherm,[0,0])
+
+        button (screen,"Help",1000,50,200,75,red,bright_red)
+
         
         #Flip the screen
         pygame.display.flip()
@@ -88,6 +92,28 @@ def instructions_screen():
         #Flip the screen
         pygame.display.flip()
 
+def highsccores_screen():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.blit(background_startscherm,[0,0])
+        
+        #TESTBUTTON
+        button (screen,"Back",640-100,576-37.5,200,75,red,bright_red, program)
+
+        #Flip the screen
+        pygame.display.flip()
+
+
 def program():
     width = 1280
     height = 720
@@ -104,8 +130,9 @@ def program():
         screen.blit(background_startscherm,[0,0])
 
         #button
-        button (screen,"Start!",200,100,200,75,green,bright_green, play_screen)
-        button (screen,"Instructions",900,200,200,75,green,bright_green, instructions_screen)
+        button (screen,"Start!",250,200,200,75,green,bright_green, play_screen)
+        button (screen,"Instructions",900,400,200,75,green,bright_green, instructions_screen)
+        button (screen,"Highscores",680,160,200,75,green,bright_green, highsccores_screen)
         button (screen,"Quit",640-100,576-37.5,200,75,red,bright_red, quitgame)
 
         #Flip the screen

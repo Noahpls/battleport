@@ -7,6 +7,9 @@ import math
 radar = pygame.image.load('radar.jpg')
 background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
+label1=pygame.image.load('button groen 1.png')
+label3=pygame.image.load('button groen 3.png')
+
 black=(0,0,0)
 white=(255,255,255)
 grey = (128,128,128)
@@ -51,8 +54,33 @@ def button (screen,msg,x,y,w,h,ic,ac,ilw,alw,fs,action = None):
     textRect.center = ( (x+(w/2)), (y+(h/2)))
     screen.blit(textSurf, textRect)
 
+def load_new_screen():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+
+    while not process_events():
+        # Clear Screen
+        screen.blit(radar,[0,0])
+        screen.blit(label1,[50,25])
+        screen.blit(label3,[645,25])
+
+        button (screen,"Load Game",255,175,200,75,green,bright_green,5,1,20, load_screen)
+        button (screen,"New Game",850,175,200,75,green,bright_green,5,1,20, new_screen)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
+
+        #Flip the screen
+        pygame.display.flip()
+
 #Main Program Logic
-def play_screen():
+def new_screen():
     width = 1280
     height = 720
     size = (width, height)
@@ -69,7 +97,28 @@ def play_screen():
         screen.blit(radar,[0,0])
 
         button (screen,"Menu",1160,20,100,50,grey,bright_grey,0,0,20)
-        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
+        
+        #Flip the screen
+        pygame.display.flip()
+
+def load_screen():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+
+    while not process_events():
+        # Clear Screen
+        screen.blit(radar,[0,0])
+
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, load_new_screen)
         
         #Flip the screen
         pygame.display.flip()
@@ -90,7 +139,7 @@ def instructions_screen():
         screen.blit(radar,[0,0])
         
         #TESTBUTTON
-        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen
         pygame.display.flip()
@@ -111,7 +160,7 @@ def highsccores_screen():
         screen.blit(radar,[0,0])
         
         #TESTBUTTON
-        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen
         pygame.display.flip()
@@ -131,7 +180,7 @@ def option_screen():
         # Clear Screen
         screen.blit(radar,[0,0])
 
-        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen
         pygame.display.flip()
@@ -152,7 +201,7 @@ def program():
         screen.blit(background_startscherm,[0,0])
 
         #button
-        button (screen,"Start!",350,200,200,75,green,bright_green,5,1,30, play_screen)
+        button (screen,"Start!",350,200,200,75,green,bright_green,5,1,30, load_new_screen)
         button (screen,"Instructions",670,580,200,75,green,bright_green,5,1,30, instructions_screen)
         button (screen,"Highscores",930,300,200,75,green,bright_green,5,1,30, highsccores_screen)
         button (screen,"Options",1160,650,100,50,grey,bright_grey,0,0,20, option_screen)

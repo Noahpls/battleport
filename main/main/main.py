@@ -95,10 +95,11 @@ def program():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
+    background_startscherm = pygame.image.load('boten achtergrond.jpg')
 
     while not process_events():
         # Clear Screen
-        screen.fill((0,0,0))
+        screen.blit(background_startscherm,[0,0])
 
         #button
         button (screen,"Start!",640-150,160-50,300,100,green,bright_green, play_screen)

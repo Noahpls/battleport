@@ -83,7 +83,7 @@ def instructions_screen():
         screen.blit(background_startscherm,[0,0])
         
         #TESTBUTTON
-        button (screen,"Back",640-150,576-50,300,100,red,bright_red, program)
+        button (screen,"Back",640-100,576-37.5,200,75,red,bright_red, program)
 
         #Flip the screen
         pygame.display.flip()
@@ -99,15 +99,14 @@ def program():
     #set a resolution
     screen = pygame.display.set_mode(size)
     
-
     while not process_events():
         # Clear Screen
         screen.blit(background_startscherm,[0,0])
 
         #button
-        button (screen,"Start!",640-150,160-50,300,100,green,bright_green, play_screen)
-        button (screen,"Instructions",640-150,360-50,300,100,blue,bright_blue, instructions_screen)
-        button (screen,"Quit",640-150,576-50,300,100,red,bright_red, quitgame)
+        button (screen,"Start!",640-100,160-37.5,200,75,green,bright_green, play_screen)
+        button (screen,"Instructions",640-100,360-37.5,200,75,blue,bright_blue, instructions_screen)
+        button (screen,"Quit",640-100,576-37.5,200,75,red,bright_red, quitgame)
 
         #Flip the screen
         pygame.display.flip()

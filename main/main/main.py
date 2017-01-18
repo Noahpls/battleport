@@ -9,12 +9,14 @@ background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
 black=(0,0,0)
 white=(255,255,255)
+grey = (128,128,128)
 red = (200,0,0)
 green = (0,200,0)
 blue = (0,0,200)
 bright_red = (255,0,0)
 bright_green = (0,255,0)
 bright_blue = (0,0,255)
+bright_grey=(155,155,155)
 
 #quit functie
 def quitgame():
@@ -66,7 +68,7 @@ def play_screen():
         # Clear Screen
         screen.blit(radar,[0,0])
 
-        button (screen,"Menu",1160,20,100,50,red,bright_red,0,0,20)
+        button (screen,"Menu",1160,20,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
         
         #Flip the screen
@@ -114,6 +116,25 @@ def highsccores_screen():
         #Flip the screen
         pygame.display.flip()
 
+def option_screen():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.blit(radar,[0,0])
+
+        button (screen,"Back",20,650,100,50,red,bright_red,0,0,20, program)
+
+        #Flip the screen
+        pygame.display.flip()
 
 def program():
     width = 1280
@@ -134,6 +155,7 @@ def program():
         button (screen,"Start!",350,200,200,75,green,bright_green,5,1,30, play_screen)
         button (screen,"Instructions",670,580,200,75,green,bright_green,5,1,30, instructions_screen)
         button (screen,"Highscores",930,300,200,75,green,bright_green,5,1,30, highsccores_screen)
+        button (screen,"Options",1160,650,100,50,grey,bright_grey,0,0,20, option_screen)
         button (screen,"Quit",20,650,100,50,red,bright_red,0,0,20, quitgame)
 
         #Flip the screen

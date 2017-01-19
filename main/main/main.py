@@ -195,7 +195,7 @@ def program():
     pygame.init()
 
     #sound TEST
-    pygame.mixer.music.load("Sonar_Sound.wav")
+    pygame.mixer.music.load("Sonar_Sound.mp3")
     pygame.mixer.music.play()
     #set a resolution
     screen = pygame.display.set_mode(size)

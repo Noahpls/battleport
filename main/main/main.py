@@ -4,6 +4,7 @@ import pygame
 import math
 
 #global image files
+#set a resolution
 radar = pygame.image.load('radar.jpg')
 background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
@@ -26,6 +27,14 @@ def quitgame():
     pygame.quit()
     quit ()
 
+def play_sound():
+    pygame.init()
+    sonar_sound = pygame.mixer.Sound('Sonar_Sound.wav')
+    sonar_sound.play()
+    set_volume=pygame.mixer.Sound.set_volume(sonar_sound, 0.1)
+    
+
+
 # Handle pygame events
 def process_events():
     for event in pygame.event.get():
@@ -38,14 +47,19 @@ def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
-def button (screen,msg,x,y,w,h,ic,ac,ilw,alw,fs,action = None):
+def button (screen,msg,x,y,w,h,ic,ac,ilw,alw,fs,action = None, action2 = None):
+    pygame.init()
     mouse =pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         pygame.draw.rect(screen,ac,(x,y,w,h),ilw)
+        if click[0] == 1 and action2 != None:
+            action2()
         if click[0] == 1 and action != None:
             action()
+            
+            
     else:
         pygame.draw.rect(screen,ic,(x,y,w,h),alw)
 
@@ -72,8 +86,8 @@ def load_new_screen():
         screen.blit(label1,[50,25])
         screen.blit(label3,[645,25])
 
-        button (screen,"Load Game",255,175,200,75,green,bright_green,5,1,20, load_screen)
-        button (screen,"New Game",850,175,200,75,green,bright_green,5,1,20, new_screen)
+        button (screen,"Load Game",255,175,200,75,green,bright_green,5,1,20, load_screen,play_sound)
+        button (screen,"New Game",850,175,200,75,green,bright_green,5,1,20, new_screen,play_sound)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen
@@ -190,24 +204,20 @@ def program():
     width = 1280
     height = 720
     size = (width, height)
-
     #start PyGame
-    pygame.init()
 
-    #sound TEST
-    pygame.mixer.music.load("Sonar_Sound.mp3")
-    pygame.mixer.music.play()
-    #set a resolution
+    
     screen = pygame.display.set_mode(size)
     
     while not process_events():
         # Clear Screen
         screen.blit(background_startscherm,[0,0])
+            
 
         #button
-        button (screen,"Start!",350,200,200,75,green,bright_green,5,1,30, load_new_screen)
-        button (screen,"Instructions",670,580,200,75,green,bright_green,5,1,30, instructions_screen)
-        button (screen,"Highscores",930,300,200,75,green,bright_green,5,1,30, highsccores_screen)
+        button (screen,"Start!",350,200,200,75,green,bright_green,5,1,30, load_new_screen, play_sound)
+        button (screen,"Instructions",670,580,200,75,green,bright_green,5,1,30, instructions_screen,play_sound)
+        button (screen,"Highscores",930,300,200,75,green,bright_green,5,1,30, highsccores_screen,play_sound)
         button (screen,"Options",1160,650,100,50,grey,bright_grey,0,0,20, option_screen)
         button (screen,"Quit",20,650,100,50,red,bright_red,0,0,20, quitgame)
 

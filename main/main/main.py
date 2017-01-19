@@ -80,6 +80,7 @@ def load_new_screen():
         pygame.display.flip()
 
 #Main Program Logic
+#main-start-new
 def new_screen():
     width = 1280
     height = 720
@@ -101,7 +102,7 @@ def new_screen():
         
         #Flip the screen
         pygame.display.flip()
-
+#main-start-load
 def load_screen():
     width = 1280
     height = 720
@@ -122,7 +123,7 @@ def load_screen():
         
         #Flip the screen
         pygame.display.flip()
-
+#main-instructions
 def instructions_screen():
     width = 1280
     height = 720
@@ -143,7 +144,7 @@ def instructions_screen():
 
         #Flip the screen
         pygame.display.flip()
-
+#main-highscores
 def highsccores_screen():
     width = 1280
     height = 720
@@ -164,7 +165,7 @@ def highsccores_screen():
 
         #Flip the screen
         pygame.display.flip()
-
+#main-options
 def option_screen():
     width = 1280
     height = 720
@@ -184,7 +185,7 @@ def option_screen():
 
         #Flip the screen
         pygame.display.flip()
-
+#main
 def program():
     width = 1280
     height = 720
@@ -193,6 +194,9 @@ def program():
     #start PyGame
     pygame.init()
 
+    #sound TEST
+    pygame.mixer.music.load("Sonar_Sound.wav")
+    pygame.mixer.music.play()
     #set a resolution
     screen = pygame.display.set_mode(size)
     
@@ -212,3 +216,5 @@ def program():
 
 # Start the program
 program()
+
+#end

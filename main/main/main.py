@@ -31,7 +31,7 @@ def play_sound():
     pygame.init()
     sonar_sound = pygame.mixer.Sound('Sonar_Sound.wav')
     sonar_sound.play()
-    set_volume=pygame.mixer.Sound.set_volume(sonar_sound, 0.1)
+    set_volume=pygame.mixer.Sound.set_volume(sonar_sound, 0.25)
     
 
 

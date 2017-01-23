@@ -19,6 +19,7 @@ spelregels2=pygame.image.load('Spelregels 2.png')
 spelregels3=pygame.image.load('Spelregels 3.png')
 spelregels4=pygame.image.load('Spelregels 4.png')
 spelregels5=pygame.image.load('Spelregels 5.png')
+settings=pygame.image.load('Settings.png')
 
 black=(0,0,0)
 white=(255,255,255)
@@ -307,11 +308,10 @@ def option_screen():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
-
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
-
+        screen.blit(settings,[37,0])
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen

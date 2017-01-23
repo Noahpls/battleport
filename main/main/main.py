@@ -12,6 +12,9 @@ label1=pygame.image.load('button groen 1.png')
 label3=pygame.image.load('button groen 3.png')
 spelregels1=pygame.image.load('Spelregels 1.png')
 spelregels2=pygame.image.load('Spelregels 2.png')
+spelregels3=pygame.image.load('Spelregels 3.png')
+spelregels4=pygame.image.load('Spelregels 4.png')
+spelregels5=pygame.image.load('Spelregels 5.png')
 
 black=(0,0,0)
 white=(255,255,255)
@@ -152,10 +155,10 @@ def instructions_screen():
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
-        
+        screen.blit(label3, [240,50])
         #TESTBUTTON
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
-        button (screen,"Game Rules",350,200,200,75,green,bright_green,5,1,30, instructions1, play_sound)
+        button (screen,"Game Rules",450,200,200,75,green,bright_green,5,1,30, instructions1, play_sound)
        
 
         #Flip the screen
@@ -197,8 +200,74 @@ def instructions2():
         screen.fill(black)
         screen.blit(spelregels2,[0,0])
 
-        button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20)
+        button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20,instructions3)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, instructions1)
+
+        #Flip the screen
+        pygame.display.flip()
+
+def instructions3():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.fill(black)
+        screen.blit(spelregels3,[0,0])
+
+        button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20,instructions4)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, instructions2)
+
+        #Flip the screen
+        pygame.display.flip()
+
+def instructions4():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.fill(black)
+        screen.blit(spelregels4,[0,0])
+
+        button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20,instructions5)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, instructions3)
+
+        #Flip the screen
+        pygame.display.flip()
+
+def instructions5():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.fill(black)
+        screen.blit(spelregels5,[0,0])
+
+        button (screen,"Exit",1160,650,100,50,grey,bright_grey,0,0,20, program)
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, instructions4)
 
         #Flip the screen
         pygame.display.flip()

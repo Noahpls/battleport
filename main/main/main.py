@@ -2,6 +2,10 @@
 #Imports
 import pygame
 import math
+pygame.init()
+
+pygame.mixer.music.load("Achtergrond.mp3")
+pygame.mixer.music.play(loops=200, start=0.0)
 
 #global image files
 #set a resolution
@@ -109,7 +113,6 @@ def new_screen():
     #set a resolution
     screen = pygame.display.set_mode(size)
 
-
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
@@ -131,7 +134,7 @@ def load_screen():
     #set a resolution
     screen = pygame.display.set_mode(size)
 
-
+ 
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
@@ -319,10 +322,12 @@ def program():
     height = 720
     size = (width, height)
     #start PyGame
+    pygame.init()
+
+    screen = pygame.display.set_mode(size)
 
     
-    screen = pygame.display.set_mode(size)
-    
+
     while not process_events():
         # Clear Screen
         screen.blit(background_startscherm,[0,0])

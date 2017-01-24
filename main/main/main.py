@@ -118,7 +118,7 @@ def new_screen():
         # Clear Screen
         screen.blit(radar,[0,0])
 
-        button (screen,"Menu",1160,20,100,50,grey,bright_grey,0,0,20)
+        button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
         
         #Flip the screen

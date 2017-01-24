@@ -1,5 +1,6 @@
 """ PROJECT 2 : TEAM 1"""
 #Imports
+
 import pygame
 import math
 pygame.init()
@@ -31,7 +32,7 @@ bright_red = (255,0,0)
 bright_green = (0,255,0)
 bright_blue = (0,0,255)
 bright_grey=(155,155,155)
-
+volume = 1
 #quit functie
 def quitgame():
     pygame.quit()
@@ -41,10 +42,8 @@ def play_sound():
     pygame.init()
     sonar_sound = pygame.mixer.Sound('Sonar_Sound.wav')
     sonar_sound.play()
-    set_volume=pygame.mixer.Sound.set_volume(sonar_sound, 0.25)
+    pygame.mixer.Sound.set_volume(sonar_sound, volume)
     
-
-
 # Handle pygame events
 def process_events():
     for event in pygame.event.get():
@@ -57,13 +56,13 @@ def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
-def button (screen,msg,x,y,w,h,ic,ac,ilw,alw,fs,action = None, action2 = None):
+def button (screen,msg,x,y,w,h,ic,ac,alw,ilw,fs,action = None, action2 = None):
     pygame.init()
     mouse =pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
-        pygame.draw.rect(screen,ac,(x,y,w,h),ilw)
+        pygame.draw.rect(screen,ac,(x,y,w,h),alw)
         if click[0] == 1 and action2 != None:
             action2()
         if click[0] == 1 and action != None:
@@ -71,12 +70,28 @@ def button (screen,msg,x,y,w,h,ic,ac,ilw,alw,fs,action = None, action2 = None):
             
             
     else:
-        pygame.draw.rect(screen,ic,(x,y,w,h),alw)
+        pygame.draw.rect(screen,ic,(x,y,w,h),ilw)
 
     smallText = pygame.font.Font("freesansbold.ttf",fs)
     textSurf, textRect = text_objects(msg, smallText)
     textRect.center = ( (x+(w/2)), (y+(h/2)))
     screen.blit(textSurf, textRect)
+
+def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
+    pygame.init()
+    mouse =pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    x1 = x-r
+    y1= y-r
+
+    if x1+w > mouse[0] > x1 and y1+h > mouse[1] > y1:
+        pygame.draw.circle(screen,ac,(x,y),r,ilw)
+        if click[0] == 1:
+            volume = newvolume
+            
+    else:
+        pygame.draw.circle(screen,ic,(x,y),r,alw)
+    
 
 def load_new_screen():
     width = 1280
@@ -310,8 +325,13 @@ def option_screen():
     screen = pygame.display.set_mode(size)
     while not process_events():
         # Clear Screen
-        screen.blit(radar,[0,0])
+        screen.fill(black)
         screen.blit(settings,[37,0])
+        circle (screen,445,218,10,20,20,green,bright_green,0,1, 0)
+        circle (screen,540,218,10,20,20,green,bright_green,0,1, 0.25)
+        circle (screen,640,218,10,20,20,green,bright_green,0,1,0.50)
+        circle (screen,741,218,10,20,20,green,bright_green,0,1,0.75)
+        circle (screen,842,218,10,20,20,green,bright_green,0,1,1)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen
@@ -331,8 +351,6 @@ def program():
     while not process_events():
         # Clear Screen
         screen.blit(background_startscherm,[0,0])
-            
-
         #button
         button (screen,"Start!",350,200,200,75,green,bright_green,5,1,30, load_new_screen, play_sound)
         button (screen,"Instructions",670,580,200,75,green,bright_green,5,1,30, instructions_screen,play_sound)

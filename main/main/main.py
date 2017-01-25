@@ -17,6 +17,7 @@ pygame.mixer.music.play(loops=200, start=0.0)
 radar = pygame.image.load('radar.jpg')
 background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
+zee = pygame.image.load('Bord.jpg')
 boot2rood = pygame.image.load('boot2rood.png')
 boot2geel = pygame.image.load('boot2geel.png')
 label1=pygame.image.load('button groen 1.png')
@@ -228,7 +229,7 @@ def new_screen():
 
     while not process_events():
         # Clear Screen
-        screen.fill(black)
+        screen.blit(zee, [0,0])
         mooigrid.Draw()
         
         testboot.update()

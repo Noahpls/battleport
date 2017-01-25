@@ -13,6 +13,8 @@ pygame.mixer.music.play(loops=200, start=0.0)
 radar = pygame.image.load('radar.jpg')
 background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
+boot2rood = pygame.image.load('boot2rood.png')
+boot2geel = pygame.image.load('boot2geel.png')
 label1=pygame.image.load('button groen 1.png')
 label3=pygame.image.load('button groen 3.png')
 spelregels1=pygame.image.load('Spelregels 1.png')
@@ -37,6 +39,47 @@ volume = 1
 def quitgame():
     pygame.quit()
     quit ()
+
+class bootje2():
+    def __init__ (self,x,y,player):
+        self.x = x
+        self.y = y
+        self.player = player
+        self.mode = "attacking"
+        self.hp = 2
+    def update (self):
+        keys = pygame.key.get_pressed()
+        
+        if keys [pygame.K_LEFT]:
+            self.x = self.x - 20
+        elif keys [pygame.K_RIGHT]:
+            self.x = self.x + 20
+
+        if keys [pygame.K_UP]:
+            self.y = self.y - 20
+        elif keys [pygame.K_DOWN]:
+            self.y = self.y + 20
+    def draw(self):
+        width = 1280
+        height = 720
+        size = (width, height)
+        pygame.init()
+        screen = pygame.display.set_mode(size)
+        screen.blit(boot2geel,[self.x,self.y])
+    def range(self):
+        self.range = range
+        if self.mode == "defensive" :
+            #alleen verticaal schieten
+            self.range = 3
+        else:
+            self.range = 2
+    def movement(self):
+        if self.mode == "defensive" :
+            #alleen verticaal schieten
+            self.movement = 0
+        else:
+            self.movement = 3  
+
 
 def play_sound():
     pygame.init()
@@ -128,11 +171,14 @@ def new_screen():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
+    testboot = bootje2(30,30,"player1")
 
     while not process_events():
         # Clear Screen
-        screen.blit(radar,[0,0])
-
+        screen.fill(black)
+        testboot.update()
+        testboot.draw()
+        
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
         
@@ -182,6 +228,7 @@ def instructions_screen():
 
         #Flip the screen
         pygame.display.flip()
+
 def instructions1():
     width = 1280
     height = 720

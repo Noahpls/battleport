@@ -3,6 +3,10 @@
 
 import pygame
 import math
+width = 1280
+height = 720
+size = (width, height)
+screen = pygame.display.set_mode(size)
 pygame.init()
 
 pygame.mixer.music.load("Achtergrond.mp3")
@@ -60,11 +64,6 @@ class bootje2():
         elif keys [pygame.K_DOWN]:
             self.y = self.y + 20
     def draw(self):
-        width = 1280
-        height = 720
-        size = (width, height)
-        pygame.init()
-        screen = pygame.display.set_mode(size)
         screen.blit(boot2geel,[self.x,self.y])
     def range(self):
         self.range = range
@@ -78,7 +77,60 @@ class bootje2():
             #alleen verticaal schieten
             self.movement = 0
         else:
-            self.movement = 3  
+            self.movement = 3 
+            
+############################################################
+
+class Tile:
+    def __init__(self, x, y, pos, size):
+        self.X = x
+        self.Y = y
+        self.Pos = pos
+        self.Size = size
+        self.Color = (0,0,0)
+        
+    def Clear(self):
+        self.Color = (0,0,0)
+        
+    def Draw(self):
+        pygame.draw.rect(screen, self.Color, (self.X, self.Y, self.Size, self.Size))
+        pygame.draw.lines(screen, (100,100,100), True, [(self.X,self.Y), (self.X+self.Size,self.Y), (self.X+self.Size,self.Y+self.Size), (self.X,self.Y+self.Size)],2)
+        
+
+class Grid:
+    def __init__(self,x,y,size,tilesize):
+        self.Tile_size = tilesize
+        self.Size = size
+        self.X = x
+        self.Y = y
+
+        
+        self.Tile_x = self.X
+        self.Tile_y = self.Y
+        self.Tiles = [''] * self.Size
+        for x in range(0, self.Size):
+            self.Tiles[x] = [''] * self.Size
+            for y in range(0, self.Size):
+                self.Tiles[x][y] = Tile(self.Tile_x, self.Tile_y, [x,y], self.Tile_size)
+                self.Tile_y = self.Tile_y + self.Tile_size
+            self.Tile_x = self.Tile_x + self.Tile_size
+            self.Tile_y = self.Y
+
+    def Change_color(self, tile_x, tile_y, color):
+        self.Tiles[tile_x][tile_y].Color = color
+
+    def Clear(self):
+        for y in range(0, self.Size):
+            for x in range(0, self.Size):
+                self.Tiles[x][y].Clear()
+
+    def Draw(self):
+        for y in range(0, self.Size):
+            for x in range(0, self.Size):
+                self.Tiles[x][y].Draw()
+
+
+##################################################################### 
 
 
 def play_sound():
@@ -172,18 +224,24 @@ def new_screen():
     #set a resolution
     screen = pygame.display.set_mode(size)
     testboot = bootje2(30,30,"player1")
+    mooigrid = Grid(390,110,20,25)
 
     while not process_events():
         # Clear Screen
         screen.fill(black)
+        mooigrid.Draw()
+        
         testboot.update()
         testboot.draw()
         
+        
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
-        
+
         #Flip the screen
         pygame.display.flip()
+        pygame.display.update()
+
 #main-start-load
 def load_screen():
     width = 1280

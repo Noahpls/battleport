@@ -127,11 +127,11 @@ boot3geel2_ = pygame.image.load('boot3geel.png')
 boot4geel_ = pygame.image.load('boot4geel.png')
 label1=pygame.image.load('button groen 1.png')
 label3=pygame.image.load('button groen 3.png')
-spelregels1=pygame.image.load('Spelregels 1.png')
-spelregels2=pygame.image.load('Spelregels 2.png')
-spelregels3=pygame.image.load('Spelregels 3.png')
-spelregels4=pygame.image.load('Spelregels 4.png')
-spelregels5=pygame.image.load('Spelregels 5.png')
+spelregels1=pygame.image.load('Spelregels NL 1.png')
+spelregels2=pygame.image.load('Spelregels NL 2.png')
+spelregels3=pygame.image.load('Spelregels NL 3.png')
+spelregels4=pygame.image.load('Spelregels NL 4.png')
+spelregels5=pygame.image.load('Spelregels NL 5.png')
 settings=pygame.image.load('Settings.png')
 
 mooigrid = Grid(389,100,20,25)
@@ -317,7 +317,7 @@ def new_screen():
     while not process_events():
         # Clear Screen
         
-        
+        mooigrid.Draw()
         
         plaatje(boot2geel.X,boot2geel.Y,25,50,boot2geel,boot2geel.move)
         plaatje(boot3geel1.X,boot3geel1.Y,25,75,boot3geel1,boot3geel1.move)
@@ -393,7 +393,7 @@ def instructions1():
 
     while not process_events():
         # Clear Screen
-        screen.fill(black)
+        screen.blit(radar,[0,0])
         screen.blit(spelregels1,[0,0])
         button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20, instructions2)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
@@ -414,7 +414,7 @@ def instructions2():
 
     while not process_events():
         # Clear Screen
-        screen.fill(black)
+        screen.blit(radar,[0,0])
         screen.blit(spelregels2,[0,0])
 
         button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20,instructions3)
@@ -436,7 +436,7 @@ def instructions3():
 
     while not process_events():
         # Clear Screen
-        screen.fill(black)
+        screen.blit(radar,[0,0])
         screen.blit(spelregels3,[0,0])
 
         button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20,instructions4)
@@ -458,7 +458,7 @@ def instructions4():
 
     while not process_events():
         # Clear Screen
-        screen.fill(black)
+        screen.blit(radar,[0,0])
         screen.blit(spelregels4,[0,0])
 
         button (screen,"Next",1160,650,100,50,grey,bright_grey,0,0,20,instructions5)
@@ -480,7 +480,7 @@ def instructions5():
 
     while not process_events():
         # Clear Screen
-        screen.fill(black)
+        screen.blit(radar,[0,0])
         screen.blit(spelregels5,[0,0])
 
         button (screen,"Exit",1160,650,100,50,grey,bright_grey,0,0,20, program)

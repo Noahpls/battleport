@@ -11,7 +11,7 @@ def interact_with_database(command):
 	connection.commit()
 	
 	#Save results
-	results = None:
+	results = None
 	try:
 		results = cursor.fetchall()
 	except psycopg2.ProgrammingError:

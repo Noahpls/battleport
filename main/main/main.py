@@ -3,69 +3,32 @@
 
 import pygame
 import math
-width = 1280
-height = 720
-size = (width, height)
-screen = pygame.display.set_mode(size)
-pygame.init()
 
-pygame.mixer.music.load("Achtergrond.mp3")
-pygame.mixer.music.play(loops=200, start=0.0)
-
-#global image files
-#set a resolution
-radar = pygame.image.load('radar.jpg')
-background_startscherm = pygame.image.load('radar background.jpg')
-boten = pygame.image.load('boten achtergrond.jpg')
-zee = pygame.image.load('Bord.jpg')
-boot2rood = pygame.image.load('boot2rood.png')
-boot2geel = pygame.image.load('boot2geel.png')
-label1=pygame.image.load('button groen 1.png')
-label3=pygame.image.load('button groen 3.png')
-spelregels1=pygame.image.load('Spelregels 1.png')
-spelregels2=pygame.image.load('Spelregels 2.png')
-spelregels3=pygame.image.load('Spelregels 3.png')
-spelregels4=pygame.image.load('Spelregels 4.png')
-spelregels5=pygame.image.load('Spelregels 5.png')
-settings=pygame.image.load('Settings.png')
-
-black=(0,0,0)
-white=(255,255,255)
-grey = (128,128,128)
-red = (200,0,0)
-green = (0,200,0)
-blue = (0,0,200)
-bright_red = (255,0,0)
-bright_green = (0,255,0)
-bright_blue = (0,0,255)
-bright_grey=(155,155,155)
-volume = 1
-#quit functie
-def quitgame():
-    pygame.quit()
-    quit ()
+#####################################################################
 
 class bootje2():
     def __init__ (self,x,y,player):
-        self.x = x
-        self.y = y
+        self.X = x
+        self.Y = y
         self.player = player
         self.mode = "attacking"
         self.hp = 2
+        self.active = False
+
     def update (self):
         keys = pygame.key.get_pressed()
         
         if keys [pygame.K_LEFT]:
-            self.x = self.x - 20
+            self.X = self.X - 20
         elif keys [pygame.K_RIGHT]:
-            self.x = self.x + 20
+            self.X = self.X + 20
 
         if keys [pygame.K_UP]:
-            self.y = self.y - 20
+            self.Y = self.Y - 20
         elif keys [pygame.K_DOWN]:
-            self.y = self.y + 20
-    def draw(self):
-        screen.blit(boot2geel,[self.x,self.y])
+            self.Y = self.Y + 20
+    def draw(self,plaatjeboot):
+        screen.blit(plaatjeboot,[self.X,self.Y])
     def range(self):
         self.range = range
         if self.mode == "defensive" :
@@ -80,7 +43,7 @@ class bootje2():
         else:
             self.movement = 3 
             
-############################################################
+#####################################################################
 
 class Tile:
     def __init__(self, x, y, pos, size):
@@ -89,14 +52,15 @@ class Tile:
         self.Pos = pos
         self.Size = size
         self.Color = (0,0,0)
-        
+          
     def Clear(self):
         self.Color = (0,0,0)
         
     def Draw(self):
         pygame.draw.rect(screen, self.Color, (self.X, self.Y, self.Size, self.Size))
         pygame.draw.lines(screen, (100,100,100), True, [(self.X,self.Y), (self.X+self.Size,self.Y), (self.X+self.Size,self.Y+self.Size), (self.X,self.Y+self.Size)],2)
-        
+
+#####################################################################        
 
 class Grid:
     def __init__(self,x,y,size,tilesize):
@@ -130,17 +94,78 @@ class Grid:
             for x in range(0, self.Size):
                 self.Tiles[x][y].Draw()
 
-
 ##################################################################### 
 
+width = 1280
+height = 720
+size = (width, height)
+screen = pygame.display.set_mode(size)
+pygame.init()
+
+pygame.mixer.music.load("Achtergrond.mp3")
+pygame.mixer.music.play(loops=200, start=0.0)
+
+mouse =pygame.mouse.get_pos()
+click = pygame.mouse.get_pressed()
+
+#global image files
+#set a resolution
+radar = pygame.image.load('radar.jpg')
+background_startscherm = pygame.image.load('radar background.jpg')
+boten = pygame.image.load('boten achtergrond.jpg')
+zee = pygame.image.load('Bord.jpg')
+boot2rood_ = pygame.image.load('boot2rood.png')
+boot3rood1_ = pygame.image.load('boot3rood.png')
+boot3rood2_ = pygame.image.load('boot3rood.png')
+boot4rood_ = pygame.image.load('boot4rood.png')
+boot2geel_ = pygame.image.load('boot2geel.png')
+boot3geel1_ = pygame.image.load('boot3geel.png')
+boot3geel2_ = pygame.image.load('boot3geel.png')
+boot4geel_ = pygame.image.load('boot4geel.png')
+label1=pygame.image.load('button groen 1.png')
+label3=pygame.image.load('button groen 3.png')
+spelregels1=pygame.image.load('Spelregels 1.png')
+spelregels2=pygame.image.load('Spelregels 2.png')
+spelregels3=pygame.image.load('Spelregels 3.png')
+spelregels4=pygame.image.load('Spelregels 4.png')
+spelregels5=pygame.image.load('Spelregels 5.png')
+settings=pygame.image.load('Settings.png')
+
+mooigrid = Grid(389,100,20,25)
+
+boot2geel = bootje2(mooigrid.Tiles[19][18].X,mooigrid.Tiles[19][18].Y,"player1")
+boot3geel1 = bootje2(mooigrid.Tiles[10][17].X,mooigrid.Tiles[10][17].Y,"player1")
+boot3geel2 = bootje2(mooigrid.Tiles[5][17].X,mooigrid.Tiles[5][17].Y,"player1")
+boot4geel = bootje2(mooigrid.Tiles[0][16].X,mooigrid.Tiles[0][16].Y,"player1")
+
+boot2rood = bootje2(mooigrid.Tiles[19][0].X,mooigrid.Tiles[19][0].Y,"player2")
+boot3rood1 = bootje2(mooigrid.Tiles[10][0].X,mooigrid.Tiles[10][0].Y,"player2")
+boot3rood2 = bootje2(mooigrid.Tiles[5][0].X,mooigrid.Tiles[5][0].Y,"player2")
+boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y,"player2")
+
+
+black=(0,0,0)
+white=(255,255,255)
+grey = (128,128,128)
+red = (200,0,0)
+green = (0,200,0)
+blue = (0,0,200)
+bright_red = (255,0,0)
+bright_green = (0,255,0)
+bright_blue = (0,0,255)
+bright_grey=(155,155,155)
+volume = 1
+
+def quitgame():
+    pygame.quit()
+    quit ()
 
 def play_sound():
     pygame.init()
     sonar_sound = pygame.mixer.Sound('Sonar_Sound.wav')
     sonar_sound.play()
     pygame.mixer.Sound.set_volume(sonar_sound, volume)
-    
-# Handle pygame events
+  
 def process_events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -154,7 +179,7 @@ def text_objects(text, font):
 
 def button (screen,msg,x,y,w,h,ic,ac,alw,ilw,fs,action = None, action2 = None):
     pygame.init()
-    mouse =pygame.mouse.get_pos()
+    mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
@@ -162,9 +187,7 @@ def button (screen,msg,x,y,w,h,ic,ac,alw,ilw,fs,action = None, action2 = None):
         if click[0] == 1 and action2 != None:
             action2()
         if click[0] == 1 and action != None:
-            action()
-            
-            
+            action()         
     else:
         pygame.draw.rect(screen,ic,(x,y,w,h),ilw)
 
@@ -173,6 +196,25 @@ def button (screen,msg,x,y,w,h,ic,ac,alw,ilw,fs,action = None, action2 = None):
     textRect.center = ( (x+(w/2)), (y+(h/2)))
     screen.blit(textSurf, textRect)
 
+def plaatje(x,y,w,h,action = True,ic=None,ac=None):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    boot2geel.draw(boot2geel_)
+    boot3geel1.draw(boot3geel1_)
+    boot3geel2.draw(boot3geel2_)
+    boot4geel.draw(boot4geel_)
+
+    boot2rood.draw(boot2rood_)
+    boot3rood1.draw(boot3rood1_)
+    boot3rood2.draw(boot3rood2_)
+    boot4rood.draw(boot4rood_)
+
+    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+        
+        if click[0] == 1 and action != None:
+            print("test")
+            #action()
+        
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
     pygame.init()
     mouse =pygame.mouse.get_pos()
@@ -187,8 +229,9 @@ def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
             
     else:
         pygame.draw.circle(screen,ic,(x,y),r,alw)
-    
 
+    
+    
 def load_new_screen():
     width = 1280
     height = 720
@@ -213,7 +256,7 @@ def load_new_screen():
 
         #Flip the screen
         pygame.display.flip()
-#main-start-new
+
 def new_screen():
     width = 1280
     height = 720
@@ -224,18 +267,23 @@ def new_screen():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
-    testboot = bootje2(30,30,"player1")
-    mooigrid = Grid(390,110,20,25)
+
 
     while not process_events():
         # Clear Screen
         screen.blit(zee, [0,0])
         mooigrid.Draw()
-        
-        testboot.update()
-        testboot.draw()
-        
-        
+       
+        plaatje(boot2geel.X,boot2geel.Y,25,50)
+        plaatje(boot3geel1.X,boot3geel1.Y,25,75)
+        plaatje(boot3geel2.X,boot3geel2.Y,25,75)
+        plaatje(boot4geel.X,boot4geel.Y,25,100)
+
+        plaatje(boot2rood.X,boot2rood.Y,25,25)
+        plaatje(boot3rood1.X,boot3rood1.Y,25,75)
+        plaatje(boot3rood2.X,boot3rood2.Y,25,75)
+        plaatje(boot4rood.X,boot4rood.Y,25,100)
+
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
@@ -243,7 +291,6 @@ def new_screen():
         pygame.display.flip()
         pygame.display.update()
 
-#main-start-load
 def load_screen():
     width = 1280
     height = 720
@@ -264,7 +311,7 @@ def load_screen():
         
         #Flip the screen
         pygame.display.flip()
-#main-instructions
+
 def instructions_screen():
     width = 1280
     height = 720
@@ -397,7 +444,6 @@ def instructions5():
         #Flip the screen
         pygame.display.flip()
 
-#main-highscores
 def highsccores_screen():
     width = 1280
     height = 720
@@ -418,7 +464,7 @@ def highsccores_screen():
 
         #Flip the screen
         pygame.display.flip()
-#main-options
+
 def option_screen():
     width = 1280
     height = 720
@@ -442,7 +488,7 @@ def option_screen():
 
         #Flip the screen
         pygame.display.flip()
-#main
+
 def program():
     width = 1280
     height = 720
@@ -451,6 +497,7 @@ def program():
     pygame.init()
 
     screen = pygame.display.set_mode(size)
+
 
     
 
@@ -467,7 +514,49 @@ def program():
         #Flip the screen
         pygame.display.flip()
 
-# Start the program
-program()
+'''<<<<<<< HEAD
+=======
+import psycopg2
 
-#end
+#Using Database
+def interact_with_database(command):
+	#connectie
+	connection = psycopg2.connect("dbname=Battleport user=postgres")
+	cursor = connection.cursor()
+	
+	#Execute
+	cursor.execute(command)
+	connection.commit()
+	
+	#Save results
+	results = None
+	try:
+		results = cursor.fetchall()
+	except psycopg2.ProgrammingError:
+		#Nothing to fetchall
+		pass
+		
+	#Close connection
+	cursor.close()
+	connection.close()
+	
+	return results
+	
+#Upload score into table
+def upload_score(pname, games_won, games_played, won_percentage):
+	interact_with_database("UPDATE scores SET scores = {} WHERE sname = '{}'"
+							.format(pname, games_won, games_played, won_percentage))
+							
+#Downloads score from the database
+def download_scores():
+	return interact_with_database("SELECT * FROM scores")
+
+#Downloads the top score from the database
+def download_top_score():
+		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
+		return result
+							
+
+# Start the program
+>>>>>>> origin/master'''
+program()

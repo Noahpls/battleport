@@ -514,7 +514,7 @@ def program():
         #Flip the screen
         pygame.display.flip()
 
-<<<<<<< HEAD
+'''<<<<<<< HEAD
 =======
 import psycopg2
 
@@ -558,5 +558,5 @@ def download_top_score():
 							
 
 # Start the program
->>>>>>> origin/master
+>>>>>>> origin/master'''
 program()

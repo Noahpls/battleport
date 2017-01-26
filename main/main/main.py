@@ -3,69 +3,29 @@
 
 import pygame
 import math
-width = 1280
-height = 720
-size = (width, height)
-screen = pygame.display.set_mode(size)
-pygame.init()
-
-pygame.mixer.music.load("Achtergrond.mp3")
-pygame.mixer.music.play(loops=200, start=0.0)
-
-#global image files
-#set a resolution
-radar = pygame.image.load('radar.jpg')
-background_startscherm = pygame.image.load('radar background.jpg')
-boten = pygame.image.load('boten achtergrond.jpg')
-zee = pygame.image.load('Bord.jpg')
-boot2rood = pygame.image.load('boot2rood.png')
-boot2geel = pygame.image.load('boot2geel.png')
-label1=pygame.image.load('button groen 1.png')
-label3=pygame.image.load('button groen 3.png')
-spelregels1=pygame.image.load('Spelregels 1.png')
-spelregels2=pygame.image.load('Spelregels 2.png')
-spelregels3=pygame.image.load('Spelregels 3.png')
-spelregels4=pygame.image.load('Spelregels 4.png')
-spelregels5=pygame.image.load('Spelregels 5.png')
-settings=pygame.image.load('Settings.png')
-
-black=(0,0,0)
-white=(255,255,255)
-grey = (128,128,128)
-red = (200,0,0)
-green = (0,200,0)
-blue = (0,0,200)
-bright_red = (255,0,0)
-bright_green = (0,255,0)
-bright_blue = (0,0,255)
-bright_grey=(155,155,155)
-volume = 1
-#quit functie
-def quitgame():
-    pygame.quit()
-    quit ()
 
 class bootje2():
     def __init__ (self,x,y,player):
-        self.x = x
-        self.y = y
+        self.X = x
+        self.Y = y
         self.player = player
         self.mode = "attacking"
         self.hp = 2
+
     def update (self):
         keys = pygame.key.get_pressed()
         
         if keys [pygame.K_LEFT]:
-            self.x = self.x - 20
+            self.X = self.X - 20
         elif keys [pygame.K_RIGHT]:
-            self.x = self.x + 20
+            self.X = self.X + 20
 
         if keys [pygame.K_UP]:
-            self.y = self.y - 20
+            self.Y = self.Y - 20
         elif keys [pygame.K_DOWN]:
-            self.y = self.y + 20
+            self.Y = self.Y + 20
     def draw(self):
-        screen.blit(boot2geel,[self.x,self.y])
+        screen.blit(boot2geel,[self.X,self.Y])
     def range(self):
         self.range = range
         if self.mode == "defensive" :
@@ -89,7 +49,7 @@ class Tile:
         self.Pos = pos
         self.Size = size
         self.Color = (0,0,0)
-        
+          
     def Clear(self):
         self.Color = (0,0,0)
         
@@ -132,15 +92,59 @@ class Grid:
 
 
 ##################################################################### 
+width = 1280
+height = 720
+size = (width, height)
+screen = pygame.display.set_mode(size)
+pygame.init()
 
+pygame.mixer.music.load("Achtergrond.mp3")
+pygame.mixer.music.play(loops=200, start=0.0)
+
+mouse =pygame.mouse.get_pos()
+click = pygame.mouse.get_pressed()
+
+#global image files
+#set a resolution
+radar = pygame.image.load('radar.jpg')
+background_startscherm = pygame.image.load('radar background.jpg')
+boten = pygame.image.load('boten achtergrond.jpg')
+zee = pygame.image.load('Bord.jpg')
+boot2rood = pygame.image.load('boot2rood.png')
+boot2geel = pygame.image.load('boot2geel.png')
+label1=pygame.image.load('button groen 1.png')
+label3=pygame.image.load('button groen 3.png')
+spelregels1=pygame.image.load('Spelregels 1.png')
+spelregels2=pygame.image.load('Spelregels 2.png')
+spelregels3=pygame.image.load('Spelregels 3.png')
+spelregels4=pygame.image.load('Spelregels 4.png')
+spelregels5=pygame.image.load('Spelregels 5.png')
+settings=pygame.image.load('Settings.png')
+
+mooigrid = Grid(389,100,20,25)
+
+black=(0,0,0)
+white=(255,255,255)
+grey = (128,128,128)
+red = (200,0,0)
+green = (0,200,0)
+blue = (0,0,200)
+bright_red = (255,0,0)
+bright_green = (0,255,0)
+bright_blue = (0,0,255)
+bright_grey=(155,155,155)
+volume = 1
+
+def quitgame():
+    pygame.quit()
+    quit ()
 
 def play_sound():
     pygame.init()
     sonar_sound = pygame.mixer.Sound('Sonar_Sound.wav')
     sonar_sound.play()
     pygame.mixer.Sound.set_volume(sonar_sound, volume)
-    
-# Handle pygame events
+  
 def process_events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -213,7 +217,7 @@ def load_new_screen():
 
         #Flip the screen
         pygame.display.flip()
-#main-start-new
+
 def new_screen():
     width = 1280
     height = 720
@@ -224,8 +228,8 @@ def new_screen():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
-    testboot = bootje2(30,30,"player1")
-    mooigrid = Grid(390,110,20,25)
+    
+    testboot = bootje2(mooigrid.Tiles[5][5].X,mooigrid.Tiles[5][5].Y,"player1")
 
     while not process_events():
         # Clear Screen
@@ -234,7 +238,6 @@ def new_screen():
         
         testboot.update()
         testboot.draw()
-        
         
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
@@ -451,6 +454,7 @@ def program():
     pygame.init()
 
     screen = pygame.display.set_mode(size)
+
 
     
 

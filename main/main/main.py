@@ -471,6 +471,47 @@ def program():
         #Flip the screen
         pygame.display.flip()
 
+import psycopg2
+
+#Using Database
+def interact_with_database(command):
+	#connectie
+	connection = psycopg2.connect("dbname=Battleport user=postgres")
+	cursor = connection.cursor()
+	
+	#Execute
+	cursor.execute(command)
+	connection.commit()
+	
+	#Save results
+	results = None
+	try:
+		results = cursor.fetchall()
+	except psycopg2.ProgrammingError:
+		#Nothing to fetchall
+		pass
+		
+	#Close connection
+	cursor.close()
+	connection.close()
+	
+	return results
+	
+#Upload score into table
+def upload_score(pname, games_won, games_played, won_percentage):
+	interact_with_database("UPDATE scores SET scores = {} WHERE sname = '{}'"
+							.format(pname, games_won, games_played, won_percentage))
+							
+#Downloads score from the database
+def download_scores():
+	return interact_with_database("SELECT * FROM scores")
+
+#Downloads the top score from the database
+def download_top_score():
+		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
+		return result
+							
+
 # Start the program
 program()
 

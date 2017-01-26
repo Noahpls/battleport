@@ -14,6 +14,9 @@ class bootje2():
         self.mode = "attacking"
         self.hp = 2
         self.active = False
+    def move(self):
+        if self.active == True:
+            move_menu()
 
     def update (self):
         keys = pygame.key.get_pressed()
@@ -196,7 +199,7 @@ def button (screen,msg,x,y,w,h,ic,ac,alw,ilw,fs,action = None, action2 = None):
     textRect.center = ( (x+(w/2)), (y+(h/2)))
     screen.blit(textSurf, textRect)
 
-def plaatje(x,y,w,h,action = True,ic=None,ac=None):
+def plaatje(x,y,w,h,boot,action = True,ic=None,ac=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     boot2geel.draw(boot2geel_)
@@ -212,8 +215,31 @@ def plaatje(x,y,w,h,action = True,ic=None,ac=None):
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         
         if click[0] == 1 and action != None:
-            print("test")
-            #action()
+            boot.active = True
+
+            if boot != boot2geel:
+                boot2geel.active = False
+            if boot != boot3geel1:
+                boot3geel1.active = False
+            if boot != boot3geel2:
+                boot3geel2.active = False
+            if boot != boot4geel:
+                boot4geel.active = False
+            if boot != boot2rood:
+                boot2rood.active = False
+            if boot != boot3rood1:
+                boot3rood1.active = False
+            if boot != boot3rood2:
+                boot3rood2.active = False
+            if boot != boot4rood:
+                boot4rood.active = False
+
+
+            action()
+
+def move_menu():
+    button (screen,"<",30,30,30,30,grey,bright_grey,0,0,20)
+    
         
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
     pygame.init()
@@ -274,22 +300,22 @@ def new_screen():
         screen.blit(zee, [0,0])
         mooigrid.Draw()
        
-        plaatje(boot2geel.X,boot2geel.Y,25,50)
-        plaatje(boot3geel1.X,boot3geel1.Y,25,75)
-        plaatje(boot3geel2.X,boot3geel2.Y,25,75)
-        plaatje(boot4geel.X,boot4geel.Y,25,100)
+        plaatje(boot2geel.X,boot2geel.Y,25,50,boot2geel,boot2geel.move)
+        plaatje(boot3geel1.X,boot3geel1.Y,25,75,boot3geel1)
+        plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2)
+        plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel)
 
-        plaatje(boot2rood.X,boot2rood.Y,25,25)
-        plaatje(boot3rood1.X,boot3rood1.Y,25,75)
-        plaatje(boot3rood2.X,boot3rood2.Y,25,75)
-        plaatje(boot4rood.X,boot4rood.Y,25,100)
+        plaatje(boot2rood.X,boot2rood.Y,25,25,boot2rood)
+        plaatje(boot3rood1.X,boot3rood1.Y,25,75,boot3rood1)
+        plaatje(boot3rood2.X,boot3rood2.Y,25,75,boot3rood2)
+        plaatje(boot4rood.X,boot4rood.Y,25,100,boot4rood)
 
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen
         pygame.display.flip()
-        pygame.display.update()
+        
 
 def load_screen():
     width = 1280

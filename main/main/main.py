@@ -290,7 +290,7 @@ def move_menu(boot):
                 boot.moving_down()
         button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
         pygame.display.flip()
-        button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,bright_grey,0,0,20)
+        button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,grey,0,0,20)
         button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 240,210,100,40,grey,grey,0,0,20)
         pygame.display.update()
 

@@ -18,23 +18,23 @@ class bootje2():
 
     def move(self):
         if self.active == True:
-            move_menu()
+            move_menu(self)
 
     def moving_left(self):
         self.X = self.X - 25
-        boot2geel.draw(boot2geel_)
+        self.draw(boot2geel_)
         new_screen()
     def moving_right(self):
         self.X = self.X + 25
-        boot2geel.draw(boot2geel_)
+        self.draw(boot2geel_)
         new_screen()
     def moving_up(self):
         self.Y = self.Y - 25
-        boot2geel.draw(boot2geel_)
+        self.draw(boot2geel_)
         new_screen()
     def moving_down(self):
         self.Y = self.Y + 25
-        boot2geel.draw(boot2geel_)
+        self.draw(boot2geel_)
         new_screen()
 
     def update (self):
@@ -265,13 +265,13 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
             boot4rood.active = False
 
 
-def move_menu():
+def move_menu(boot):
     while not process_events():
         button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
-        button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot2geel.moving_up)
-        button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot2geel.moving_right)
-        button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot2geel.moving_left)
-        button (screen,"v",270,390,40,40,grey,bright_grey,0,0,20, boot2geel.moving_down)
+        button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
+        button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
+        button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
+        button (screen,"v",270,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
         pygame.display.flip()
         pygame.display.update()
 

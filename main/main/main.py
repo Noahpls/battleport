@@ -7,35 +7,55 @@ import math
 #####################################################################
 
 class bootje2():
-    def __init__ (self,x,y,player):
+    def __init__ (self,x,y,player,length,hp):
         self.X = x
         self.Y = y
         self.player = player
+        self.length = length
         self.mode = "attacking"
-        self.hp = 2
+        self.hp = hp
         self.active = False
         self.pos= (self.X,self.Y) 
+        self.zetten = 0
+        self.bonus = 0
 
     def move(self):
         if self.active == True:
-            move_menu(self)
+            if self.zetten != (5-self.length) + self.bonus:
+                move_menu(self)
 
     def moving_left(self):
-        self.X = self.X - 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.X <= 389:
+            return False
+        else:
+            self.X = self.X - 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
     def moving_right(self):
-        self.X = self.X + 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.X >= 864:
+            return False
+        else:
+            self.X = self.X + 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
     def moving_up(self):
-        self.Y = self.Y - 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.Y <= 100:
+            return False
+        else:
+            self.Y = self.Y - 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
     def moving_down(self):
-        self.Y = self.Y + 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.Y >= 600 - (self.length*25):
+            return False
+        else:
+            self.Y = self.Y + 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
 
     def update (self):
         keys = pygame.key.get_pressed()
@@ -55,15 +75,15 @@ class bootje2():
         self.range = range
         if self.mode == "defensive" :
             #alleen verticaal schieten
-            self.range = 3
+            self.range = self.length + 1
         else:
-            self.range = 2
+            self.range = self.length
     def movement(self):
         if self.mode == "defensive" :
             #alleen verticaal schieten
             self.movement = 0
         else:
-            self.movement = 3 
+            self.movement = 5 - self.length 
             
 #####################################################################
 
@@ -155,15 +175,15 @@ settings=pygame.image.load('Settings.png')
 
 mooigrid = Grid(389,100,20,25)
 
-boot2geel = bootje2(mooigrid.Tiles[19][18].X,mooigrid.Tiles[19][18].Y,"player1")
-boot3geel1 = bootje2(mooigrid.Tiles[10][17].X,mooigrid.Tiles[10][17].Y,"player1")
-boot3geel2 = bootje2(mooigrid.Tiles[5][17].X,mooigrid.Tiles[5][17].Y,"player1")
-boot4geel = bootje2(mooigrid.Tiles[0][16].X,mooigrid.Tiles[0][16].Y,"player1")
+boot2geel = bootje2(mooigrid.Tiles[19][18].X,mooigrid.Tiles[19][18].Y,"player1",2,2)
+boot3geel1 = bootje2(mooigrid.Tiles[10][17].X,mooigrid.Tiles[10][17].Y,"player1",3,3)
+boot3geel2 = bootje2(mooigrid.Tiles[5][17].X,mooigrid.Tiles[5][17].Y,"player1",3,3)
+boot4geel = bootje2(mooigrid.Tiles[0][16].X,mooigrid.Tiles[0][16].Y,"player1",4,4)
 
-boot2rood = bootje2(mooigrid.Tiles[19][0].X,mooigrid.Tiles[19][0].Y,"player2")
-boot3rood1 = bootje2(mooigrid.Tiles[10][0].X,mooigrid.Tiles[10][0].Y,"player2")
-boot3rood2 = bootje2(mooigrid.Tiles[5][0].X,mooigrid.Tiles[5][0].Y,"player2")
-boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y,"player2")
+boot2rood = bootje2(mooigrid.Tiles[19][0].X,mooigrid.Tiles[19][0].Y,"player2",2,2)
+boot3rood1 = bootje2(mooigrid.Tiles[10][0].X,mooigrid.Tiles[10][0].Y,"player2",3,3)
+boot3rood2 = bootje2(mooigrid.Tiles[5][0].X,mooigrid.Tiles[5][0].Y,"player2",3,3)
+boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y,"player2",4,4)
 
 
 black=(0,0,0)
@@ -343,7 +363,7 @@ def new_screen():
         plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2,boot3geel2.move)
         plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.move)
 
-        plaatje(boot2rood.X,boot2rood.Y,25,25,boot2rood,boot2rood.move)
+        plaatje(boot2rood.X,boot2rood.Y,25,50,boot2rood,boot2rood.move)
         plaatje(boot3rood1.X,boot3rood1.Y,25,75,boot3rood1,boot3rood1.move)
         plaatje(boot3rood2.X,boot3rood2.Y,25,75,boot3rood2,boot3rood2.move)
         plaatje(boot4rood.X,boot4rood.Y,25,100,boot4rood,boot4rood.move)

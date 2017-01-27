@@ -17,7 +17,8 @@ class bootje2():
         self.active = False
         self.pos= (self.X,self.Y) 
         self.zetten = 0
-        self.bonus = 0
+        self.movementbonus = 0
+        self.rangebonus = 0
 
     def move(self):
         if self.active == True:
@@ -281,7 +282,7 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 
 def move_menu(boot):
     while not process_events():
-        if boot.zetten != 5-boot.length + boot.bonus:
+        if boot.zetten != 5-boot.length + boot.movementbonus:
             button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
             button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
             button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
@@ -400,8 +401,6 @@ def overgangsscherm():
         else:
             button (screen,"Player 1 ready?",500,500,300,50,green,bright_green,0,0,20,player1true)
             
-            
-
         pygame.display.flip()
         pygame.display.update()
 

@@ -383,6 +383,15 @@ def overgangsscherm():
     screen = pygame.display.set_mode(size)
 
     screen.blit(boten, [0,0])
+    boot2rood.zetten = 0
+    boot3rood1.zetten = 0
+    boot3rood2.zetten = 0
+    boot4rood.zetten = 0
+
+    boot2geel.zetten = 0
+    boot3geel1.zetten = 0
+    boot3geel2.zetten = 0
+    boot4geel.zetten = 0
 
     #global turnplayer1
     #global turnplayer2
@@ -444,7 +453,10 @@ def new_screen():
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
         button (screen,"pass turn",1030,670,200,50,grey,bright_grey,0,0,20, overgangsscherm)
-
+        if turnplayer1 == True:
+            button(screen, "Speler 1",73,0,100,50, grey,grey,0,0,20)
+        if turnplayer2 == True:
+            button(screen, "Speler 2",73,0,100,50, grey,grey,0,0,20)
         #Flip the screen
         pygame.display.flip()
         pygame.display.update()

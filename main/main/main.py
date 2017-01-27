@@ -21,8 +21,7 @@ class bootje2():
 
     def move(self):
         if self.active == True:
-            if self.zetten != (5-self.length) + self.bonus:
-                move_menu(self)
+            move_menu(self)
 
     def moving_left(self):
         if self.X <= 389:
@@ -57,18 +56,6 @@ class bootje2():
             self.zetten = self.zetten + 1
             new_screen()
 
-    def update (self):
-        keys = pygame.key.get_pressed()
-        
-        if keys [pygame.K_LEFT]:
-            self.X = self.X - 20
-        elif keys [pygame.K_RIGHT]:
-            self.X = self.X + 20
-
-        if keys [pygame.K_UP]:
-            self.Y = self.Y - 20
-        elif keys [pygame.K_DOWN]:
-            self.Y = self.Y + 20
     def draw(self,plaatjeboot):
         screen.blit(plaatjeboot,[self.X,self.Y])
     def range(self):
@@ -287,12 +274,24 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 
 def move_menu(boot):
     while not process_events():
+        if boot.zetten != 5-boot.length + boot.bonus:
+            button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
+            button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
+            button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
+            button (screen,"v",270,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
+            keys = pygame.key.get_pressed()
+            if keys [pygame.K_LEFT]:
+                boot.moving_left()
+            if keys [pygame.K_RIGHT]:
+                boot.moving_right()
+            if keys [pygame.K_UP]:
+                boot.moving_up()
+            if keys [pygame.K_DOWN]:
+                boot.moving_down()
         button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
-        button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
-        button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
-        button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
-        button (screen,"v",270,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
         pygame.display.flip()
+        button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,bright_grey,0,0,20)
+        button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 240,210,100,40,grey,grey,0,0,20)
         pygame.display.update()
 
     

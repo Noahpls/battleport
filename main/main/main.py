@@ -7,63 +7,74 @@ import math
 #####################################################################
 
 class bootje2():
-    def __init__ (self,x,y,player):
+    def __init__ (self,x,y,player,length,hp):
         self.X = x
         self.Y = y
         self.player = player
+        self.length = length
         self.mode = "attacking"
-        self.hp = 2
+        self.hp = hp
         self.active = False
         self.pos= (self.X,self.Y) 
+        self.zetten = 0
+        self.bonus = 0
 
     def move(self):
         if self.active == True:
             move_menu(self)
 
+    def hp_menu(self):
+        if self.active == True:
+            hp_menu_(self)
+
     def moving_left(self):
-        self.X = self.X - 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.X <= 389:
+            return False
+        else:
+            self.X = self.X - 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
     def moving_right(self):
-        self.X = self.X + 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.X >= 864:
+            return False
+        else:
+            self.X = self.X + 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
     def moving_up(self):
-        self.Y = self.Y - 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.Y <= 100:
+            return False
+        else:
+            self.Y = self.Y - 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
     def moving_down(self):
-        self.Y = self.Y + 25
-        self.draw(boot2geel_)
-        new_screen()
+        if self.Y >= 600 - (self.length*25):
+            return False
+        else:
+            self.Y = self.Y + 25
+            self.draw(boot2geel_)
+            self.zetten = self.zetten + 1
+            new_screen()
 
-    def update (self):
-        keys = pygame.key.get_pressed()
-        
-        if keys [pygame.K_LEFT]:
-            self.X = self.X - 20
-        elif keys [pygame.K_RIGHT]:
-            self.X = self.X + 20
-
-        if keys [pygame.K_UP]:
-            self.Y = self.Y - 20
-        elif keys [pygame.K_DOWN]:
-            self.Y = self.Y + 20
     def draw(self,plaatjeboot):
         screen.blit(plaatjeboot,[self.X,self.Y])
     def range(self):
         self.range = range
         if self.mode == "defensive" :
             #alleen verticaal schieten
-            self.range = 3
+            self.range = self.length + 1
         else:
-            self.range = 2
+            self.range = self.length
     def movement(self):
         if self.mode == "defensive" :
             #alleen verticaal schieten
             self.movement = 0
         else:
-            self.movement = 3 
+            self.movement = 5 - self.length 
             
 #####################################################################
 
@@ -153,17 +164,20 @@ spelregels4=pygame.image.load('Spelregels NL 4.png')
 spelregels5=pygame.image.load('Spelregels NL 5.png')
 settings=pygame.image.load('Settings.png')
 
+turnplayer1 = True
+turnplayer2 = False
+
 mooigrid = Grid(389,100,20,25)
 
-boot2geel = bootje2(mooigrid.Tiles[19][18].X,mooigrid.Tiles[19][18].Y,"player1")
-boot3geel1 = bootje2(mooigrid.Tiles[10][17].X,mooigrid.Tiles[10][17].Y,"player1")
-boot3geel2 = bootje2(mooigrid.Tiles[5][17].X,mooigrid.Tiles[5][17].Y,"player1")
-boot4geel = bootje2(mooigrid.Tiles[0][16].X,mooigrid.Tiles[0][16].Y,"player1")
+boot2geel = bootje2(mooigrid.Tiles[19][18].X,mooigrid.Tiles[19][18].Y,"player1",2,2)
+boot3geel1 = bootje2(mooigrid.Tiles[10][17].X,mooigrid.Tiles[10][17].Y,"player1",3,3)
+boot3geel2 = bootje2(mooigrid.Tiles[5][17].X,mooigrid.Tiles[5][17].Y,"player1",3,3)
+boot4geel = bootje2(mooigrid.Tiles[0][16].X,mooigrid.Tiles[0][16].Y,"player1",4,4)
 
-boot2rood = bootje2(mooigrid.Tiles[19][0].X,mooigrid.Tiles[19][0].Y,"player2")
-boot3rood1 = bootje2(mooigrid.Tiles[10][0].X,mooigrid.Tiles[10][0].Y,"player2")
-boot3rood2 = bootje2(mooigrid.Tiles[5][0].X,mooigrid.Tiles[5][0].Y,"player2")
-boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y,"player2")
+boot2rood = bootje2(mooigrid.Tiles[19][0].X,mooigrid.Tiles[19][0].Y,"player2",2,2)
+boot3rood1 = bootje2(mooigrid.Tiles[10][0].X,mooigrid.Tiles[10][0].Y,"player2",3,3)
+boot3rood2 = bootje2(mooigrid.Tiles[5][0].X,mooigrid.Tiles[5][0].Y,"player2",3,3)
+boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y,"player2",4,4)
 
 
 black=(0,0,0)
@@ -267,15 +281,38 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 
 def move_menu(boot):
     while not process_events():
+        if boot.zetten != 5-boot.length + boot.bonus:
+            button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
+            button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
+            button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
+            button (screen,"v",270,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
+            keys = pygame.key.get_pressed()
+            if keys [pygame.K_LEFT]:
+                boot.moving_left()
+            if keys [pygame.K_RIGHT]:
+                boot.moving_right()
+            if keys [pygame.K_UP]:
+                boot.moving_up()
+            if keys [pygame.K_DOWN]:
+                boot.moving_down()
         button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
-        button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
-        button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
-        button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
-        button (screen,"v",270,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
+        keys = pygame.key.get_pressed()
+        if keys [pygame.K_ESCAPE]:
+                new_screen()
         pygame.display.flip()
+        button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,grey,0,0,20)
+        button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 240,210,100,40,grey,grey,0,0,20)
         pygame.display.update()
 
-    
+def hp_menu_(boot):
+    while not process_events():
+        button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
+        keys = pygame.key.get_pressed()
+        if keys [pygame.K_ESCAPE]:
+                new_screen()
+        pygame.display.flip()
+        button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,grey,0,0,20)
+        pygame.display.update()
         
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
     pygame.init()
@@ -319,6 +356,50 @@ def load_new_screen():
         #Flip the screen
         pygame.display.flip()
 
+def player2true():
+    global turnplayer1
+    global turnplayer2
+    turnplayer2 = True
+    turnplayer1 = False
+    new_screen()
+
+def player1true():
+    global turnplayer1
+    global turnplayer2
+    turnplayer1 = True
+    turnplayer2 = False
+    new_screen()
+
+def overgangsscherm():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+    
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    screen.blit(boten, [0,0])
+
+    #global turnplayer1
+    #global turnplayer2
+
+    while not process_events():
+        if turnplayer1 == True:
+            button (screen,"player 2 ready?",500,500,300,50,grey,bright_grey,0,0,20,player2true)
+            
+        else:
+            button (screen,"player 1 ready?",500,500,300,50,grey,bright_grey,0,0,20,player1true)
+            
+            
+
+        pygame.display.flip()
+        pygame.display.update()
+
+
 def new_screen():
     width = 1280
     height = 720
@@ -337,19 +418,32 @@ def new_screen():
         # Clear Screen
         
         mooigrid.Draw()
-        
-        plaatje(boot2geel.X,boot2geel.Y,25,50,boot2geel,boot2geel.move)
-        plaatje(boot3geel1.X,boot3geel1.Y,25,75,boot3geel1,boot3geel1.move)
-        plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2,boot3geel2.move)
-        plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.move)
 
-        plaatje(boot2rood.X,boot2rood.Y,25,25,boot2rood,boot2rood.move)
-        plaatje(boot3rood1.X,boot3rood1.Y,25,75,boot3rood1,boot3rood1.move)
-        plaatje(boot3rood2.X,boot3rood2.Y,25,75,boot3rood2,boot3rood2.move)
-        plaatje(boot4rood.X,boot4rood.Y,25,100,boot4rood,boot4rood.move)
+        if turnplayer1 == True:
+            plaatje(boot2geel.X,boot2geel.Y,25,50,boot2geel,boot2geel.move)
+            plaatje(boot3geel1.X,boot3geel1.Y,25,75,boot3geel1,boot3geel1.move)
+            plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2,boot3geel2.move)
+            plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.move)
+
+            plaatje(boot2rood.X,boot2rood.Y,25,50,boot2rood,boot2rood.hp_menu)
+            plaatje(boot3rood1.X,boot3rood1.Y,25,75,boot3rood1,boot3rood1.hp_menu)
+            plaatje(boot3rood2.X,boot3rood2.Y,25,75,boot3rood2,boot3rood2.hp_menu)
+            plaatje(boot4rood.X,boot4rood.Y,25,100,boot4rood,boot4rood.hp_menu)
+
+        if turnplayer2 == True:
+            plaatje(boot2rood.X,boot2rood.Y,25,50,boot2rood,boot2rood.move)
+            plaatje(boot3rood1.X,boot3rood1.Y,25,75,boot3rood1,boot3rood1.move)
+            plaatje(boot3rood2.X,boot3rood2.Y,25,75,boot3rood2,boot3rood2.move)
+            plaatje(boot4rood.X,boot4rood.Y,25,100,boot4rood,boot4rood.move)
+
+            plaatje(boot2geel.X,boot2geel.Y,25,50,boot2geel,boot2geel.hp_menu)
+            plaatje(boot3geel1.X,boot3geel1.Y,25,75,boot3geel1,boot3geel1.hp_menu)
+            plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2,boot3geel2.hp_menu)
+            plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.hp_menu)
 
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
+        button (screen,"pass turn",1030,670,200,50,grey,bright_grey,0,0,20, overgangsscherm)
 
         #Flip the screen
         pygame.display.flip()

@@ -185,10 +185,10 @@ white=(255,255,255)
 grey = (128,128,128)
 red = (200,0,0)
 green = (0,200,0)
-blue = (0,0,200)
+blue = (0,51,150)
 bright_red = (255,0,0)
 bright_green = (0,255,0)
-bright_blue = (0,0,255)
+bright_blue = (0,51,205)
 bright_grey=(155,155,155)
 volume = 1
 
@@ -395,10 +395,10 @@ def overgangsscherm():
 
     while not process_events():
         if turnplayer1 == True:
-            button (screen,"Player 2 ready?",500,500,300,50,grey,bright_grey,0,0,20,player2true)
+            button (screen,"Player 2 ready?",500,500,300,50,green,bright_green,0,0,20,player2true)
             
         else:
-            button (screen,"Player 1 ready?",500,500,300,50,grey,bright_grey,0,0,20,player1true)
+            button (screen,"Player 1 ready?",500,500,300,50,green,bright_green,0,0,20,player1true)
             
             
 
@@ -447,13 +447,13 @@ def new_screen():
             plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2,boot3geel2.hp_menu)
             plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.hp_menu)
 
-        button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
+        button (screen,"Menu",1090,0,100,50,green,bright_green,0,0,20)
         button (screen,"Back",73,620,100,50,grey,bright_grey,0,0,20, program)
-        button (screen,"Pass turn",1090,620,100,50,grey,bright_grey,0,0,20, overgangsscherm)
+        button (screen,"Pass turn",1090,620,100,50,green,bright_green,0,0,20, overgangsscherm)
         if turnplayer1 == True:
-            button(screen, "Speler 1",73,0,100,50, grey,grey,0,0,20)
+            button(screen, "Speler 1",73,0,100,50, green,green,0,0,20)
         if turnplayer2 == True:
-            button(screen, "Speler 2",73,0,100,50, grey,grey,0,0,20)
+            button(screen, "Speler 2",73,0,100,50, green,green,0,0,20)
         #Flip the screen
         pygame.display.flip()
         pygame.display.update()

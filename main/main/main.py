@@ -393,15 +393,12 @@ def overgangsscherm():
     boot3geel2.zetten = 0
     boot4geel.zetten = 0
 
-    #global turnplayer1
-    #global turnplayer2
-
     while not process_events():
         if turnplayer1 == True:
-            button (screen,"player 2 ready?",500,500,300,50,grey,bright_grey,0,0,20,player2true)
+            button (screen,"Player 2 ready?",500,500,300,50,grey,bright_grey,0,0,20,player2true)
             
         else:
-            button (screen,"player 1 ready?",500,500,300,50,grey,bright_grey,0,0,20,player1true)
+            button (screen,"Player 1 ready?",500,500,300,50,grey,bright_grey,0,0,20,player1true)
             
             
 
@@ -451,8 +448,8 @@ def new_screen():
             plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.hp_menu)
 
         button (screen,"Menu",1090,0,100,50,grey,bright_grey,0,0,20)
-        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
-        button (screen,"pass turn",1030,670,200,50,grey,bright_grey,0,0,20, overgangsscherm)
+        button (screen,"Back",73,620,100,50,grey,bright_grey,0,0,20, program)
+        button (screen,"Pass turn",1090,620,100,50,grey,bright_grey,0,0,20, overgangsscherm)
         if turnplayer1 == True:
             button(screen, "Speler 1",73,0,100,50, grey,grey,0,0,20)
         if turnplayer2 == True:

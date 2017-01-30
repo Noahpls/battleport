@@ -19,6 +19,19 @@ class bootje2():
         self.zetten = 0
         self.movementbonus = 0
         self.rangebonus = 0
+        self.vierkantje = pygame.Rect(self.X,self.Y,25, 25*self.length)
+
+    def turn(self):
+        if self.X + 25*(self.length-1) < 889:
+            if self.mode == "attacking":
+                self.mode = "defensive"
+                self.vierkantje = pygame.Rect(self.X,self.Y, 25*self.length, 25)
+            else:
+                self.mode = "attacking"
+                self.vierkantje = pygame.Rect(self.X,self.Y, 25, 25*self.length)
+            new_screen()
+        else:
+            return False
 
     def move(self):
         if self.active == True:
@@ -63,6 +76,10 @@ class bootje2():
 
     def draw(self,plaatjeboot):
         screen.blit(plaatjeboot,[self.X,self.Y])
+
+    def draw2(self,plaatjeboot):
+        screen.blit(plaatjeboot,[self.X,self.Y + self.length*25 - 25])
+
     def range(self):
         self.range = range
         if self.mode == "defensive" :
@@ -149,13 +166,21 @@ background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
 zee = pygame.image.load('Bord.jpg')
 boot2rood_ = pygame.image.load('boot2rood.png')
+boot2rood_d = pygame.image.load('boot2rood_d.png')
 boot3rood1_ = pygame.image.load('boot3rood.png')
+boot3rood1_d = pygame.image.load('boot3rood_d.png')
 boot3rood2_ = pygame.image.load('boot3rood.png')
+boot3rood2_d = pygame.image.load('boot3rood_d.png')
 boot4rood_ = pygame.image.load('boot4rood.png')
+boot4rood_d = pygame.image.load('boot4rood_d.png')
 boot2geel_ = pygame.image.load('boot2geel.png')
+boot2geel_d = pygame.image.load('boot2geel_d.png')
 boot3geel1_ = pygame.image.load('boot3geel.png')
+boot3geel1_d = pygame.image.load('boot3geel_d.png')
 boot3geel2_ = pygame.image.load('boot3geel.png')
+boot3geel2_d = pygame.image.load('boot3geel_d.png')
 boot4geel_ = pygame.image.load('boot4geel.png')
+boot4geel_d = pygame.image.load('boot4geel_d.png')
 label1=pygame.image.load('button groen 1.png')
 label3=pygame.image.load('button groen 3.png')
 spelregels1=pygame.image.load('Spelregels NL 1.png')
@@ -178,7 +203,7 @@ boot4geel = bootje2(mooigrid.Tiles[0][16].X,mooigrid.Tiles[0][16].Y,"player1",4,
 boot2rood = bootje2(mooigrid.Tiles[19][0].X,mooigrid.Tiles[19][0].Y,"player2",2,2)
 boot3rood1 = bootje2(mooigrid.Tiles[10][0].X,mooigrid.Tiles[10][0].Y,"player2",3,3)
 boot3rood2 = bootje2(mooigrid.Tiles[5][0].X,mooigrid.Tiles[5][0].Y,"player2",3,3)
-boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y,"player2",4,4)
+boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y, "player2",4,4)
 
 
 black=(0,0,0)
@@ -236,18 +261,49 @@ def button (screen,msg,x,y,w,h,ic,ac,alw,ilw,fs,action = None, action2 = None):
 def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
-    boot2geel.draw(boot2geel_)
-    boot3geel1.draw(boot3geel1_)
-    boot3geel2.draw(boot3geel2_)
-    boot4geel.draw(boot4geel_)
 
-    boot2rood.draw(boot2rood_)
-    boot3rood1.draw(boot3rood1_)
-    boot3rood2.draw(boot3rood2_)
-    boot4rood.draw(boot4rood_)
+    if boot2geel.mode == "attacking":
+        boot2geel.draw(boot2geel_)
+    else:
+        boot2geel.draw(boot2geel_d)
 
-    if x+w > mouse[0] > x and y+h > mouse[1] > y:
+    if boot3geel1.mode == "attacking":
+        boot3geel1.draw(boot3geel1_)
+    else:
+        boot3geel1.draw(boot3geel1_d)
+    
+    if boot3geel2.mode == "attacking":
+        boot3geel2.draw(boot3geel2_)
+    else:
+        boot3geel2.draw(boot3geel2_d)
+
+    if boot4geel.mode == "attacking":
+        boot4geel.draw(boot4geel_)
+    else:
+        boot4geel.draw(boot4geel_d)
+
+
+    if boot2rood.mode == "attacking":
+        boot2rood.draw(boot2rood_)
+    else:
+        boot2rood.draw2(boot2rood_d)
+
+    if boot3rood1.mode == "attacking":
+        boot3rood1.draw(boot3rood1_)
+    else:
+        boot3rood1.draw2(boot3rood1_d)
+
+    if boot3rood2.mode == "attacking":
+        boot3rood2.draw(boot3rood2_)
+    else:
+        boot3rood2.draw2(boot3rood2_d)
+
+    if boot4rood.mode == "attacking":
+        boot4rood.draw(boot4rood_)
+    else:
+        boot4rood.draw2(boot4rood_d)
         
+    if boot.player == "player1" and (x+w > mouse[0] > x) and (y+h > mouse[1] > y):
         if click[0] == 1 and action != None:
             boot.active = True
 
@@ -267,7 +323,55 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
+            print(boot.player, boot.X, boot.Y, boot.length)
+            print("eerste if")
             action()
+
+    elif (boot.player == "player2" and boot.mode == "defensive" and x+w > mouse[0] > x and y+h+25*boot.length > mouse[1] > y-h-25*boot.length):
+        if click[0] == 1 and action != None:
+            boot.active = True
+
+            if boot != boot2geel:
+                boot2geel.active = False
+            if boot != boot3geel1:
+                boot3geel1.active = False
+            if boot != boot3geel2:
+                boot3geel2.active = False
+            if boot != boot4geel:
+                boot4geel.active = False
+            if boot != boot2rood:
+                boot2rood.active = False
+            if boot != boot3rood1:
+                boot3rood1.active = False
+            if boot != boot3rood2:
+                boot3rood2.active = False
+            if boot != boot4rood:
+                boot4rood.active = False
+            print("tweede if")
+            action()
+    elif (boot.player == "player2" and boot.mode == "attacking") and (x+w > mouse[0] > x) and (y+h > mouse[1] > y):
+        if click[0] == 1 and action != None:
+            boot.active = True
+
+            if boot != boot2geel:
+                boot2geel.active = False
+            if boot != boot3geel1:
+                boot3geel1.active = False
+            if boot != boot3geel2:
+                boot3geel2.active = False
+            if boot != boot4geel:
+                boot4geel.active = False
+            if boot != boot2rood:
+                boot2rood.active = False
+            if boot != boot3rood1:
+                boot3rood1.active = False
+            if boot != boot3rood2:
+                boot3rood2.active = False
+            if boot != boot4rood:
+                boot4rood.active = False
+            print("derde if")
+            action()
+
     else:
         if click[0] == 1:
             boot2geel.active = False
@@ -282,7 +386,7 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 
 def move_menu(boot):
     while not process_events():
-        if boot.zetten != 5-boot.length + boot.movementbonus:
+        if boot.zetten != 5-boot.length + boot.movementbonus and boot.mode == "attacking":
             button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
             button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
             button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
@@ -297,6 +401,7 @@ def move_menu(boot):
             if keys [pygame.K_DOWN]:
                 boot.moving_down()
         button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
+        button (screen, "TURN", 320, 290, 40, 40, grey, bright_grey, 0, 0 ,15, boot.turn)
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
@@ -425,26 +530,26 @@ def new_screen():
         mooigrid.Draw()
 
         if turnplayer1 == True:
-            plaatje(boot2geel.X,boot2geel.Y,25,50,boot2geel,boot2geel.move)
-            plaatje(boot3geel1.X,boot3geel1.Y,25,75,boot3geel1,boot3geel1.move)
-            plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2,boot3geel2.move)
-            plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.move)
+            plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.move)
+            plaatje(boot3geel1.X,boot3geel1.Y,boot3geel1.vierkantje.width,boot3geel1.vierkantje.height,boot3geel1,boot3geel1.move)
+            plaatje(boot3geel2.X,boot3geel2.Y,boot3geel2.vierkantje.width,boot3geel2.vierkantje.height,boot3geel2,boot3geel2.move)
+            plaatje(boot4geel.X,boot4geel.Y,boot4geel.vierkantje.width, boot4geel.vierkantje.height,boot4geel,boot4geel.move)
 
-            plaatje(boot2rood.X,boot2rood.Y,25,50,boot2rood,boot2rood.hp_menu)
-            plaatje(boot3rood1.X,boot3rood1.Y,25,75,boot3rood1,boot3rood1.hp_menu)
-            plaatje(boot3rood2.X,boot3rood2.Y,25,75,boot3rood2,boot3rood2.hp_menu)
-            plaatje(boot4rood.X,boot4rood.Y,25,100,boot4rood,boot4rood.hp_menu)
+            plaatje(boot2rood.X,boot2rood.Y,boot2rood.vierkantje.width,boot2rood.vierkantje.height,boot2rood,boot2rood.hp_menu)
+            plaatje(boot3rood1.X,boot3rood1.Y,boot3rood1.vierkantje.width,boot3rood1.vierkantje.height,boot3rood1,boot3rood1.hp_menu)
+            plaatje(boot3rood2.X,boot3rood2.Y,boot3rood2.vierkantje.width,boot3rood2.vierkantje.height,boot3rood2,boot3rood2.hp_menu)
+            plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.hp_menu)
 
         if turnplayer2 == True:
-            plaatje(boot2rood.X,boot2rood.Y,25,50,boot2rood,boot2rood.move)
-            plaatje(boot3rood1.X,boot3rood1.Y,25,75,boot3rood1,boot3rood1.move)
-            plaatje(boot3rood2.X,boot3rood2.Y,25,75,boot3rood2,boot3rood2.move)
-            plaatje(boot4rood.X,boot4rood.Y,25,100,boot4rood,boot4rood.move)
+            plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.hp_menu)
+            plaatje(boot3geel1.X,boot3geel1.Y,boot3geel1.vierkantje.width,boot3geel1.vierkantje.height,boot3geel1,boot3geel1.hp_menu)
+            plaatje(boot3geel2.X,boot3geel2.Y,boot3geel2.vierkantje.width,boot3geel2.vierkantje.height,boot3geel2,boot3geel2.hp_menu)
+            plaatje(boot4geel.X,boot4geel.Y,boot4geel.vierkantje.width, boot4geel.vierkantje.height,boot4geel,boot4geel.hp_menu)
 
-            plaatje(boot2geel.X,boot2geel.Y,25,50,boot2geel,boot2geel.hp_menu)
-            plaatje(boot3geel1.X,boot3geel1.Y,25,75,boot3geel1,boot3geel1.hp_menu)
-            plaatje(boot3geel2.X,boot3geel2.Y,25,75,boot3geel2,boot3geel2.hp_menu)
-            plaatje(boot4geel.X,boot4geel.Y,25,100,boot4geel,boot4geel.hp_menu)
+            plaatje(boot2rood.X,boot2rood.Y,boot2rood.vierkantje.width,boot2rood.vierkantje.height,boot2rood,boot2rood.move)
+            plaatje(boot3rood1.X,boot3rood1.Y,boot3rood1.vierkantje.width,boot3rood1.vierkantje.height,boot3rood1,boot3rood1.move)
+            plaatje(boot3rood2.X,boot3rood2.Y,boot3rood2.vierkantje.width,boot3rood2.vierkantje.height,boot3rood2,boot3rood2.move)
+            plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.move)
 
         button (screen,"Menu",1090,0,100,50,green,bright_green,0,0,20)
         button (screen,"Back",73,620,100,50,grey,bright_grey,0,0,20, program)

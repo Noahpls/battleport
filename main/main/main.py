@@ -146,7 +146,127 @@ class Grid:
                 self.Tiles[x][y].Draw()
 
 ##################################################################### 
+class temp_card_holder:
+    def __init__(self, name, id, desc, amount):
+        self.Name = name
+        self.ID = id
+        self.Desc = desc
+        self.Amount = amount
 
+class Card:
+    def __init__(self, x, y, width, height, name, desc, function, i, deck):
+        self.X = x
+        self.Y = y
+        self.Width = width
+        self.Height = height
+        self.Name = name
+        self.Desc = desc
+        self.Function = function
+        self.Active = True
+        self.Deck = deck
+        self.ID = i
+
+        self.Pressed = False
+        self.Pressing = False
+    
+    def Hover(self):
+        if self.X < pygame.mouse.get_pos()[0] < self.X + self.Width:
+            if self.Y < pygame.mouse.get_pos()[1] < self.Y + self.Height: return True
+        return False
+    
+    def Click(self): return pygame.mouse.get_pressed()[0]
+
+    def Draw(self):
+        if self.Active:
+            if self.Hover():
+                # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
+                pygame.draw.rect(screen, (100,100,100), (self.X, self.Y, self.Width, self.Height))
+                Text_draw(str(self.ID), 15, self.X, self.Y-15)
+                Text_draw(self.Name, 15, self.X, self.Y - 40)
+                self.Pressing = self.Click()
+                if self.Pressing:
+                    self.Pressed = True
+                    self.Pressing = False
+                else:
+                    if self.Pressed:
+                        #self.Function()
+                        self.Deck.Remove_card(self.ID)
+                        self.Pressed = False
+
+
+            else:
+                pygame.draw.rect(screen, (50,50,50), (self.X, self.Y, self.Width, self.Height))
+                Text_draw(str(self.ID), 15, self.X, self.Y-15)
+                Text_draw(self.Name, 10, self.X, self.Y - 40)
+                screen.blit(pygame.image.load("boot2rood" + ".png"), [self.X, self.Y])
+
+        else:
+            pygame.draw.rect(screen, (255,0,0), (self.X, self.Y, self.Width, self.Height))
+
+class Deck:
+    def __init__(self, x, y, player, limit):
+        self.X = x
+        self.Y = y
+        self.Player = player
+        self.Limit = limit
+
+        self.Cards = [""] * self.Limit
+    
+    def Add_card(self, name, desc, function):
+        i = 0
+        x = self.X
+        y = self.Y
+        w = 50
+        h = 100
+
+        for card in self.Cards:
+            if card == "":
+                self.Cards[i] = Card(x, y, w, h, name, desc, function, i, self)
+                break
+            x = x + w + 25
+            i += 1
+
+    def Remove_card(self, element):
+        del self.Cards[element]
+        for i in range(element, self.Limit - 1):
+            if self.Cards[i] != "":
+                self.Cards[i].ID -= 1
+                self.Cards[i].X -= self.Cards[i].Width + 25
+        self.Cards.append("")
+    
+    def Activate(self):
+        for card in self.Cards:
+            if card == "": break
+            else:
+                if card.Active: card.Active = False
+                else: card.Active = True
+
+    def Draw(self):
+        for card in self.Cards:
+            if card == "": break
+            else: card.Draw()
+        
+        
+class Hand:
+    def __init__(self, x, y, player):
+        self.X = x
+        self.Y = y
+        self.Player = player
+
+        self.Decks = [Deck(self.X, self.Y, self.Player, 6), Deck(self.X, self.Y, self.Player, 7), Deck(self.X, self.Y, self.Player, 8)]
+        self.Normal = self.Decks[0]
+        self.Traps = self.Decks[1]
+        self.Special = self.Decks[2]
+    
+    def Activate(self):
+        for deck in self.Decks:
+            deck.Activate()
+
+
+    def Draw(self):
+        for deck in self.Decks:
+            deck.Draw()
+#####################################################################
 width = 1280
 height = 720
 size = (width, height)
@@ -218,6 +338,17 @@ bright_blue = (0,51,205)
 bright_grey=(155,155,155)
 volume = 1
 
+#Create card instance
+
+#Offensive
+fmj_upgrade = temp_card_holder("FMJ Upgrade",1,"When this card is used, your next shot does +1 damage.",2)
+advanced_rifling = temp_card_holder("Advanced Rifling",3,"When this card is used, your next shot has +2 range.",2)
+
+
+hand = Hand(425,610,1)
+
+
+
 def quitgame():
     pygame.quit()
     quit ()
@@ -230,10 +361,18 @@ def play_sound():
   
 def process_events():
     for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                hand.Normal.Add_card(fmj_upgrade.Name, fmj_upgrade.Desc, 1)
+            if event.key == pygame.K_2:
+                hand.Normal.Add_card(advanced_rifling.Name, advanced_rifling.Desc, 1)
+            if event.key == pygame.K_3:
+                hand.Activate()
         if event.type == pygame.QUIT:
             # Give the signal to quit
             return True
     return False
+        
 
 def text_objects(text, font):
     textSurface = font.render(text, True, black)
@@ -257,6 +396,11 @@ def button (screen,msg,x,y,w,h,ic,ac,alw,ilw,fs,action = None, action2 = None):
     textSurf, textRect = text_objects(msg, smallText)
     textRect.center = ( (x+(w/2)), (y+(h/2)))
     screen.blit(textSurf, textRect)
+
+def Text_draw(text, size, x, y, textcolor=(255,255,255)):
+    font = pygame.font.SysFont(None, size)
+    screen_text = font.render(text, True, textcolor)
+    screen.blit(screen_text, [x,y])
 
 def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
     mouse = pygame.mouse.get_pos()
@@ -528,7 +672,7 @@ def new_screen():
         # Clear Screen
         
         mooigrid.Draw()
-
+        hand.Draw()
         if turnplayer1 == True:
             plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.move)
             plaatje(boot3geel1.X,boot3geel1.Y,boot3geel1.vierkantje.width,boot3geel1.vierkantje.height,boot3geel1,boot3geel1.move)

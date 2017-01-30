@@ -171,18 +171,24 @@ class Card:
     
     def Hover(self):
         if self.X < pygame.mouse.get_pos()[0] < self.X + self.Width:
-            if self.Y < pygame.mouse.get_pos()[1] < self.Y + self.Height: return True
-        return False
+            if self.Y < pygame.mouse.get_pos()[1] < self.Y + self.Height: 
+                return True
+            return False
+        
+        
     
-    def Click(self): return pygame.mouse.get_pressed()[0]
+    def Click(self): 
+        return pygame.mouse.get_pressed()[0]
 
     def Draw(self):
         if self.Active:
             if self.Hover():
                 # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
-                screen.blit(boot2geel_, [self.X, self.Y])
-
+                screen.blit(card1groot, [540, 210]) 
                 self.Pressing = self.Click()
+ 
+                
+
                 if self.Pressing:
                     self.Pressed = True
                     self.Pressing = False
@@ -191,11 +197,9 @@ class Card:
                         #self.Function()
                         self.Deck.Remove_card(self.ID)
                         self.Pressed = False
-
-
             else:
-                pygame.draw.rect(screen, (50,50,50), (self.X, self.Y, self.Width, self.Height))
-                screen.blit(card1, [self.X, self.Y])
+                screen.blit(card1, [self.X, self.Y])  
+                       
 
         else:
             pygame.draw.rect(screen, (255,0,0), (self.X, self.Y, self.Width, self.Height))
@@ -241,7 +245,9 @@ class Deck:
     def Draw(self):
         for card in self.Cards:
             if card == "": break
-            else: card.Draw()
+            else: 
+                card.Draw()
+                
         
         
 class Hand:
@@ -307,6 +313,7 @@ spelregels4=pygame.image.load('Spelregels NL 4.png')
 spelregels5=pygame.image.load('Spelregels NL 5.png')
 settings=pygame.image.load('Settings.png')
 card1 = pygame.image.load("Kaart tekst.png")
+card1groot = pygame.image.load("Kaart groot tekst.png")
 
 turnplayer1 = True
 turnplayer2 = False
@@ -657,7 +664,6 @@ def new_screen():
 
     #start PyGame
     pygame.init()
-    
 
     #set a resolution
     screen = pygame.display.set_mode(size)
@@ -668,7 +674,7 @@ def new_screen():
         # Clear Screen
         
         mooigrid.Draw()
-        hand.Draw()
+        
         if turnplayer1 == True:
             plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.move)
             plaatje(boot3geel1.X,boot3geel1.Y,boot3geel1.vierkantje.width,boot3geel1.vierkantje.height,boot3geel1,boot3geel1.move)
@@ -698,6 +704,8 @@ def new_screen():
             button(screen, "Speler 1",73,0,100,50, green,green,0,0,20)
         if turnplayer2 == True:
             button(screen, "Speler 2",73,0,100,50, green,green,0,0,20)
+
+        hand.Draw()
         #Flip the screen
         pygame.display.flip()
         pygame.display.update()

@@ -180,9 +180,8 @@ class Card:
         if self.Active:
             if self.Hover():
                 # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
-                pygame.draw.rect(screen, (100,100,100), (self.X, self.Y, self.Width, self.Height))
-                Text_draw(str(self.ID), 15, self.X, self.Y-15)
-                Text_draw(self.Name, 15, self.X, self.Y - 40)
+                screen.blit(boot2geel_, [self.X, self.Y])
+
                 self.Pressing = self.Click()
                 if self.Pressing:
                     self.Pressed = True
@@ -196,9 +195,7 @@ class Card:
 
             else:
                 pygame.draw.rect(screen, (50,50,50), (self.X, self.Y, self.Width, self.Height))
-                Text_draw(str(self.ID), 15, self.X, self.Y-15)
-                Text_draw(self.Name, 10, self.X, self.Y - 40)
-                screen.blit(pygame.image.load("boot2rood" + ".png"), [self.X, self.Y])
+                screen.blit(card1, [self.X, self.Y])
 
         else:
             pygame.draw.rect(screen, (255,0,0), (self.X, self.Y, self.Width, self.Height))
@@ -233,7 +230,7 @@ class Deck:
                 self.Cards[i].ID -= 1
                 self.Cards[i].X -= self.Cards[i].Width + 25
         self.Cards.append("")
-    
+        new_screen()
     def Activate(self):
         for card in self.Cards:
             if card == "": break
@@ -309,6 +306,7 @@ spelregels3=pygame.image.load('Spelregels NL 3.png')
 spelregels4=pygame.image.load('Spelregels NL 4.png')
 spelregels5=pygame.image.load('Spelregels NL 5.png')
 settings=pygame.image.load('Settings.png')
+card1 = pygame.image.load("Kaart tekst.png")
 
 turnplayer1 = True
 turnplayer2 = False
@@ -468,10 +466,9 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
             if boot != boot4rood:
                 boot4rood.active = False
             print(boot.player, boot.X, boot.Y, boot.length)
-            print("eerste if")
             action()
 
-    elif (boot.player == "player2" and boot.mode == "defensive" and x+w > mouse[0] > x and y+h+25*boot.length > mouse[1] > y-h-25*boot.length):
+    elif (boot.player == "player2" and boot.mode == "defensive" and x+w > mouse[0] > x and y+25*boot.length > mouse[1] > y+25*boot.length-25):
         if click[0] == 1 and action != None:
             boot.active = True
 
@@ -491,7 +488,6 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
-            print("tweede if")
             action()
     elif (boot.player == "player2" and boot.mode == "attacking") and (x+w > mouse[0] > x) and (y+h > mouse[1] > y):
         if click[0] == 1 and action != None:
@@ -513,7 +509,7 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
-            print("derde if")
+
             action()
 
     else:

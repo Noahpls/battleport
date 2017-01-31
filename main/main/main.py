@@ -12,10 +12,12 @@ class bootje2():
         self.Y = y
         self.player = player
         self.length = length
+        self.range = self.length
         self.mode = "attacking"
         self.hp = hp
         self.active = False
-        self.pos= (self.X,self.Y) 
+        self.pos= (self.X,self.Y)
+        self.aanvallen = 0 
         self.zetten = 0
         self.movementbonus = 0
         self.rangebonus = 0
@@ -29,9 +31,16 @@ class bootje2():
             else:
                 self.mode = "attacking"
                 self.vierkantje = pygame.Rect(self.X,self.Y, 25, 25*self.length)
+            self.zetten = self.zetten+1
             new_screen()
         else:
             return False
+
+    def attack(self):
+        self.aanvallen = self.aanvallen + 1
+
+    def damage(self):
+        self.hp = self.hp - 1
 
     def move(self):
         if self.active == True:
@@ -81,7 +90,6 @@ class bootje2():
         screen.blit(plaatjeboot,[self.X,self.Y + self.length*25 - 25])
 
     def range(self):
-        self.range = range
         if self.mode == "defensive" :
             #alleen verticaal schieten
             self.range = self.length + 1
@@ -184,7 +192,8 @@ class Card:
         if self.Active:
             if self.Hover():
                 # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
-                screen.blit(card1groot, [540, 210]) 
+                screen.blit(card1groot, [540, 210])
+                screen.blit(card1, [self.X, self.Y])   
                 self.Pressing = self.Click()
  
                 
@@ -350,8 +359,8 @@ fmj_upgrade = temp_card_holder("FMJ Upgrade",1,"When this card is used, your nex
 advanced_rifling = temp_card_holder("Advanced Rifling",3,"When this card is used, your next shot has +2 range.",2)
 
 
-hand = Hand(425,625,1)
-
+handp1 = Hand(425,625,1)
+handp2 = Hand(425,625,1)
 
 
 def quitgame():
@@ -367,19 +376,28 @@ def play_sound():
 def process_events():
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                hand.Normal.Add_card(fmj_upgrade.Name, fmj_upgrade.Desc, 1)
-            if event.key == pygame.K_2:
-                hand.Normal.Add_card(advanced_rifling.Name, advanced_rifling.Desc, 1)
-            if event.key == pygame.K_3:
-                hand.Activate()
+            if turnplayer1 == True:
+                if event.key == pygame.K_1:
+                    handp1.Normal.Add_card(fmj_upgrade.Name, fmj_upgrade.Desc, 1)
+                if event.key == pygame.K_2:
+                    handp1.Normal.Add_card(advanced_rifling.Name, advanced_rifling.Desc, 1)
+                if event.key == pygame.K_3:
+                    handp1.Activate()
+            if turnplayer2 == True:
+                if event.key == pygame.K_1:
+                    handp2.Normal.Add_card(fmj_upgrade.Name, fmj_upgrade.Desc, 1)
+                if event.key == pygame.K_2:
+                    handp2.Normal.Add_card(advanced_rifling.Name, advanced_rifling.Desc, 1)
+                if event.key == pygame.K_3:
+                    handp2.Activate()
+
         if event.type == pygame.QUIT:
             # Give the signal to quit
             return True
     return False
         
 
-def text_objects(text, font = "freesansbold.ttf"):
+def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
@@ -472,7 +490,16 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
-            print(boot.player, boot.X, boot.Y, boot.length)
+            if turnplayer1 == True:
+                print(boot.player, boot.X, boot.Y, boot.length, boot.mode)
+                print(boot2rood.player, boot2rood.X, boot2rood.Y, boot2rood.length,boot2rood.mode)
+                print(boot3rood1.player, boot3rood1.X, boot3rood1.Y, boot3rood1.length,boot3rood1.mode)
+                print(boot3rood2.player, boot3rood2.X, boot3rood2.Y, boot3rood2.length,boot3rood2.mode)
+                print(boot4rood.player, boot4rood.X, boot4rood.Y, boot4rood.length,boot4rood.mode)
+                #for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
+                    #for i in[1-(boot.length+boot.range),boot.range]:
+                        #if bootje.X == boot.X and (boot.Y - i *25 <= (bootje.Y + (bootje.length - 1 )*25) and  boot.Y - i *25 >=  bootje.Y ):
+
             action()
 
     elif (boot.player == "player2" and boot.mode == "defensive" and x+w > mouse[0] > x and y+25*boot.length > mouse[1] > y+25*boot.length-25):
@@ -495,6 +522,12 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
+            if turnplayer2 == True:
+                print(boot.player, boot.X, boot.Y, boot.length, boot.mode)
+                print(boot2geel.player, boot2geel.X, boot2geel.Y, boot2geel.length,boot2geel.mode)
+                print(boot3geel1.player, boot3geel1.X, boot3geel1.Y, boot3geel1.length,boot3geel1.mode)
+                print(boot3geel2.player, boot3geel2.X, boot3geel2.Y, boot3geel2.length,boot3geel2.mode)
+                print(boot4geel.player, boot4geel.X, boot4geel.Y, boot4geel.length,boot4geel.mode)
             action()
     elif (boot.player == "player2" and boot.mode == "attacking") and (x+w > mouse[0] > x) and (y+h > mouse[1] > y):
         if click[0] == 1 and action != None:
@@ -516,7 +549,16 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
-
+            if turnplayer2 == True:
+                print(boot.player, boot.X, boot.Y, boot.length, boot.mode)
+                print(boot2geel.player, boot2geel.X, boot2geel.Y, boot2geel.length,boot2geel.mode)
+                print(boot3geel1.player, boot3geel1.X, boot3geel1.Y, boot3geel1.length,boot3geel1.mode)
+                print(boot3geel2.player, boot3geel2.X, boot3geel2.Y, boot3geel2.length,boot3geel2.mode)
+                print(boot4geel.player, boot4geel.X, boot4geel.Y, boot4geel.length,boot4geel.mode)
+                for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
+                    for i in[1-(boot.length+boot.range),boot.range]:
+                        if bootje.X == boot.X and (boot.Y - i *25 <= (bootje.Y + (bootje.length - 1 )*25) and  boot.Y - i *25 >=  bootje.Y ):
+                            print("in range")
             action()
 
     else:
@@ -531,24 +573,27 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
             boot4rood.active = False
 
 
+
 def move_menu(boot):
     while not process_events():
-        if boot.zetten != 5-boot.length + boot.movementbonus and boot.mode == "attacking":
-            button (screen,"^",1095,275,60,60,grey,bright_grey,0,0,20, boot.moving_up)
-            button (screen,">",1160,340,60,60,grey,bright_grey,0,0,20, boot.moving_right)
-            button (screen,"<",1030,340,60,60,grey,bright_grey,0,0,20, boot.moving_left)
-            button (screen,"v",1095,405,60,60,grey,bright_grey,0,0,20, boot.moving_down)
-            keys = pygame.key.get_pressed()
-            if keys [pygame.K_LEFT]:
-                boot.moving_left()
-            if keys [pygame.K_RIGHT]:
-                boot.moving_right()
-            if keys [pygame.K_UP]:
-                boot.moving_up()
-            if keys [pygame.K_DOWN]:
-                boot.moving_down()
+        if boot.zetten != 5-boot.length + boot.movementbonus:
+            if boot.mode == "attacking":
+                button (screen,"^",1095,275,60,60,grey,bright_grey,0,0,20, boot.moving_up)
+                button (screen,">",1160,340,60,60,grey,bright_grey,0,0,20, boot.moving_right)
+                button (screen,"<",1030,340,60,60,grey,bright_grey,0,0,20, boot.moving_left)
+                button (screen,"v",1095,405,60,60,grey,bright_grey,0,0,20, boot.moving_down)
+                keys = pygame.key.get_pressed()
+                if keys [pygame.K_LEFT]:
+                    boot.moving_left()
+                if keys [pygame.K_RIGHT]:
+                    boot.moving_right()
+                if keys [pygame.K_UP]:
+                    boot.moving_up()
+                if keys [pygame.K_DOWN]:
+                    boot.moving_down()
+            button (screen, "TURN", 1160, 275, 60, 60, grey, bright_grey, 0, 0 ,15, boot.turn)
         button (screen,"X",1095,340,60,60,grey,bright_grey,0,0,20, new_screen)
-        button (screen, "TURN", 1160, 275, 60, 60, grey, bright_grey, 0, 0 ,15, boot.turn)
+        
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
@@ -559,12 +604,32 @@ def move_menu(boot):
 
 def hp_menu_(boot):
     while not process_events():
-        button (screen,"X",1110,340,40,40,grey,bright_grey,0,0,20, new_screen)
+        button (screen,"X",1095,340,60,60,grey,bright_grey,0,0,20, new_screen)
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
         pygame.display.flip()
-        button (screen,"HP:" + str(boot.hp),1080,170,100,40,grey,grey,0,0,20)
+        button (screen,"HP:" + str(boot.hp),1075,170,100,40,grey,grey,0,0,20)
+        #boot is degene waarop geklikt is die wordt aangevallen, bootje is de aanvaller
+        if turnplayer1 == True:
+            for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
+                for i in[1-(bootje.length+bootje.range),bootje.range]:
+                    if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                        if bootje.aanvallen < 1:
+                            button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+
+                        else:
+                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+        else:
+            for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
+                    for i in[1-(bootje.length+bootje.range),bootje.range]:
+                        if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                            if bootje.aanvallen < 1:
+                                button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+
+                            else:
+                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                        
         pygame.display.update()
         
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
@@ -641,10 +706,21 @@ def overgangsscherm():
     boot3rood2.zetten = 0
     boot4rood.zetten = 0
 
+    boot2rood.aanvallen = 0
+    boot3rood1.aanvallen = 0
+    boot3rood2.aanvallen = 0
+    boot4rood.aanvallen = 0
+
+
     boot2geel.zetten = 0
     boot3geel1.zetten = 0
     boot3geel2.zetten = 0
     boot4geel.zetten = 0
+
+    boot2geel.aanvallen = 0
+    boot3geel1.aanvallen = 0
+    boot3geel2.aanvallen = 0
+    boot4geel.aanvallen = 0
 
     while not process_events():
         if turnplayer1 == True:
@@ -686,6 +762,8 @@ def new_screen():
             plaatje(boot3rood2.X,boot3rood2.Y,boot3rood2.vierkantje.width,boot3rood2.vierkantje.height,boot3rood2,boot3rood2.hp_menu)
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.hp_menu)
 
+            handp1.Draw()
+
         if turnplayer2 == True:
             plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.hp_menu)
             plaatje(boot3geel1.X,boot3geel1.Y,boot3geel1.vierkantje.width,boot3geel1.vierkantje.height,boot3geel1,boot3geel1.hp_menu)
@@ -697,15 +775,17 @@ def new_screen():
             plaatje(boot3rood2.X,boot3rood2.Y,boot3rood2.vierkantje.width,boot3rood2.vierkantje.height,boot3rood2,boot3rood2.move)
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.move)
 
-        button (screen,"Menu",1160,29,100,50,green,bright_green,0,0,20)
-        button (screen,"Back",990,29,100,50,grey,bright_grey,0,0,20, program)
-        button (screen,"Pass turn",1075,510,100,50,green,bright_green,0,0,20, overgangsscherm)
-        if turnplayer1 == True:
-            button(screen, "Speler 1",590,7,100,50, green,green,0,0,20)
-        if turnplayer2 == True:
-            button(screen, "Speler 2",590,7,100,50, green,green,0,0,20)
+            handp2.Draw()
 
-        hand.Draw()
+        button (screen,"Menu",1160,30,100,50,green,bright_green,0,0,20)
+        button (screen,"Back", 990,30,100,50,grey,bright_grey,0,0,20, program)
+        button (screen,"Pass turn",1075,515,100,50,green,bright_green,0,0,20, overgangsscherm)
+        if turnplayer1 == True:
+            button(screen, "Speler 1",590,5,100,50, green,green,0,0,20)
+        if turnplayer2 == True:
+            button(screen, "Speler 2",590,5,100,50, green,green,0,0,20)
+
+        
         #Flip the screen
         pygame.display.flip()
         pygame.display.update()
@@ -867,35 +947,20 @@ def highsccores_screen():
     width = 1280
     height = 720
     size = (width, height)
-    #printing scores on screen
-    highscore = download_scores()     
-    
-    player_highscores = []
-    player_highscores.append(highscore[0][0] + "   "  + str(highscore[0][1]) + "   " + str(highscore[0][2]) + "   " + str(highscore[0][3]) + "\n")
-    player_highscores.append(highscore[1][0] + "   "  + str(highscore[1][1]) + "   " + str(highscore[1][2]) + "   " + str(highscore[1][3]) + "\n")
-    player_highscores.append(highscore[2][0] + "   "  + str(highscore[2][1]) + "   " + str(highscore[2][2]) + "   " + str(highscore[2][3]) + "\n")
-    player_highscores.append(highscore[3][0] + "   "  + str(highscore[3][1]) + "   " + str(highscore[3][2]) + "   " + str(highscore[3][3]) + "\n")
-    player_highscores.append(highscore[4][0] + "   "  + str(highscore[4][1]) + "   " + str(highscore[4][2]) + "   " + str(highscore[4][3]) + "\n")
-    
 
-    font = pygame.font.Font(None,70)
-    score_text = font.render(player_highscores[0],1,(255,255,255))
-    
     #start PyGame
     pygame.init()
 
+    #set a resolution
+    screen = pygame.display.set_mode(size)
 
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
-        #Positie text highscore
-        screen.blit(score_text, (300, 200))
         
         #TESTBUTTON
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
-        
-       
-        
+
         #Flip the screen
         pygame.display.flip()
 
@@ -948,14 +1013,14 @@ def program():
         #Flip the screen
         pygame.display.flip()
 
-#<<<<<<< HEAD
-#=======
+'''<<<<<<< HEAD
+=======
 import psycopg2
 
 #Using Database
 def interact_with_database(command):
 	#connectie
-	connection = psycopg2.connect("dbname=Battleport user=postgres password=h62v5th")
+	connection = psycopg2.connect("dbname=Battleport user=postgres")
 	cursor = connection.cursor()
 	
 	#Execute
@@ -969,7 +1034,6 @@ def interact_with_database(command):
 	except psycopg2.ProgrammingError:
 		#Nothing to fetchall
 		pass
-	print(results)
 		
 	#Close connection
 	cursor.close()
@@ -984,16 +1048,14 @@ def upload_score(pname, games_won, games_played, won_percentage):
 							
 #Downloads score from the database
 def download_scores():
-	return interact_with_database("SELECT sname, games_won, games_played, won_percentage FROM scores LIMIT 5")
+	return interact_with_database("SELECT * FROM scores")
 
 #Downloads the top score from the database
 def download_top_score():
 		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
 		return result
-
-download_scores()
 							
 
 # Start the program
-#>>>>>>> origin/master
+>>>>>>> origin/master'''
 program()

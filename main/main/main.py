@@ -31,6 +31,7 @@ class bootje2():
             else:
                 self.mode = "attacking"
                 self.vierkantje = pygame.Rect(self.X,self.Y, 25, 25*self.length)
+            self.zetten = self.zetten+1
             new_screen()
         else:
             return False

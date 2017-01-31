@@ -18,7 +18,7 @@ class bootje2():
         self.active = False
         self.pos= (self.X,self.Y)
         self.aanvallen = 0 
-        self.zetten = 0
+        self.zetten = -40
         self.movementbonus = 0
         self.rangebonus = 0
         self.vierkantje = pygame.Rect(self.X,self.Y,25, 25*self.length)
@@ -831,13 +831,26 @@ def hp_menu_(boot):
         #boot is degene waarop geklikt is die wordt aangevallen, bootje is de aanvaller
         if turnplayer1 == True:
             for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
-                for i in[1-(bootje.length+bootje.range),bootje.range]:
-                    if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
-                        if bootje.aanvallen < 1:
-                            button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-
-                        else:
-                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                if bootje.mode ==  "attacking" and boot.mode == "attacking":
+                    for o in range(-bootje.vierkantje.height, bootje.vierkantje.height):
+                        if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o + 25 >= boot.X >= bootje.X - o - 25):
+                            if bootje.aanvallen < 1:
+                                button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                            #else:
+                            #    button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                    #vGOEDv
+                    for i in[1-(bootje.length+bootje.range),bootje.range]:
+                        if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                            if bootje.aanvallen < 1:
+                                button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                            #else:
+                            #    button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                elif bootje.mode == "attacking" and boot.mode == "defensive":
+                    return False
+                elif bootje.mode == "defensive" and boot.mode == "attacking":
+                    return False
+                elif bootje.mode == "defensive" and boot.mode == "defensive":
+                    return False
         else:
             for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
                     for i in[1-(bootje.length+bootje.range),bootje.range]:
@@ -919,10 +932,10 @@ def overgangsscherm():
     screen = pygame.display.set_mode(size)
 
     screen.blit(boten, [0,0])
-    boot2rood.zetten = 0
-    boot3rood1.zetten = 0
-    boot3rood2.zetten = 0
-    boot4rood.zetten = 0
+    boot2rood.zetten = -40
+    boot3rood1.zetten = -40
+    boot3rood2.zetten = -40
+    boot4rood.zetten = -40
 
     boot2rood.aanvallen = 0
     boot3rood1.aanvallen = 0
@@ -930,10 +943,10 @@ def overgangsscherm():
     boot4rood.aanvallen = 0
 
 
-    boot2geel.zetten = 0
-    boot3geel1.zetten = 0
-    boot3geel2.zetten = 0
-    boot4geel.zetten = 0
+    boot2geel.zetten = -40
+    boot3geel1.zetten = -40
+    boot3geel2.zetten = -40
+    boot4geel.zetten = -40
 
     boot2geel.aanvallen = 0
     boot3geel1.aanvallen = 0

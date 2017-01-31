@@ -566,22 +566,24 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 
 def move_menu(boot):
     while not process_events():
-        if boot.zetten != 5-boot.length + boot.movementbonus and boot.mode == "attacking":
-            button (screen,"^",1095,275,60,60,grey,bright_grey,0,0,20, boot.moving_up)
-            button (screen,">",1160,340,60,60,grey,bright_grey,0,0,20, boot.moving_right)
-            button (screen,"<",1030,340,60,60,grey,bright_grey,0,0,20, boot.moving_left)
-            button (screen,"v",1095,405,60,60,grey,bright_grey,0,0,20, boot.moving_down)
-            keys = pygame.key.get_pressed()
-            if keys [pygame.K_LEFT]:
-                boot.moving_left()
-            if keys [pygame.K_RIGHT]:
-                boot.moving_right()
-            if keys [pygame.K_UP]:
-                boot.moving_up()
-            if keys [pygame.K_DOWN]:
-                boot.moving_down()
+        if boot.zetten != 5-boot.length + boot.movementbonus:
+            if boot.mode == "attacking":
+                button (screen,"^",1095,275,60,60,grey,bright_grey,0,0,20, boot.moving_up)
+                button (screen,">",1160,340,60,60,grey,bright_grey,0,0,20, boot.moving_right)
+                button (screen,"<",1030,340,60,60,grey,bright_grey,0,0,20, boot.moving_left)
+                button (screen,"v",1095,405,60,60,grey,bright_grey,0,0,20, boot.moving_down)
+                keys = pygame.key.get_pressed()
+                if keys [pygame.K_LEFT]:
+                    boot.moving_left()
+                if keys [pygame.K_RIGHT]:
+                    boot.moving_right()
+                if keys [pygame.K_UP]:
+                    boot.moving_up()
+                if keys [pygame.K_DOWN]:
+                    boot.moving_down()
+            button (screen, "TURN", 1160, 275, 60, 60, grey, bright_grey, 0, 0 ,15, boot.turn)
         button (screen,"X",1095,340,60,60,grey,bright_grey,0,0,20, new_screen)
-        button (screen, "TURN", 1160, 275, 60, 60, grey, bright_grey, 0, 0 ,15, boot.turn)
+        
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
@@ -599,14 +601,23 @@ def hp_menu_(boot):
         pygame.display.flip()
         button (screen,"HP:" + str(boot.hp),1075,170,100,40,grey,grey,0,0,20)
         #boot is degene waarop geklikt is die wordt aangevallen, bootje is de aanvaller
-        for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
-            for i in[1-(bootje.length+bootje.range),bootje.range]:
-                if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
-                    if bootje.aanvallen < 1:
-                        button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+        if turnplayer1 == True:
+            for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
+                for i in[1-(bootje.length+bootje.range),bootje.range]:
+                    if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                        if bootje.aanvallen < 1:
+                            button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
 
-                    else:
-                        button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                        else:
+                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+        for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
+                for i in[1-(bootje.length+bootje.range),bootje.range]:
+                    if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                        if bootje.aanvallen < 1:
+                            button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+
+                        else:
+                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                         
 
         pygame.display.update()

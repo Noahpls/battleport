@@ -287,7 +287,7 @@ click = pygame.mouse.get_pressed()
 radar = pygame.image.load('radar.jpg')
 background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
-zee = pygame.image.load('Bord.jpg')
+zee = pygame.image.load('Bord2.jpg')
 boot2rood_ = pygame.image.load('boot2rood.png')
 boot2rood_d = pygame.image.load('boot2rood_d.png')
 boot3rood1_ = pygame.image.load('boot3rood.png')
@@ -350,7 +350,7 @@ fmj_upgrade = temp_card_holder("FMJ Upgrade",1,"When this card is used, your nex
 advanced_rifling = temp_card_holder("Advanced Rifling",3,"When this card is used, your next shot has +2 range.",2)
 
 
-hand = Hand(425,610,1)
+hand = Hand(425,625,1)
 
 
 
@@ -534,10 +534,10 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 def move_menu(boot):
     while not process_events():
         if boot.zetten != 5-boot.length + boot.movementbonus and boot.mode == "attacking":
-            button (screen,"^",970,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
-            button (screen,">",1020,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
-            button (screen,"<",920,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
-            button (screen,"v",970,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
+            button (screen,"^",1095,275,60,60,grey,bright_grey,0,0,20, boot.moving_up)
+            button (screen,">",1160,340,60,60,grey,bright_grey,0,0,20, boot.moving_right)
+            button (screen,"<",1030,340,60,60,grey,bright_grey,0,0,20, boot.moving_left)
+            button (screen,"v",1095,405,60,60,grey,bright_grey,0,0,20, boot.moving_down)
             keys = pygame.key.get_pressed()
             if keys [pygame.K_LEFT]:
                 boot.moving_left()
@@ -547,24 +547,24 @@ def move_menu(boot):
                 boot.moving_up()
             if keys [pygame.K_DOWN]:
                 boot.moving_down()
-        button (screen,"X",970,340,40,40,grey,bright_grey,0,0,20, new_screen)
-        button (screen, "TURN", 1020, 290, 40, 40, grey, bright_grey, 0, 0 ,15, boot.turn)
+        button (screen,"X",1095,340,60,60,grey,bright_grey,0,0,20, new_screen)
+        button (screen, "TURN", 1160, 275, 60, 60, grey, bright_grey, 0, 0 ,15, boot.turn)
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
         pygame.display.flip()
-        button (screen,"HP:" + str(boot.hp),940,170,100,40,grey,grey,0,0,20)
-        button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 940,210,100,40,grey,grey,0,0,20)
+        button (screen,"HP:" + str(boot.hp),1075,170,100,40,grey,grey,0,0,20)
+        button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 1075,210,100,40,grey,grey,0,0,20)
         pygame.display.update()
 
 def hp_menu_(boot):
     while not process_events():
-        button (screen,"X",970,340,40,40,grey,bright_grey,0,0,20, new_screen)
+        button (screen,"X",1110,340,40,40,grey,bright_grey,0,0,20, new_screen)
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
         pygame.display.flip()
-        button (screen,"HP:" + str(boot.hp),940,170,100,40,grey,grey,0,0,20)
+        button (screen,"HP:" + str(boot.hp),1080,170,100,40,grey,grey,0,0,20)
         pygame.display.update()
         
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
@@ -697,13 +697,13 @@ def new_screen():
             plaatje(boot3rood2.X,boot3rood2.Y,boot3rood2.vierkantje.width,boot3rood2.vierkantje.height,boot3rood2,boot3rood2.move)
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.move)
 
-        button (screen,"Menu",1090,0,100,50,green,bright_green,0,0,20)
-        button (screen,"Back",73,620,100,50,grey,bright_grey,0,0,20, program)
-        button (screen,"Pass turn",1090,620,100,50,green,bright_green,0,0,20, overgangsscherm)
+        button (screen,"Menu",1160,29,100,50,green,bright_green,0,0,20)
+        button (screen,"Back",990,29,100,50,grey,bright_grey,0,0,20, program)
+        button (screen,"Pass turn",1075,510,100,50,green,bright_green,0,0,20, overgangsscherm)
         if turnplayer1 == True:
-            button(screen, "Speler 1",73,0,100,50, green,green,0,0,20)
+            button(screen, "Speler 1",590,7,100,50, green,green,0,0,20)
         if turnplayer2 == True:
-            button(screen, "Speler 2",73,0,100,50, green,green,0,0,20)
+            button(screen, "Speler 2",590,7,100,50, green,green,0,0,20)
 
         hand.Draw()
         #Flip the screen

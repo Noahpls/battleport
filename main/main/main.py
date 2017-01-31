@@ -55,7 +55,7 @@ class bootje2():
             return False
         else:
             self.X = self.X - 25
-            self.draw(boot2geel_)
+            self.draw(boot2geel_,boot2geel_k)
             self.zetten = self.zetten + 1
             new_screen()
     def moving_right(self):
@@ -63,7 +63,7 @@ class bootje2():
             return False
         else:
             self.X = self.X + 25
-            self.draw(boot2geel_)
+            self.draw(boot2geel_,boot2geel_k)
             self.zetten = self.zetten + 1
             new_screen()
     def moving_up(self):
@@ -71,7 +71,7 @@ class bootje2():
             return False
         else:
             self.Y = self.Y - 25
-            self.draw(boot2geel_)
+            self.draw(boot2geel_,boot2geel_k)
             self.zetten = self.zetten + 1
             new_screen()
     def moving_down(self):
@@ -79,16 +79,22 @@ class bootje2():
             return False
         else:
             self.Y = self.Y + 25
-            self.draw(boot2geel_)
+            self.draw(boot2geel_,boot2geel_k)
             self.zetten = self.zetten + 1
             new_screen()
 
-    def draw(self,plaatjeboot):
-        screen.blit(plaatjeboot,[self.X,self.Y])
+    def draw(self,plaatjeboot,plaatjebootkapot):
+        if self.hp > 0:
+            screen.blit(plaatjeboot,[self.X,self.Y])
+        else:
+            screen.blit(plaatjebootkapot,[self.X,self.Y])
+        
 
-    def draw2(self,plaatjeboot):
-        screen.blit(plaatjeboot,[self.X,self.Y + self.length*25 - 25])
-
+    def draw2(self,plaatjeboot,plaatjebootkapot):
+        if self.hp > 0:
+            screen.blit(plaatjeboot,[self.X,self.Y + self.length*25 - 25])
+        else:
+            screen.blit(plaatjebootkapot,[self.X,self.Y+ self.length*25 - 25])
     def range(self):
         if self.mode == "defensive" :
             #alleen verticaal schieten
@@ -303,20 +309,44 @@ boten = pygame.image.load('boten achtergrond.jpg')
 zee = pygame.image.load('Bord2.jpg')
 boot2rood_ = pygame.image.load('boot2rood.png')
 boot2rood_d = pygame.image.load('boot2rood_d.png')
+boot2rood_k = pygame.image.load('boot2rood_dood.png')
+boot2rood_d = pygame.image.load('boot2rood_dood_d.png')
+
 boot3rood1_ = pygame.image.load('boot3rood.png')
 boot3rood1_d = pygame.image.load('boot3rood_d.png')
+boot3rood1_k = pygame.image.load('boot3rood_dood.png')
+boot3rood1_dk = pygame.image.load('boot3rood_dood_d.png')
+
 boot3rood2_ = pygame.image.load('boot3rood.png')
 boot3rood2_d = pygame.image.load('boot3rood_d.png')
+boot3rood2_k = pygame.image.load('boot3rood_dood.png')
+boot3rood2_dk = pygame.image.load('boot3rood_dood_d.png')
+
 boot4rood_ = pygame.image.load('boot4rood.png')
 boot4rood_d = pygame.image.load('boot4rood_d.png')
+boot4rood_k = pygame.image.load('boot4rood_dood.png')
+boot4rood_dk = pygame.image.load('boot4rood_dood_d.png')
+
 boot2geel_ = pygame.image.load('boot2geel.png')
 boot2geel_d = pygame.image.load('boot2geel_d.png')
+boot2geel_k = pygame.image.load('boot2geel_dood.png')
+boot2geel_dk = pygame.image.load('boot2geel_dood_d.png')
+
 boot3geel1_ = pygame.image.load('boot3geel.png')
 boot3geel1_d = pygame.image.load('boot3geel_d.png')
+boot3geel1_k = pygame.image.load('boot3geel_dood.png')
+boot3geel1_dk = pygame.image.load('boot3geel_dood_d.png')
+
 boot3geel2_ = pygame.image.load('boot3geel.png')
 boot3geel2_d = pygame.image.load('boot3geel_d.png')
+boot3geel2_k = pygame.image.load('boot3geel_dood.png')
+boot3geel2_dk = pygame.image.load('boot3geel_dood_d.png')
+
 boot4geel_ = pygame.image.load('boot4geel.png')
 boot4geel_d = pygame.image.load('boot4geel_d.png')
+boot4geel_k = pygame.image.load('boot4geel_dood.png')
+boot4geel_dk = pygame.image.load('boot4geel_dood_d.png')
+
 label1=pygame.image.load('button groen 1.png')
 label3=pygame.image.load('button groen 3.png')
 spelregels1=pygame.image.load('Spelregels NL 1.png')
@@ -648,45 +678,45 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
     click = pygame.mouse.get_pressed()
 
     if boot2geel.mode == "attacking":
-        boot2geel.draw(boot2geel_)
+        boot2geel.draw(boot2geel_,boot2geel_k)
     else:
-        boot2geel.draw(boot2geel_d)
+        boot2geel.draw(boot2geel_d,boot2geel_dk)
 
     if boot3geel1.mode == "attacking":
-        boot3geel1.draw(boot3geel1_)
+        boot3geel1.draw(boot3geel1_,boot3geel1_k)
     else:
-        boot3geel1.draw(boot3geel1_d)
+        boot3geel1.draw(boot3geel1_d,boot3geel1_dk)
     
     if boot3geel2.mode == "attacking":
-        boot3geel2.draw(boot3geel2_)
+        boot3geel2.draw(boot3geel2_,boot3geel2_k)
     else:
-        boot3geel2.draw(boot3geel2_d)
+        boot3geel2.draw(boot3geel2_d,boot3geel2_dk)
 
     if boot4geel.mode == "attacking":
-        boot4geel.draw(boot4geel_)
+        boot4geel.draw(boot4geel_,boot4geel_k)
     else:
-        boot4geel.draw(boot4geel_d)
+        boot4geel.draw(boot4geel_d,boot4geel_dk)
 
 
     if boot2rood.mode == "attacking":
-        boot2rood.draw(boot2rood_)
+        boot2rood.draw(boot2rood_,boot2rood_k)
     else:
-        boot2rood.draw2(boot2rood_d)
+        boot2rood.draw2(boot2rood_d,boot2rood_dk)
 
     if boot3rood1.mode == "attacking":
-        boot3rood1.draw(boot3rood1_)
+        boot3rood1.draw(boot3rood1_,boot3rood1_k)
     else:
-        boot3rood1.draw2(boot3rood1_d)
+        boot3rood1.draw2(boot3rood1_d,boot3rood1_dk)
 
     if boot3rood2.mode == "attacking":
-        boot3rood2.draw(boot3rood2_)
+        boot3rood2.draw(boot3rood2_,boot3rood2_k)
     else:
-        boot3rood2.draw2(boot3rood2_d)
+        boot3rood2.draw2(boot3rood2_d,boot3rood2_dk)
 
     if boot4rood.mode == "attacking":
-        boot4rood.draw(boot4rood_)
+        boot4rood.draw(boot4rood_,boot4rood_k)
     else:
-        boot4rood.draw2(boot4rood_d)
+        boot4rood.draw2(boot4rood_d,boot4rood_dk)
         
     if boot.player == "player1" and (x+w > mouse[0] > x) and (y+h > mouse[1] > y):
         if click[0] == 1 and action != None:
@@ -794,7 +824,7 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 
 def move_menu(boot):
     while not process_events():
-        if boot.zetten != 5-boot.length + boot.movementbonus:
+        if boot.zetten != 5-boot.length + boot.movementbonus and boot.hp > 0:
             if boot.mode == "attacking":
                 button (screen,"^",1095,275,60,60,grey,bright_grey,0,0,20, boot.moving_up)
                 button (screen,">",1160,340,60,60,grey,bright_grey,0,0,20, boot.moving_right)
@@ -817,7 +847,8 @@ def move_menu(boot):
                 new_screen()
         pygame.display.flip()
         button (screen,"HP:" + str(boot.hp),1075,170,100,40,grey,grey,0,0,20)
-        button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 1075,210,100,40,grey,grey,0,0,20)
+        if boot.hp > 0:
+            button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 1075,210,100,40,grey,grey,0,0,20)
         pygame.display.update()
 
 def hp_menu_(boot):
@@ -831,20 +862,21 @@ def hp_menu_(boot):
         #boot is degene waarop geklikt is die wordt aangevallen, bootje is de aanvaller
         if turnplayer1 == True:
             for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
-                if bootje.mode ==  "attacking" and boot.mode == "attacking":
-                    for o in range(-bootje.vierkantje.height, bootje.vierkantje.height):
+                if bootje.mode ==  "attacking":
+                    for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
                         if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o + 25 >= boot.X >= bootje.X - o - 25):
                             if bootje.aanvallen < 1:
                                 button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                            #else:
-                            #    button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                                
+                            else:
+                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                     #vGOEDv
                     for i in[1-(bootje.length+bootje.range),bootje.range]:
                         if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
                             if bootje.aanvallen < 1:
                                 button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                            #else:
-                            #    button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                            else:
+                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                 elif bootje.mode == "attacking" and boot.mode == "defensive":
                     return False
                 elif bootje.mode == "defensive" and boot.mode == "attacking":

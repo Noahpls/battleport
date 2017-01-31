@@ -3,7 +3,7 @@ import psycopg2
 #Using Database
 def interact_with_database(command):
 	#connectie
-	connection = psycopg2.connect("dbname=Battleport user=postgres")
+	connection = psycopg2.connect("dbname=Battleport user=postgres password=h62v5th")
 	cursor = connection.cursor()
 	
 	#Execute
@@ -17,6 +17,7 @@ def interact_with_database(command):
 	except psycopg2.ProgrammingError:
 		#Nothing to fetchall
 		pass
+	print(results)
 		
 	#Close connection
 	cursor.close()
@@ -37,4 +38,8 @@ def download_scores():
 def download_top_score():
 		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
 		return result
-							
+
+download_scores()
+
+#Binnen hiscores class
+screen.blit(download_scores(),('''positie (x,y)'''))							

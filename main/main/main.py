@@ -12,10 +12,12 @@ class bootje2():
         self.Y = y
         self.player = player
         self.length = length
+        self.range = self.length
         self.mode = "attacking"
         self.hp = hp
         self.active = False
-        self.pos= (self.X,self.Y) 
+        self.pos= (self.X,self.Y)
+        self.aanvallen = 0 
         self.zetten = 0
         self.movementbonus = 0
         self.rangebonus = 0
@@ -32,6 +34,12 @@ class bootje2():
             new_screen()
         else:
             return False
+
+    def attack(self):
+        self.aanvallen = self.aanvallen + 1
+
+    def damage(self):
+        self.hp = self.hp - 1
 
     def move(self):
         if self.active == True:
@@ -81,7 +89,6 @@ class bootje2():
         screen.blit(plaatjeboot,[self.X,self.Y + self.length*25 - 25])
 
     def range(self):
-        self.range = range
         if self.mode == "defensive" :
             #alleen verticaal schieten
             self.range = self.length + 1
@@ -472,7 +479,16 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
-            print(boot.player, boot.X, boot.Y, boot.length)
+            if turnplayer1 == True:
+                print(boot.player, boot.X, boot.Y, boot.length, boot.mode)
+                print(boot2rood.player, boot2rood.X, boot2rood.Y, boot2rood.length,boot2rood.mode)
+                print(boot3rood1.player, boot3rood1.X, boot3rood1.Y, boot3rood1.length,boot3rood1.mode)
+                print(boot3rood2.player, boot3rood2.X, boot3rood2.Y, boot3rood2.length,boot3rood2.mode)
+                print(boot4rood.player, boot4rood.X, boot4rood.Y, boot4rood.length,boot4rood.mode)
+                #for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
+                    #for i in[1-(boot.length+boot.range),boot.range]:
+                        #if bootje.X == boot.X and (boot.Y - i *25 <= (bootje.Y + (bootje.length - 1 )*25) and  boot.Y - i *25 >=  bootje.Y ):
+
             action()
 
     elif (boot.player == "player2" and boot.mode == "defensive" and x+w > mouse[0] > x and y+25*boot.length > mouse[1] > y+25*boot.length-25):
@@ -495,6 +511,12 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
+            if turnplayer2 == True:
+                print(boot.player, boot.X, boot.Y, boot.length, boot.mode)
+                print(boot2geel.player, boot2geel.X, boot2geel.Y, boot2geel.length,boot2geel.mode)
+                print(boot3geel1.player, boot3geel1.X, boot3geel1.Y, boot3geel1.length,boot3geel1.mode)
+                print(boot3geel2.player, boot3geel2.X, boot3geel2.Y, boot3geel2.length,boot3geel2.mode)
+                print(boot4geel.player, boot4geel.X, boot4geel.Y, boot4geel.length,boot4geel.mode)
             action()
     elif (boot.player == "player2" and boot.mode == "attacking") and (x+w > mouse[0] > x) and (y+h > mouse[1] > y):
         if click[0] == 1 and action != None:
@@ -516,7 +538,16 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
                 boot3rood2.active = False
             if boot != boot4rood:
                 boot4rood.active = False
-
+            if turnplayer2 == True:
+                print(boot.player, boot.X, boot.Y, boot.length, boot.mode)
+                print(boot2geel.player, boot2geel.X, boot2geel.Y, boot2geel.length,boot2geel.mode)
+                print(boot3geel1.player, boot3geel1.X, boot3geel1.Y, boot3geel1.length,boot3geel1.mode)
+                print(boot3geel2.player, boot3geel2.X, boot3geel2.Y, boot3geel2.length,boot3geel2.mode)
+                print(boot4geel.player, boot4geel.X, boot4geel.Y, boot4geel.length,boot4geel.mode)
+                for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
+                    for i in[1-(boot.length+boot.range),boot.range]:
+                        if bootje.X == boot.X and (boot.Y - i *25 <= (bootje.Y + (bootje.length - 1 )*25) and  boot.Y - i *25 >=  bootje.Y ):
+                            print("in range")
             action()
 
     else:
@@ -529,6 +560,7 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
             boot3rood1.active = False
             boot3rood2.active = False
             boot4rood.active = False
+
 
 
 def move_menu(boot):
@@ -565,6 +597,17 @@ def hp_menu_(boot):
                 new_screen()
         pygame.display.flip()
         button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,grey,0,0,20)
+        #boot is degene waarop geklikt is die wordt aangevallen, bootje is de aanvaller
+        for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
+            for i in[1-(bootje.length+bootje.range),bootje.range]:
+                if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                    if bootje.aanvallen < 1:
+                        button (screen,"Attack!",240,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+
+                    else:
+                        button (screen,"je hebt al aangevallen",215,240,150,40,grey,grey,0,0,15)
+                        
+
         pygame.display.update()
         
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
@@ -641,10 +684,21 @@ def overgangsscherm():
     boot3rood2.zetten = 0
     boot4rood.zetten = 0
 
+    boot2rood.aanvallen = 0
+    boot3rood1.aanvallen = 0
+    boot3rood2.aanvallen = 0
+    boot4rood.aanvallen = 0
+
+
     boot2geel.zetten = 0
     boot3geel1.zetten = 0
     boot3geel2.zetten = 0
     boot4geel.zetten = 0
+
+    boot2geel.aanvallen = 0
+    boot3geel1.aanvallen = 0
+    boot3geel2.aanvallen = 0
+    boot4geel.aanvallen = 0
 
     while not process_events():
         if turnplayer1 == True:

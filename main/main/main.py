@@ -867,20 +867,25 @@ def highsccores_screen():
     width = 1280
     height = 720
     size = (width, height)
-
+    #printing scores on screen
+    highscore = download_scores()
+    font = pygame.font.Font(None,70)
+    score_text = font.render((str(highscore)),1,(255,255,255))
     #start PyGame
     pygame.init()
 
-    #set a resolution
-    screen = pygame.display.set_mode(size)
 
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
+        #Positie text highscore
+        screen.blit(score_text, (300, 200))
         
         #TESTBUTTON
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
-
+        
+       
+        
         #Flip the screen
         pygame.display.flip()
 
@@ -933,14 +938,14 @@ def program():
         #Flip the screen
         pygame.display.flip()
 
-'''<<<<<<< HEAD
-=======
+#<<<<<<< HEAD
+#=======
 import psycopg2
 
 #Using Database
 def interact_with_database(command):
 	#connectie
-	connection = psycopg2.connect("dbname=Battleport user=postgres")
+	connection = psycopg2.connect("dbname=Battleport user=postgres password=h62v5th")
 	cursor = connection.cursor()
 	
 	#Execute
@@ -954,6 +959,7 @@ def interact_with_database(command):
 	except psycopg2.ProgrammingError:
 		#Nothing to fetchall
 		pass
+	print(results)
 		
 	#Close connection
 	cursor.close()
@@ -968,14 +974,16 @@ def upload_score(pname, games_won, games_played, won_percentage):
 							
 #Downloads score from the database
 def download_scores():
-	return interact_with_database("SELECT * FROM scores")
+	return interact_with_database("SELECT sname, games_won, games_played, won_percentage FROM scores"), print('\n')
 
 #Downloads the top score from the database
 def download_top_score():
-		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
+		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1], print('\n')
 		return result
+
+download_scores()
 							
 
 # Start the program
->>>>>>> origin/master'''
+#>>>>>>> origin/master
 program()

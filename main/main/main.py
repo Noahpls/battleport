@@ -947,22 +947,37 @@ def highsccores_screen():
     width = 1280
     height = 720
     size = (width, height)
+    #printing scores on screen
+    '''highscore = download_scores()     
+    
+    player_highscores = []
+    player_highscores.append(highscore[0][0] + "   "  + str(highscore[0][1]) + "   " + str(highscore[0][2]) + "   " + str(highscore[0][3]) + "\n")
+    player_highscores.append(highscore[1][0] + "   "  + str(highscore[1][1]) + "   " + str(highscore[1][2]) + "   " + str(highscore[1][3]) + "\n")
+    player_highscores.append(highscore[2][0] + "   "  + str(highscore[2][1]) + "   " + str(highscore[2][2]) + "   " + str(highscore[2][3]) + "\n")
+    player_highscores.append(highscore[3][0] + "   "  + str(highscore[3][1]) + "   " + str(highscore[3][2]) + "   " + str(highscore[3][3]) + "\n")
+    player_highscores.append(highscore[4][0] + "   "  + str(highscore[4][1]) + "   " + str(highscore[4][2]) + "   " + str(highscore[4][3]) + "\n")
+    
 
+    font = pygame.font.Font(None,70)
+    score_text = font.render(player_highscores[0],1,(255,255,255))
+    
     #start PyGame
     pygame.init()
 
-    #set a resolution
-    screen = pygame.display.set_mode(size)
 
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
+        #Positie text highscore
+        screen.blit(score_text, (300, 200))
         
         #TESTBUTTON
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
-
+        
+       
+        
         #Flip the screen
-        pygame.display.flip()
+        pygame.display.flip()'''
 
 def option_screen():
     width = 1280
@@ -1020,7 +1035,7 @@ import psycopg2
 #Using Database
 def interact_with_database(command):
 	#connectie
-	connection = psycopg2.connect("dbname=Battleport user=postgres")
+	connection = psycopg2.connect("dbname=Battleport user=postgres password=h62v5th")
 	cursor = connection.cursor()
 	
 	#Execute
@@ -1034,6 +1049,7 @@ def interact_with_database(command):
 	except psycopg2.ProgrammingError:
 		#Nothing to fetchall
 		pass
+	print(results)
 		
 	#Close connection
 	cursor.close()
@@ -1048,13 +1064,14 @@ def upload_score(pname, games_won, games_played, won_percentage):
 							
 #Downloads score from the database
 def download_scores():
-	return interact_with_database("SELECT * FROM scores")
+	return interact_with_database("SELECT sname, games_won, games_played, won_percentage FROM scores LIMIT 5")
 
 #Downloads the top score from the database
 def download_top_score():
 		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
 		return result
-							
+
+download_scores()							
 
 # Start the program
 >>>>>>> origin/master'''

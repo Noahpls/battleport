@@ -534,10 +534,10 @@ def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
 def move_menu(boot):
     while not process_events():
         if boot.zetten != 5-boot.length + boot.movementbonus and boot.mode == "attacking":
-            button (screen,"^",270,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
-            button (screen,">",320,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
-            button (screen,"<",220,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
-            button (screen,"v",270,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
+            button (screen,"^",970,290,40,40,grey,bright_grey,0,0,20, boot.moving_up)
+            button (screen,">",1020,340,40,40,grey,bright_grey,0,0,20, boot.moving_right)
+            button (screen,"<",920,340,40,40,grey,bright_grey,0,0,20, boot.moving_left)
+            button (screen,"v",970,390,40,40,grey,bright_grey,0,0,20, boot.moving_down)
             keys = pygame.key.get_pressed()
             if keys [pygame.K_LEFT]:
                 boot.moving_left()
@@ -547,24 +547,24 @@ def move_menu(boot):
                 boot.moving_up()
             if keys [pygame.K_DOWN]:
                 boot.moving_down()
-        button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
-        button (screen, "TURN", 320, 290, 40, 40, grey, bright_grey, 0, 0 ,15, boot.turn)
+        button (screen,"X",970,340,40,40,grey,bright_grey,0,0,20, new_screen)
+        button (screen, "TURN", 1020, 290, 40, 40, grey, bright_grey, 0, 0 ,15, boot.turn)
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
         pygame.display.flip()
-        button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,grey,0,0,20)
-        button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 240,210,100,40,grey,grey,0,0,20)
+        button (screen,"HP:" + str(boot.hp),940,170,100,40,grey,grey,0,0,20)
+        button (screen, "Moves:" + str(5-(boot.length+boot.zetten)), 940,210,100,40,grey,grey,0,0,20)
         pygame.display.update()
 
 def hp_menu_(boot):
     while not process_events():
-        button (screen,"X",270,340,40,40,grey,bright_grey,0,0,20, new_screen)
+        button (screen,"X",970,340,40,40,grey,bright_grey,0,0,20, new_screen)
         keys = pygame.key.get_pressed()
         if keys [pygame.K_ESCAPE]:
                 new_screen()
         pygame.display.flip()
-        button (screen,"HP:" + str(boot.hp),240,170,100,40,grey,grey,0,0,20)
+        button (screen,"HP:" + str(boot.hp),940,170,100,40,grey,grey,0,0,20)
         pygame.display.update()
         
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):

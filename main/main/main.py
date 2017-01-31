@@ -610,16 +610,16 @@ def hp_menu_(boot):
 
                         else:
                             button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
-        for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
-                for i in[1-(bootje.length+bootje.range),bootje.range]:
-                    if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
-                        if bootje.aanvallen < 1:
-                            button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+        else:
+            for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
+                    for i in[1-(bootje.length+bootje.range),bootje.range]:
+                        if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                            if bootje.aanvallen < 1:
+                                button (screen,"Attack!",1075,240,100,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
 
-                        else:
-                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                            else:
+                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                         
-
         pygame.display.update()
         
 def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):

@@ -379,7 +379,7 @@ def process_events():
     return False
         
 
-def text_objects(text, font):
+def text_objects(text, font = "freesansbold.ttf"):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
 
@@ -868,9 +868,19 @@ def highsccores_screen():
     height = 720
     size = (width, height)
     #printing scores on screen
-    highscore = download_scores()
+    highscore = download_scores()     
+    
+    player_highscores = []
+    player_highscores.append(highscore[0][0] + "   "  + str(highscore[0][1]) + "   " + str(highscore[0][2]) + "   " + str(highscore[0][3]) + "\n")
+    player_highscores.append(highscore[1][0] + "   "  + str(highscore[1][1]) + "   " + str(highscore[1][2]) + "   " + str(highscore[1][3]) + "\n")
+    player_highscores.append(highscore[2][0] + "   "  + str(highscore[2][1]) + "   " + str(highscore[2][2]) + "   " + str(highscore[2][3]) + "\n")
+    player_highscores.append(highscore[3][0] + "   "  + str(highscore[3][1]) + "   " + str(highscore[3][2]) + "   " + str(highscore[3][3]) + "\n")
+    player_highscores.append(highscore[4][0] + "   "  + str(highscore[4][1]) + "   " + str(highscore[4][2]) + "   " + str(highscore[4][3]) + "\n")
+    
+
     font = pygame.font.Font(None,70)
-    score_text = font.render((str(highscore)),1,(255,255,255))
+    score_text = font.render(player_highscores[0],1,(255,255,255))
+    
     #start PyGame
     pygame.init()
 
@@ -974,11 +984,11 @@ def upload_score(pname, games_won, games_played, won_percentage):
 							
 #Downloads score from the database
 def download_scores():
-	return interact_with_database("SELECT sname, games_won, games_played, won_percentage FROM scores"), print('\n')
+	return interact_with_database("SELECT sname, games_won, games_played, won_percentage FROM scores LIMIT 5")
 
 #Downloads the top score from the database
 def download_top_score():
-		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1], print('\n')
+		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
 		return result
 
 download_scores()

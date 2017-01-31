@@ -154,12 +154,14 @@ class Grid:
                 self.Tiles[x][y].Draw()
 
 ##################################################################### 
-class temp_card_holder:
-    def __init__(self, name, id, desc, amount):
+class cardholder:
+    def __init__ (self, name, id, desc,amount,simg,bimg):
         self.Name = name
-        self.ID = id
+        self.id = id
         self.Desc = desc
-        self.Amount = amount
+        self.Amount= amount
+        self.simg = simg
+        self.bimg = bimg
 
 class Card:
     def __init__(self, x, y, width, height, name, desc, function, i, deck):
@@ -192,8 +194,8 @@ class Card:
         if self.Active:
             if self.Hover():
                 # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
-                screen.blit(card1groot, [540, 210])
-                screen.blit(card1, [self.X, self.Y])   
+                screen.blit(emp_upgrade_big, [540, 210])
+                screen.blit(emp_upgrade_small, [self.X, self.Y])   
                 self.Pressing = self.Click()
  
                 
@@ -207,7 +209,7 @@ class Card:
                         self.Deck.Remove_card(self.ID)
                         self.Pressed = False
             else:
-                screen.blit(card1, [self.X, self.Y])  
+                screen.blit(emp_upgrade_small, [self.X, self.Y])  
                        
 
         else:
@@ -278,6 +280,8 @@ class Hand:
     def Draw(self):
         for deck in self.Decks:
             deck.Draw()
+
+
 #####################################################################
 width = 1280
 height = 720
@@ -324,6 +328,41 @@ settings=pygame.image.load('Settings.png')
 card1 = pygame.image.load("Kaart tekst.png")
 card1groot = pygame.image.load("Kaart groot tekst.png")
 
+#Cards
+fmj_small                   = pygame.image.load('Kaart FMJ.png')
+fmj_big                     = pygame.image.load('Kaart FMJ groot.png')
+rifling_small               = pygame.image.load('Kaart rifling.png')    
+rifling_big                 = pygame.image.load('Kaart rifling groot.png')
+advanced_rifling_small      = pygame.image.load('Kaart adv rifling.png')
+advanced_rifling_big        = pygame.image.load('Kaart adv rifling groot.png')
+emp_upgrade_small           = pygame.image.load('Kaart EMP.png')
+emp_upgrade_big             = pygame.image.load('Kaart EMP groot.png')
+reinforced_hull_small       = pygame.image.load('Kaart reinf hull.png')
+reinforced_hull_big         = pygame.image.load('Kaart reinf hull groot.png')
+sonar_small                 = pygame.image.load('Kaart sonar.png')
+sonar_big                   = pygame.image.load('Kaart sonar groot.png')
+smokescreen_small           = pygame.image.load('Kaart smoke.png')
+smokescreen_big             = pygame.image.load('Kaart smoke groot.png')
+sabotage_small              = pygame.image.load('Kaart sabotage.png')
+sabotage_big                = pygame.image.load('Kaart sabotage groot.png')
+backup_small                = pygame.image.load('Kaart backup.png')
+backup_big                  = pygame.image.load('Kaart backup groot.png')
+extra_fuel_small            = pygame.image.load('Kaart fuel.png')
+extra_fuel_big              = pygame.image.load('Kaart fuel groot.png')
+extra_fuel2_small           = pygame.image.load('Kaart fuel 2.png')
+extra_fuel2_big             = pygame.image.load('Kaart fuel 2 groot.png')
+rally_small                 = pygame.image.load('Kaart rally.png')
+rally_big                   = pygame.image.load('Kaart rally groot.png')
+nuclear_small               = pygame.image.load('Kaart nuclear.png')
+nuclear_big                 = pygame.image.load('Kaart nuclear groot.png')
+repair_small                = pygame.image.load('Kaart repair.png')
+repair_big                  = pygame.image.load('Kaart repair groot.png')
+far_sight_small             = pygame.image.load('Kaart far sight.png')
+far_sight_big               = pygame.image.load('Kaart far sight groot.png')
+aluminium_hull_small        = pygame.image.load('Kaart aluminium.png')
+aluminium_hull_big          = pygame.image.load('Kaart aluminium groot.png')
+
+
 turnplayer1 = True
 turnplayer2 = False
 
@@ -353,12 +392,33 @@ bright_grey=(155,155,155)
 volume = 1
 
 #Create card instance
-
 #Offensive
-fmj_upgrade = temp_card_holder("FMJ Upgrade",1,"When this card is used, your next shot does +1 damage.",2)
-advanced_rifling = temp_card_holder("Advanced Rifling",3,"When this card is used, your next shot has +2 range.",2)
+fmj_upgrade = cardholder("FMJ Upgrade",0,"When this card is used, your next shot does +1 damage.",2,fmj_small,fmj_big)
+rifling = cardholder("Rifling",1,"When this card is used, your next shot has +1 range.",2,rifling_small,rifling_big)
+advanced_rifling = cardholder("Advanced Rifling",2,"When this card is used, your next shot has +2 range.",2,advanced_rifling_small,advanced_rifling_big)
+emp_upgrade = cardholder("EMP Upgrade", 3, "When this card is used, your shot will disable the movement and attack of the ship(s) that got hit for 1 turn.",4,emp_upgrade_small,emp_upgrade_big)
+
+#defensive
+reinforced_hull = cardholder("Reinforced Hull",4,"Adds one HP to a friendly ship of your choice when this card is played.",2,reinforced_hull_small,reinforced_hull_big)
+sonar = cardholder("Sonar",5,"Choose a potential mine location to spot and deactivate that mine and place it in the discarded deck.",4,sonar_small,sonar_big)
+smokescreen = cardholder("Smokescreen",6,"When a friendly ship gets attacked, you may activate this card to make the attack miss.",2,smokescreen_small,smokescreen_big)
+sabotage = cardholder("Sabotage",7,"When activated, your opponent's attack deals damage to its own ship.",2,sabotage_small,sabotage_big)
+
+#Utility
+backup = cardholder("Backup",8,"Draw two cards.",2,backup_small,backup_big)
+extra_fuel = cardholder("Extra Fuel",9,"Select a friendly ship to make it move +1 step.",6,extra_fuel_small,extra_fuel_small)
+extra_fuel2 = cardholder("Extra Fuel II",10,"Select a friendly ship to make it move +1 step.",4,extra_fuel2_small,extra_fuel2_big)
+rally = cardholder("Rally",11,"All friendly ships van move +1 step.",1,rally_small,rally_big)
+nuclear = cardholder("Nuclear",12,"Select a friendly ship to make its moveset x2.",4,nuclear_small,nuclear_big)
+
+#Special cards
+repair = cardholder("Repair", 13, "Select a friendly ship to fully heal this ship (Base HP).",2,repair_small,repair_big)
+far_sight = cardholder("Far Sight", 14, "The used ship now has +2 range.",1,far_sight_small,far_sight_big)
+aluminium_hull = cardholder("Aluminium Hull",15,"The used ship now has its moveset x2.",1,aluminium_hull_small,aluminium_hull_big)
 
 
+
+#hand
 handp1 = Hand(425,625,1)
 handp2 = Hand(425,625,1)
 
@@ -424,6 +484,164 @@ def Text_draw(text, size, x, y, textcolor=(255,255,255)):
     font = pygame.font.SysFont(None, size)
     screen_text = font.render(text, True, textcolor)
     screen.blit(screen_text, [x,y])
+
+
+def carddraw():
+    r = random.randint(0,15)
+    foundcard = 0
+    while foundcard == 0:
+        if r == 1:
+        
+            if fmj_upgrade.amount == 0:
+                foundcard = 0
+            else:
+                fmj_upgrade.amount = fmj_upgrade.amount - 1
+                foundcard = 1
+                activecard = fmj_upgrade
+                return activecard
+
+        elif r == 2:
+        
+            if rifling.amount == 0:
+                foundcard = 0
+            else:
+                rifling.amount = rifling.amount - 1
+                foundcard = 1
+                activecard = rifling
+                return activecard
+        elif r == 3:
+        
+            if advanced_rifling.amount == 0:
+                foundcard = 0
+            else:
+                advanced_rifling.amount = advanced_rifling.amount - 1
+                foundcard = 1
+                activecard = advanced_rifling
+                return activecard
+
+
+        elif r == 4:
+        
+            if emp_upgrade.amount == 0:
+                foundcard = 0
+            else:
+                emp_upgrade.amount = emp_upgrade.amount - 1
+                foundcard = 1
+                activecard = emp_upgrade
+                return activecard
+
+        elif r == 5:
+        
+            if reinforced_hull.amount == 0:
+                foundcard = 0
+            else:
+                reinforced_hull.amount = reinforced_hull.amount - 1
+                foundcard = 1
+                activecard = reinforced_hull
+                return activecard
+
+       
+        elif r == 6:
+        
+            if smokescreen.amount == 0:
+                foundcard = 0
+            else:
+                smokescreen.amount = smokescreen.amount - 1
+                foundcard = 1
+                activecard = smokescreen
+                return activecard
+
+        elif r == 7:
+        
+            if sabotage.amount == 0:
+                foundcard = 0
+            else:
+                sabotage.amount = sabotage.amount - 1
+                foundcard = 1
+                activecard = sabotage
+                return activecard
+
+        elif r == 8:
+        
+            if backup.amount == 0:
+                foundcard = 0
+            else:
+                backup.amount = backup.amount - 1
+                foundcard = 1
+                activecard = backup
+                return activecard
+
+        elif r == 9:
+        
+            if extra_fuel.amount == 0:
+                foundcard = 0
+            else:
+                extra_fuel.amount = extra_fuel.amount - 1
+                foundcard = 1
+                activecard = extra_fuel
+                return activecard
+
+        elif r == 10:
+        
+            if extra_fuel2.amount == 0:
+                foundcard = 0
+            else:
+                extra_fuel2.amount = extra_fuel2.amount - 1
+                foundcard = 1
+                activecard = extra_fuel2
+                return activecard
+
+        elif r == 11:
+        
+            if rally.amount == 0:
+                foundcard = 0
+            else:
+                rally.amount = rally.amount - 1
+                foundcard = 1
+                activecard = rally
+                return activecard
+
+        elif r == 12:##
+        
+            if nuclear.amount == 0:
+                foundcard = 0
+            else:
+                nuclear.amount = nuclear.amount - 1
+                foundcard = 1
+                activecard = nuclear
+                return activecard
+
+        elif r == 13:
+        
+            if repair.amount == 0:
+                foundcard = 0
+            else:
+                repair.amount = repair.amount - 1
+                foundcard = 1
+                activecard = repair
+                return activecard
+
+
+        elif r == 14:
+        
+            if far_sight.amount == 0:
+                foundcard = 0
+            else:
+                far_sight.amount = far_sight.amount - 1
+                foundcard = 1
+                activecard = far_sight
+                return activecard
+
+        elif r == 15:
+        
+            if aluminium_hull.amount == 0:
+                foundcard = 0
+            else:
+                aluminium_hull.amount = aluminium_hull.amount - 1
+                foundcard = 1
+                activecard = aluminium_hull
+                return activecard
+
 
 def plaatje(x,y,w,h,boot,action = None,ic=None,ac=None):
     mouse = pygame.mouse.get_pos()

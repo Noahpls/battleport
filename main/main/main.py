@@ -867,7 +867,7 @@ def highsccores_screen():
     width = 1280
     height = 720
     size = (width, height)
-    #printing scores on screen
+    '''#printing scores on screen
     highscore = download_scores()     
     
     player_highscores = []
@@ -897,7 +897,7 @@ def highsccores_screen():
        
         
         #Flip the screen
-        pygame.display.flip()
+        pygame.display.flip()'''
 
 def option_screen():
     width = 1280
@@ -950,7 +950,7 @@ def program():
 
 #<<<<<<< HEAD
 #=======
-import psycopg2
+'''import psycopg2
 
 #Using Database
 def interact_with_database(command):
@@ -991,7 +991,7 @@ def download_top_score():
 		result = interact_with_database("SELECT * FROM scores ORDER BY scores")[0][1]
 		return result
 
-download_scores()
+download_scores()'''
 							
 
 # Start the program

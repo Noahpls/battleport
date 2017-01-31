@@ -192,7 +192,8 @@ class Card:
         if self.Active:
             if self.Hover():
                 # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
-                screen.blit(card1groot, [540, 210]) 
+                screen.blit(card1groot, [540, 210])
+                screen.blit(card1, [self.X, self.Y])   
                 self.Pressing = self.Click()
  
                 
@@ -358,8 +359,8 @@ fmj_upgrade = temp_card_holder("FMJ Upgrade",1,"When this card is used, your nex
 advanced_rifling = temp_card_holder("Advanced Rifling",3,"When this card is used, your next shot has +2 range.",2)
 
 
-hand = Hand(425,610,1)
-
+handp1 = Hand(425,625,1)
+handp2 = Hand(425,625,1)
 
 
 def quitgame():
@@ -375,12 +376,21 @@ def play_sound():
 def process_events():
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                hand.Normal.Add_card(fmj_upgrade.Name, fmj_upgrade.Desc, 1)
-            if event.key == pygame.K_2:
-                hand.Normal.Add_card(advanced_rifling.Name, advanced_rifling.Desc, 1)
-            if event.key == pygame.K_3:
-                hand.Activate()
+            if turnplayer1 == True:
+                if event.key == pygame.K_1:
+                    handp1.Normal.Add_card(fmj_upgrade.Name, fmj_upgrade.Desc, 1)
+                if event.key == pygame.K_2:
+                    handp1.Normal.Add_card(advanced_rifling.Name, advanced_rifling.Desc, 1)
+                if event.key == pygame.K_3:
+                    handp1.Activate()
+            if turnplayer2 == True:
+                if event.key == pygame.K_1:
+                    handp2.Normal.Add_card(fmj_upgrade.Name, fmj_upgrade.Desc, 1)
+                if event.key == pygame.K_2:
+                    handp2.Normal.Add_card(advanced_rifling.Name, advanced_rifling.Desc, 1)
+                if event.key == pygame.K_3:
+                    handp2.Activate()
+
         if event.type == pygame.QUIT:
             # Give the signal to quit
             return True
@@ -752,6 +762,8 @@ def new_screen():
             plaatje(boot3rood2.X,boot3rood2.Y,boot3rood2.vierkantje.width,boot3rood2.vierkantje.height,boot3rood2,boot3rood2.hp_menu)
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.hp_menu)
 
+            handp1.Draw()
+
         if turnplayer2 == True:
             plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.hp_menu)
             plaatje(boot3geel1.X,boot3geel1.Y,boot3geel1.vierkantje.width,boot3geel1.vierkantje.height,boot3geel1,boot3geel1.hp_menu)
@@ -763,6 +775,8 @@ def new_screen():
             plaatje(boot3rood2.X,boot3rood2.Y,boot3rood2.vierkantje.width,boot3rood2.vierkantje.height,boot3rood2,boot3rood2.move)
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.move)
 
+            handp2.Draw()
+
         button (screen,"Menu",1160,30,100,50,green,bright_green,0,0,20)
         button (screen,"Back", 990,30,100,50,grey,bright_grey,0,0,20, program)
         button (screen,"Pass turn",1075,515,100,50,green,bright_green,0,0,20, overgangsscherm)
@@ -771,7 +785,7 @@ def new_screen():
         if turnplayer2 == True:
             button(screen, "Speler 2",590,5,100,50, green,green,0,0,20)
 
-        hand.Draw()
+        
         #Flip the screen
         pygame.display.flip()
         pygame.display.update()

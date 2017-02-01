@@ -295,8 +295,10 @@ size = (width, height)
 screen = pygame.display.set_mode(size)
 pygame.init()
 
+
 pygame.mixer.music.load("Achtergrond.mp3")
 pygame.mixer.music.play(loops=200, start=0.0)
+
 
 mouse =pygame.mouse.get_pos()
 click = pygame.mouse.get_pressed()
@@ -350,6 +352,9 @@ boot4geel_dk = pygame.image.load('boot4geel_dood_d.png')
 
 label1=pygame.image.load('button groen 1.png')
 label3=pygame.image.load('button groen 3.png')
+
+boatinfo = pygame.image.load('Spelregels 2.png')
+
 spelregels1=pygame.image.load('Spelregels NL 1.png')
 spelregels2=pygame.image.load('Spelregels NL 2.png')
 spelregels3=pygame.image.load('Spelregels NL 3.png')
@@ -467,6 +472,7 @@ def play_sound():
     sonar_sound = pygame.mixer.Sound('Sonar_Sound.wav')
     sonar_sound.play()
     pygame.mixer.Sound.set_volume(sonar_sound, volume)
+
   
 def process_events():
     for event in pygame.event.get():
@@ -1023,7 +1029,7 @@ def hp_menu_(boot):
                                         
         pygame.display.update()
         
-def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
+def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,action = None):
     pygame.init()
     mouse =pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
@@ -1032,8 +1038,8 @@ def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,newvolume):
 
     if x1+w > mouse[0] > x1 and y1+h > mouse[1] > y1:
         pygame.draw.circle(screen,ac,(x,y),r,ilw)
-        if click[0] == 1:
-            volume = newvolume
+        if click[0] == 1 and action != None:
+            action()
             
     else:
         pygame.draw.circle(screen,ic,(x,y),r,alw)
@@ -1175,7 +1181,7 @@ def new_screen():
 
             handp2.Draw()
 
-        button (screen,"Menu",1160,30,100,50,green,bright_green,0,0,20)
+        button (screen,"Boat info",1160,30,100,50,green,bright_green,0,0,15,boat_info)
         button (screen,"Back", 990,30,100,50,grey,bright_grey,0,0,20, program)
         if (boot2geel.hp != 0 or boot3geel1.hp != 0 or boot3geel2.hp != 0 or boot4geel.hp != 0) and (boot2rood.hp != 0 or boot3rood1.hp != 0 or boot3rood2.hp != 0 or boot4rood.hp != 0):
             button (screen,"Pass turn",1075,515,100,50,green,bright_green,0,0,20, overgangsscherm)
@@ -1216,6 +1222,26 @@ def load_screen():
 
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, load_new_screen)
         
+        #Flip the screen
+        pygame.display.flip()
+
+def boat_info():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+    while not process_events():
+        # Clear Screen
+        screen.fill(black)
+        screen.blit(boatinfo,[0,0])
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, new_screen)
+
         #Flip the screen
         pygame.display.flip()
 
@@ -1428,6 +1454,28 @@ def highsccores_screen():
         #Flip the screen
         pygame.display.flip()'''
 
+def mute():
+    global volume
+    volume = 0
+    pygame.mixer.music.set_volume(0)
+def vijfentwintig():
+    global volume
+    volume = 0.25
+    pygame.mixer.music.set_volume(0.25)
+def vijftig():
+    global volume
+    volume = 0.50
+    pygame.mixer.music.set_volume(0.50)
+def vijfenzeventig():
+    global volume
+    volume = 0.75
+    pygame.mixer.music.set_volume(0.75)
+def honderd():
+    global volume
+    volume = 1
+    pygame.mixer.music.set_volume(1)
+
+
 def option_screen():
     width = 1280
     height = 720
@@ -1442,11 +1490,11 @@ def option_screen():
         # Clear Screen
         screen.fill(black)
         screen.blit(settings,[37,0])
-        circle (screen,445,218,10,20,20,green,bright_green,0,1, 0)
-        circle (screen,540,218,10,20,20,green,bright_green,0,1, 0.25)
-        circle (screen,640,218,10,20,20,green,bright_green,0,1,0.50)
-        circle (screen,741,218,10,20,20,green,bright_green,0,1,0.75)
-        circle (screen,842,218,10,20,20,green,bright_green,0,1,1)
+        circle (screen,445,218,10,20,20,green,bright_green,0,1, mute)
+        circle (screen,540,218,10,20,20,green,bright_green,0,1, vijfentwintig)
+        circle (screen,640,218,10,20,20,green,bright_green,0,1,vijftig)
+        circle (screen,741,218,10,20,20,green,bright_green,0,1,vijfenzeventig)
+        circle (screen,842,218,10,20,20,green,bright_green,0,1,honderd)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen

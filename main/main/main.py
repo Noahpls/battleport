@@ -1021,11 +1021,15 @@ def overgangsscherm():
     boot4geel.aanvallen = 0
 
     while not process_events():
+        keys = pygame.key.get_pressed()
         if turnplayer1 == True:
             button (screen,"Player 2 ready?",500,500,300,50,green,bright_green,0,0,20,player2true)
-            
+            if keys [pygame.K_RETURN]:
+                    player2true()
         else:
             button (screen,"Player 1 ready?",500,500,300,50,green,bright_green,0,0,20,player1true)
+            if keys [pygame.K_RETURN]:
+                    player1true()
             
         pygame.display.flip()
         pygame.display.update()
@@ -1078,6 +1082,9 @@ def new_screen():
         button (screen,"Menu",1160,30,100,50,green,bright_green,0,0,20)
         button (screen,"Back", 990,30,100,50,grey,bright_grey,0,0,20, program)
         button (screen,"Pass turn",1075,515,100,50,green,bright_green,0,0,20, overgangsscherm)
+        keys = pygame.key.get_pressed()
+        if keys [pygame.K_RETURN]:
+                    overgangsscherm()
         if turnplayer1 == True:
             button(screen, "Speler 1",590,5,100,50, green,green,0,0,20)
         if turnplayer2 == True:

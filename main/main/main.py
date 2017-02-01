@@ -18,7 +18,7 @@ class bootje2():
         self.active = False
         self.pos= (self.X,self.Y)
         self.aanvallen = 0 
-        self.zetten = 0
+        self.zetten = -40
         self.movementbonus = 0
         self.rangebonus = 0
         self.vierkantje = pygame.Rect(self.X,self.Y,25, 25*self.length)
@@ -88,6 +88,7 @@ class bootje2():
             screen.blit(plaatjeboot,[self.X,self.Y])
         else:
             screen.blit(plaatjebootkapot,[self.X,self.Y])
+            self.active = False
         
 
     def draw2(self,plaatjeboot,plaatjebootkapot):
@@ -297,7 +298,7 @@ pygame.init()
 
 
 pygame.mixer.music.load("Achtergrond.mp3")
-pygame.mixer.music.play(loops=200, start=0.0)
+pygame.mixer.music.play(200,5.0)
 
 
 mouse =pygame.mouse.get_pos()
@@ -402,7 +403,6 @@ aluminium_hull_big          = pygame.image.load('Kaart aluminium groot.png')
 turnplayer1 = True
 turnplayer2 = False
 
-aanvalszetten = 2
 
 mooigrid = Grid(389,100,20,25)
 
@@ -960,73 +960,66 @@ def hp_menu_(boot):
     while not process_events():
         button (screen,"X",1095,340,60,60,grey,bright_grey,0,0,20, new_screen)
         keys = pygame.key.get_pressed()
-        global aanvalszetten
         if keys [pygame.K_ESCAPE]:
                 new_screen()
         pygame.display.flip()
         button (screen,"HP:" + str(boot.hp),1075,170,100,40,grey,grey,0,0,20)
         #boot is degene waarop geklikt is die wordt aangevallen, bootje is de aanvaller
         if turnplayer1 == True:
-            if aanvalszetten > 0:
-                for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
-                    if boot.hp > 0:
-                        if bootje.hp > 0:
-                            if bootje.mode ==  "attacking" and boot.mode == "attacking":
-                                for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
-                                    if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
-                                        if bootje.aanvallen < 1:
-                                            button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                                        else:
-                                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+            for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
+                if boot.hp > 0:
+                    if bootje.hp > 0:
+                        if bootje.mode ==  "attacking" and boot.mode == "attacking":
+                            for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
+                                if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
+                                    if bootje.aanvallen < 1:
+                                        button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                                    else:
+                                        button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                         #vGOEDv
-                        for i in[1-(bootje.length+bootje.range),bootje.range]:
-                            if boot.hp > 0:
-                                    if bootje.hp > 0:
-                                        if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                            for i in[1-(bootje.length+bootje.range),bootje.range]:
+                                if boot.hp > 0:
+                                        if bootje.hp > 0:
+                                            if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
                                 
-                                            if bootje.aanvallen < 1:
-                                                button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                                            else:
-                                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                                                if bootje.aanvallen < 1:
+                                                    button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                                                else:
+                                                    button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                     elif bootje.mode == "attacking" and boot.mode == "defensive":
                         return False
                     elif bootje.mode == "defensive" and boot.mode == "attacking":
                         return False
                     elif bootje.mode == "defensive" and boot.mode == "defensive":
                         return False
-            else:
-                button (screen,"Je hebt al 2x aangevallen",1025,240,200,40,grey,grey,0,0,15)
+         
+
         else:
-            if aanvalszetten > 0:
-                for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
-                    if boot.hp >0:
-                        if bootje.hp > 0:
-                            if bootje.mode ==  "attacking" and boot.mode == "attacking":
-                                for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
-                                    if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
-                                        if bootje.aanvallen < 1:
-                                            button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                                            aanvalszetten = aanvalszetten - 1
-                                
-                                        else:
-                                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+            for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
+                if boot.hp >0:
+                    if bootje.hp > 0:
+                        if bootje.mode ==  "attacking" and boot.mode == "attacking":
+                            for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
+                                if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
+                                    if bootje.aanvallen < 1:
+                                        button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                                    else:
+                                        button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                         #vGOEDv
-                        for i in[1-(bootje.length+bootje.range),bootje.range]:
-                            if boot.hp > 0:
-                                    if bootje.hp > 0:
-                                        if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
-                                            if bootje.aanvallen < 1:
-                                                button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                                            else:
-                                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                            for i in[1-(bootje.length+bootje.range),bootje.range]:
+                                if boot.hp > 0:
+                                        if bootje.hp > 0:
+                                            if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                                                if bootje.aanvallen < 1:
+                                                    button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                                                else:
+                                                    button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                     elif bootje.mode == "attacking" and boot.mode == "defensive":
                         return False
                     elif bootje.mode == "defensive" and boot.mode == "attacking":
                         return False
                     elif bootje.mode == "defensive" and boot.mode == "defensive":
                         return False
-            else:
-                button (screen,"Je hebt al 2x aangevallen",1025,240,200,40,grey,grey,0,0,15)
                                         
         pygame.display.update()
         
@@ -1073,19 +1066,15 @@ def load_new_screen():
         pygame.display.flip()
 
 def player2true():
-    global aanvalszetten
     global turnplayer1
     global turnplayer2
-    aanvalszetten = 2
     turnplayer2 = True
     turnplayer1 = False
     new_screen()
 
 def player1true():
-    global aanvalszetten
     global turnplayer1
     global turnplayer2
-    aanvalszetten = 2
     turnplayer1 = True
     turnplayer2 = False
     new_screen()
@@ -1103,10 +1092,10 @@ def overgangsscherm():
     screen = pygame.display.set_mode(size)
 
     screen.blit(boten, [0,0])
-    boot2rood.zetten = 0
-    boot3rood1.zetten = 0
-    boot3rood2.zetten = 0
-    boot4rood.zetten = 0
+    boot2rood.zetten = -40
+    boot3rood1.zetten = -40
+    boot3rood2.zetten = -40
+    boot4rood.zetten = -40
 
     boot2rood.aanvallen = 0
     boot3rood1.aanvallen = 0
@@ -1114,10 +1103,10 @@ def overgangsscherm():
     boot4rood.aanvallen = 0
 
 
-    boot2geel.zetten = 0
-    boot3geel1.zetten = 0
-    boot3geel2.zetten = 0
-    boot4geel.zetten = 0
+    boot2geel.zetten = -40
+    boot3geel1.zetten = -40
+    boot3geel2.zetten = -40
+    boot4geel.zetten = -40
 
     boot2geel.aanvallen = 0
     boot3geel1.aanvallen = 0

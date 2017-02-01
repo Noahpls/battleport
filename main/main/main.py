@@ -307,6 +307,7 @@ radar = pygame.image.load('radar.jpg')
 background_startscherm = pygame.image.load('radar background.jpg')
 boten = pygame.image.load('boten achtergrond.jpg')
 zee = pygame.image.load('Bord2.jpg')
+eindscherm = pygame.image.load('eindscherm.jpg')
 boot2rood_ = pygame.image.load('boot2rood.png')
 boot2rood_d = pygame.image.load('boot2rood_d.png')
 boot2rood_k = pygame.image.load('boot2rood_dood.png')
@@ -422,6 +423,7 @@ bright_red = (255,0,0)
 bright_green = (0,255,0)
 bright_blue = (0,51,205)
 bright_grey=(155,155,155)
+dark_red=(120,13,3)
 volume = 1
 
 #Create card instance
@@ -1345,6 +1347,47 @@ def instructions5():
 
         button (screen,"Exit",1160,650,100,50,grey,bright_grey,0,0,20, program)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, instructions4)
+
+        #Flip the screen
+        pygame.display.flip()
+
+def eindscherm1():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+
+    while not process_events():
+        # Clear Screen
+        screen.blit(eindscherm,[0,0])
+        button (screen,text.text,395,358,124,50,bright_grey,bright_grey,1,1,26)
+        button (screen,"",190,561,278,50,dark_red,red,3,2,26, program)
+        #Flip the screen
+        pygame.display.flip()
+
+def eindscherm2():
+    width = 1280
+    height = 720
+    size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+
+
+    while not process_events():
+        # Clear Screen
+        screen.blit(eindscherm,[0,0])
+        button (screen,text2.text,395,358,124,50,bright_grey,bright_grey,1,1,26)
+        button (screen,"",190,561,278,50,dark_red,red,3,2,26, program)
 
         #Flip the screen
         pygame.display.flip()

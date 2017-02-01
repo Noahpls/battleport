@@ -18,7 +18,7 @@ class bootje2():
         self.active = False
         self.pos= (self.X,self.Y)
         self.aanvallen = 0 
-        self.zetten = -40
+        self.zetten = 0
         self.movementbonus = 0
         self.rangebonus = 0
         self.vierkantje = pygame.Rect(self.X,self.Y,25, 25*self.length)
@@ -311,7 +311,7 @@ eindscherm = pygame.image.load('eindscherm.jpg')
 boot2rood_ = pygame.image.load('boot2rood.png')
 boot2rood_d = pygame.image.load('boot2rood_d.png')
 boot2rood_k = pygame.image.load('boot2rood_dood.png')
-boot2rood_d = pygame.image.load('boot2rood_dood_d.png')
+boot2rood_dk = pygame.image.load('boot2rood_dood_d.png')
 
 boot3rood1_ = pygame.image.load('boot3rood.png')
 boot3rood1_d = pygame.image.load('boot3rood_d.png')
@@ -1096,10 +1096,10 @@ def overgangsscherm():
     screen = pygame.display.set_mode(size)
 
     screen.blit(boten, [0,0])
-    boot2rood.zetten = -40
-    boot3rood1.zetten = -40
-    boot3rood2.zetten = -40
-    boot4rood.zetten = -40
+    boot2rood.zetten = 0
+    boot3rood1.zetten = 0
+    boot3rood2.zetten = 0
+    boot4rood.zetten = 0
 
     boot2rood.aanvallen = 0
     boot3rood1.aanvallen = 0
@@ -1107,10 +1107,10 @@ def overgangsscherm():
     boot4rood.aanvallen = 0
 
 
-    boot2geel.zetten = -40
-    boot3geel1.zetten = -40
-    boot3geel2.zetten = -40
-    boot4geel.zetten = -40
+    boot2geel.zetten = 0
+    boot3geel1.zetten = 0
+    boot3geel2.zetten = 0
+    boot4geel.zetten = 0
 
     boot2geel.aanvallen = 0
     boot3geel1.aanvallen = 0
@@ -1367,7 +1367,7 @@ def eindscherm1():
         # Clear Screen
         screen.blit(eindscherm,[0,0])
         button (screen,text.text,395,358,124,50,bright_grey,bright_grey,1,1,26)
-        button (screen,"",190,561,278,50,dark_red,red,3,2,26, program)
+        button (screen,"Quit",190,561,278,50,dark_red,red,0,0,26, quitgame)
         #Flip the screen
         pygame.display.flip()
 
@@ -1387,7 +1387,7 @@ def eindscherm2():
         # Clear Screen
         screen.blit(eindscherm,[0,0])
         button (screen,text2.text,395,358,124,50,bright_grey,bright_grey,1,1,26)
-        button (screen,"",190,561,278,50,dark_red,red,3,2,26, program)
+        button (screen,"Quit",190,561,278,50,dark_red,red,0,0,26, quitgame)
 
         #Flip the screen
         pygame.display.flip()

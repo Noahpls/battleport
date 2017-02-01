@@ -410,6 +410,7 @@ boot3rood1 = bootje2(mooigrid.Tiles[10][0].X,mooigrid.Tiles[10][0].Y,"player2",3
 boot3rood2 = bootje2(mooigrid.Tiles[5][0].X,mooigrid.Tiles[5][0].Y,"player2",3,3)
 boot4rood = bootje2(mooigrid.Tiles[0][0].X,mooigrid.Tiles[0][0].Y, "player2",4,4)
 
+special = {"1": "!","2": "@","3": "#","4": "$","5": "%","6": "^","7": "&","8": "*","9": "(","0": ")","`": "~","-": "_","=": "+",",": "<",".": ">","/": "?",";": ":","'": chr(34),"[": "{","]": "}",chr(92): "|"}
 
 black=(0,0,0)
 white=(255,255,255)
@@ -487,7 +488,101 @@ def process_events():
             # Give the signal to quit
             return True
     return False
-        
+ 
+done = False
+def name_input():
+    global done
+    class input_page:# the actual screen
+
+	    def __init__(self):
+		    self.lst = [] # list of text box's
+		    self.current = 0 #currently selected string
+
+	    def get_input(self,event,mouse_pos):
+		    if event.type == pygame.KEYDOWN:
+			    if event.key == pygame.K_RETURN or event.key == pygame.K_TAB:# move to next box in the list
+				    if self.current < len(self.lst)-1:
+					    self.current += 1
+		    if event.type == pygame.MOUSEBUTTONDOWN:# sees if you click in the box
+			    for i in range(len(self.lst)):
+				    if self.lst[i].rect.collidepoint(mouse_pos):
+					    self.lst[i].current = True
+					    self.current = i
+					    for g in range(len(self.lst)):
+						    if g != i:
+							    self.lst[g].current = False
+				
+		    for i in range(len(self.lst)):# makes all other text boxes not the current one selected
+			    if i == self.current:
+				    self.lst[i].current = True
+				    self.lst[i].get_input(event)
+				    for g in range(len(self.lst)):
+						    if g != i:
+							    self.lst[g].current = False
+				
+
+	    def render(self,screen):
+		    for i in range(len(self.lst)): # renders the text boxes
+			    self.lst[i].render(screen)
+
+    class text_box:
+
+	    def __init__(self,location,width,height,question = None,text_color = (255,255,255), font = None,font_size = 20):
+		    self.location = location
+		    self.text = ""
+		    self.question = question
+		    self.current = False
+		    self.rect = pygame.Rect((location),(width,max(height,25)))
+		    self.font_size = font_size
+		    self.font = pygame.font.Font(font,font_size)
+		    self.text_color = text_color
+		    self.outline = (255,255,255)
+		    self.rect_color = (0,0,0)
+
+	    def render(self,screen):
+		    if self.current == True:
+			    temp = (self.rect[0]-3,self.rect[1]-3,self.rect[2]+6,self.rect[3]+6)# if you change the numbers, the second two need to be multiplied by 2 and postive
+			    pygame.draw.rect(screen,(255,105,34),temp)
+		    pygame.draw.rect(screen,self.rect_color,self.rect)
+		    pygame.draw.rect(screen,self.outline,self.rect,1)
+		    screen.blit(self.font.render(self.question,1,self.text_color),(self.location[0]-self.font.size(self.question)[0]-100,self.location[1]+4))
+		    screen.blit(self.font.render(self.text,1,self.text_color),(self.location[0]+2,self.location[1]+4))
+	    def get_input(self,event):
+		    if event.type == pygame.KEYDOWN:
+			    if 31<event.key<127 and event.key != 8: # making sure not backspace or error throwing key
+				    if event.mod & (pygame.KMOD_SHIFT | pygame.KMOD_CAPS): # sees if caps or shift is on
+					    if chr(event.key) in special.keys(): # Shifted keys
+						    self.text += special[chr(event.key)]# adds to the current string
+					    else:
+						    self.text += chr(event.key).upper() # uppercase
+				    else:
+					    self.text += chr(event.key)# lowercase
+			    if event.key == 8: # Backspace
+				    self.text = self.text[0:-1]
+			    if event.key == 127: # delete entire string, comment out if you want
+				    self.text = ""
+			    if self.font.size(self.text)[0] > self.rect.size[0]-5:# makes sure it isn't making text outside of the rect
+				    self.text = self.text[0:-1]
+    inp = input_page()# make the page class
+    text = text_box((int(width/1.75),height/2-145),200,25,"Name player 1 -->")# make the text box classes
+    text2 = text_box((int(width/1.75),height/2-95),200,25,"Name player 2 -->")
+    inp.lst = [text,text2]# add the boxes to a list
+    global text
+    global text2
+    while done == False:
+    
+        screen.blit(radar,(0,0))
+        pos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            inp.get_input(event,pos)# give the boxes input
+
+        button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
+        button (screen,"FIGHT!",1160,650,100,50,grey,bright_grey,0,0,20, new_screen)
+
+        inp.render(screen)# render the boxes
+        pygame.display.flip()       
 
 def text_objects(text, font):
     textSurface = font.render(text, True, black)
@@ -962,7 +1057,7 @@ def load_new_screen():
         screen.blit(label3,[645,25])
 
         button (screen,"Load Game",255,175,200,75,green,bright_green,5,1,20, load_screen,play_sound)
-        button (screen,"New Game",850,175,200,75,green,bright_green,5,1,20, new_screen,play_sound)
+        button (screen,"New Game",850,175,200,75,green,bright_green,5,1,20, name_input,play_sound)
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
 
         #Flip the screen
@@ -1023,11 +1118,11 @@ def overgangsscherm():
     while not process_events():
         keys = pygame.key.get_pressed()
         if turnplayer1 == True:
-            button (screen,"Player 2 ready?",500,500,300,50,green,bright_green,0,0,20,player2true)
+            button (screen, text2.text + " ready?",500,500,300,50,green,bright_green,0,0,20,player2true)
             if keys [pygame.K_RETURN]:
                     player2true()
         else:
-            button (screen,"Player 1 ready?",500,500,300,50,green,bright_green,0,0,20,player1true)
+            button (screen,text.text + " ready?",500,500,300,50,green,bright_green,0,0,20,player1true)
             if keys [pygame.K_RETURN]:
                     player1true()
             
@@ -1039,7 +1134,6 @@ def new_screen():
     width = 1280
     height = 720
     size = (width, height)
-
     #start PyGame
     pygame.init()
 
@@ -1094,9 +1188,9 @@ def new_screen():
         if keys [pygame.K_RETURN]:
                     overgangsscherm()
         if turnplayer1 == True:
-            button(screen, "Speler 1",590,5,100,50, green,green,0,0,20)
+            button(screen, text.text,565,5,150,50, green,green,0,0,20)
         if turnplayer2 == True:
-            button(screen, "Speler 2",590,5,100,50, green,green,0,0,20)
+            button(screen, text2.text,565,5,150,50, green,green,0,0,20)
         
         #Flip the screen
         pygame.display.flip()

@@ -3,7 +3,7 @@
 
 import pygame
 import math
-
+import sqlite3
 #####################################################################
 
 class bootje2():
@@ -372,7 +372,12 @@ spelregels5=pygame.image.load('Spelregels NL 5.png')
 settings=pygame.image.load('Settings.png')
 card1 = pygame.image.load("Kaart tekst.png")
 card1groot = pygame.image.load("Kaart groot tekst.png")
-
+p1wins = 0
+p1games = 0
+p2wins = 0
+p2games = 0
+p1won_percentage = 0
+p2won_percentage = 0
 #Cards
 fmj_small                   = pygame.image.load('Kaart FMJ.png')
 fmj_big                     = pygame.image.load('Kaart FMJ groot.png')
@@ -407,7 +412,7 @@ far_sight_big               = pygame.image.load('Kaart far sight groot.png')
 aluminium_hull_small        = pygame.image.load('Kaart aluminium.png')
 aluminium_hull_big          = pygame.image.load('Kaart aluminium groot.png')
 
-
+reps = 0
 turnplayer1 = True
 turnplayer2 = False
 
@@ -595,7 +600,7 @@ def name_input():
             inp.get_input(event,pos)# give the boxes input
 
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
-        button (screen,"FIGHT!",1160,650,100,50,grey,bright_grey,0,0,20, new_screen)
+        button (screen,"FIGHT!",1160,650,100,50,grey,bright_grey,0,0,20, new_screen, read_from_db)
 
         inp.render(screen)# render the boxes
         pygame.display.flip()       
@@ -1149,9 +1154,11 @@ def new_screen():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
-    
+    global p1wins
+    global p1games
     screen.blit(zee, [0,0])
-    
+    print ("p1: " + str(p1wins) + " " + str(p1games))
+    print ("p2 wins: " + str(p2wins) + ", total games: " + str(p2games))
     while not process_events():
         # Clear Screen
         
@@ -1169,7 +1176,7 @@ def new_screen():
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.hp_menu)
 
             handp1.Draw()
-            button (screen,"Draw a card",150,615,100,50,green,bright_green,0,0,20,handplayer1)
+            #button (screen,"Draw a card",150,615,100,50,green,bright_green,0,0,20,handplayer1)
 
         if turnplayer2 == True:
             plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.hp_menu)
@@ -1183,7 +1190,7 @@ def new_screen():
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.move)
 
             handp2.Draw()
-            button (screen,"Draw a card",150,615,100,50,green,bright_green,0,0,20,handplayer2)
+            #button (screen,"Draw a card",150,615,100,50,green,bright_green,0,0,20,handplayer2)
 
         
         button (screen,"Boat info",1160,30,100,50,green,bright_green,0,0,15,boat_info)
@@ -1204,7 +1211,7 @@ def new_screen():
             button(screen, text.text,565,5,150,50, green,green,0,0,20)
         if turnplayer2 == True:
             button(screen, text2.text,565,5,150,50, green,green,0,0,20)
-        
+        button (screen,"End game",1075,565,100,50,green,bright_green,0,0,20, eindscherm1)
         #Flip the screen
         pygame.display.flip()
         pygame.display.update()
@@ -1392,8 +1399,19 @@ def eindscherm1():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
-
-
+    global p2wins
+    global p1wins
+    global p1games
+    global p2games
+    global p1won_percentage
+    global p2won_percentage
+    p2wins = int(p2wins)
+    p1wins = int(p1wins) + 1
+    p1games = int(p1games) + 1
+    p2games = int(p2games) + 1
+    p2won_percentage = (p2wins/p2games)*100
+    p1won_percentage = (p1wins/p1games)*100
+    data_entry()
     while not process_events():
         # Clear Screen
         screen.blit(eindscherm,[0,0])
@@ -1411,9 +1429,19 @@ def eindscherm2():
     pygame.init()
 
     #set a resolution
+    global p2wins
+    global p1wins
+    global p1games
+    global p2games
+    global p2won_percentage
+    global p1won_percentage
     screen = pygame.display.set_mode(size)
-
-
+    p2wins = int(p2wins) + 1
+    p1wins = int(p1wins)
+    p1games = int(p1games) + 1
+    p2games = int(p2games) + 1
+    p2won_percentage = int((p2wins/p2games)*100)
+    p1won_percentage = int((p1wins/p1games)*100)
     while not process_events():
         # Clear Screen
         screen.blit(eindscherm,[0,0])
@@ -1427,6 +1455,13 @@ def highsccores_screen():
     width = 1280
     height = 720
     size = (width, height)
+
+    #start PyGame
+    pygame.init()
+
+    #set a resolution
+    screen = pygame.display.set_mode(size)
+    read_all()
     #printing scores on screen
     '''highscore = download_scores()     
     
@@ -1442,14 +1477,12 @@ def highsccores_screen():
     score_text = font.render(player_highscores[0],1,(255,255,255))
     
     #start PyGame
-    pygame.init()
+    pygame.init()'''
 
 
     while not process_events():
         # Clear Screen
         screen.blit(radar,[0,0])
-        #Positie text highscore
-        screen.blit(score_text, (300, 200))
         
         #TESTBUTTON
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
@@ -1457,7 +1490,7 @@ def highsccores_screen():
        
         
         #Flip the screen
-        pygame.display.flip()'''
+        pygame.display.flip()
 
 def mute():
     global volume
@@ -1529,6 +1562,68 @@ def program():
 
         #Flip the screen
         pygame.display.flip()
+
+
+def create_table():
+    conn = sqlite3.connect('battleport.db')
+    c = conn.cursor()
+    c.execute('CREATE TABLE IF NOT EXISTS scores(pname TEXT, games_won INT, games_played INT, won_percentage INT)')
+    conn.commit()
+    c.close()
+    conn.close()
+
+def read_all():
+    conn = sqlite3.connect('battleport.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM scores ORDER BY won_percentage DESC")
+    for row in c.fetchall():
+        naam = str(row[0])
+        wins = str(row[1])
+        games = str(row[2])
+        percentage = str(row[3])
+        global reps
+        hoogte_score = 50+(reps*50)
+        reps = reps + 1
+        button(screen,"Naam: "+naam+"   totaal aantal wins: "+wins+"   totaal aantal games: "+games+"   winstpercentage: "+percentage+"%",20,hoogte_score,1000,50,grey,grey,0,0,20)
+        print("Naam: "+naam+"   totaal aantal wins: "+wins+"   totaal aantal games: "+games+"   winstpercentage: "+percentage+"%")
+
+def read_from_db():
+    conn = sqlite3.connect('battleport.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM scores WHERE pname = '"+ text.text + "'")
+    for row in c.fetchall():
+        global p1wins
+        global p1games
+        p1wins = row[1]
+        p1games = row[2]
+        conn.commit()
+    c.close()
+    conn.close()
+    read_from_db2()
+
+def read_from_db2():
+    conn = sqlite3.connect('battleport.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM scores WHERE pname = '"+ text2.text + "'")
+    for row in c.fetchall():
+        global p2wins
+        global p2games
+        p2wins = row[1]
+        p2games = row[2]
+    conn.commit()
+    c.close()
+    conn.close()
+
+def data_entry():
+    conn = sqlite3.connect('battleport.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM scores WHERE pname ='"+ text.text +"'")
+    c.execute("DELETE FROM scores WHERE pname='"+text2.text+"'")
+    c.execute("INSERT INTO scores (pname, games_won, games_played, won_percentage) VALUES (?, ?, ?, ?)", (text.text, p1wins, p1games, p1won_percentage))
+    c.execute("INSERT INTO scores (pname, games_won, games_played, won_percentage) VALUES (?, ?, ?, ?)", (text2.text, p2wins, p2games, p2won_percentage))
+    conn.commit()
+    c.close()
+    conn.close()
 
 '''<<<<<<< HEAD
 =======

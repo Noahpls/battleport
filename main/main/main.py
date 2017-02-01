@@ -1081,7 +1081,15 @@ def new_screen():
 
         button (screen,"Menu",1160,30,100,50,green,bright_green,0,0,20)
         button (screen,"Back", 990,30,100,50,grey,bright_grey,0,0,20, program)
-        button (screen,"Pass turn",1075,515,100,50,green,bright_green,0,0,20, overgangsscherm)
+        if (boot2geel.hp != 0 or boot3geel1.hp != 0 or boot3geel2.hp != 0 or boot4geel.hp != 0) and (boot2rood.hp != 0 or boot3rood1.hp != 0 or boot3rood2.hp != 0 or boot4rood.hp != 0):
+            button (screen,"Pass turn",1075,515,100,50,green,bright_green,0,0,20, overgangsscherm)
+        elif boot2geel.hp == 0 and boot3geel1.hp == 0 and boot3geel2.hp == 0 and boot4geel.hp == 0:
+            #P2 heeft gewonnen
+            button (screen,"End game",1075,515,100,50,green,bright_green,0,0,20, eindscherm2)
+        elif boot2rood.hp == 0 and boot3rood1.hp == 0 and boot3rood2.hp == 0 and boot4rood.hp == 0:
+            #P1 heeft gewonnen
+            button (screen,"End game",1075,515,100,50,green,bright_green,0,0,20, eindscherm1)
+
         keys = pygame.key.get_pressed()
         if keys [pygame.K_RETURN]:
                     overgangsscherm()
@@ -1089,7 +1097,6 @@ def new_screen():
             button(screen, "Speler 1",590,5,100,50, green,green,0,0,20)
         if turnplayer2 == True:
             button(screen, "Speler 2",590,5,100,50, green,green,0,0,20)
-
         
         #Flip the screen
         pygame.display.flip()

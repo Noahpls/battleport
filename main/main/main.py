@@ -201,8 +201,8 @@ class Card:
         if self.Active:
             if self.Hover():
                 # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
-                screen.blit(emp_upgrade_big, [540, 210])
-                screen.blit(emp_upgrade_small, [self.X, self.Y])   
+                screen.blit(activecard.bimg, [540, 210])
+                screen.blit(activecard.simg, [self.X, self.Y])   
                 self.Pressing = self.Click()
  
                 
@@ -216,7 +216,7 @@ class Card:
                         self.Deck.Remove_card(self.ID)
                         self.Pressed = False
             else:
-                screen.blit(emp_upgrade_small, [self.X, self.Y])  
+                screen.blit(activecard.simg, [self.X, self.Y])  
                        
 
         else:
@@ -237,6 +237,14 @@ class Deck:
         y = self.Y
         w = 50
         h = 100
+        activecard = carddraw()
+
+        for card in self.Cards:
+            if card == "":
+                self.Cards[i] = Card(x, y, w, h, name, desc, function, i, self)
+                break
+            x = x + w + 25
+            i += 1
 
         for card in self.Cards:
             if card == "":
@@ -1038,7 +1046,11 @@ def circle (screen,x,y,r,w,h,ic,ac,ilw,alw,action = None):
     else:
         pygame.draw.circle(screen,ic,(x,y),r,alw)
 
-    
+#def handplayer1():
+#     handp1.Normal.Add_card(activecard.Name, activecard.Desc, 1)   
+
+#def handplayer2():
+#     handp2.Normal.Add_card(activecard.Name, activecard.Desc, 1) 
     
 def load_new_screen():
     width = 1280
@@ -1126,7 +1138,7 @@ def overgangsscherm():
             
         pygame.display.flip()
         pygame.display.update()
-
+ 
 
 def new_screen():
     width = 1280
@@ -1157,6 +1169,7 @@ def new_screen():
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.hp_menu)
 
             handp1.Draw()
+            button (screen,"Draw a card",150,615,100,50,green,bright_green,0,0,20,handplayer1)
 
         if turnplayer2 == True:
             plaatje(boot2geel.X,boot2geel.Y,boot2geel.vierkantje.width,boot2geel.vierkantje.height,boot2geel,boot2geel.hp_menu)
@@ -1170,7 +1183,9 @@ def new_screen():
             plaatje(boot4rood.X,boot4rood.Y,boot4rood.vierkantje.width,boot4rood.vierkantje.height,boot4rood,boot4rood.move)
 
             handp2.Draw()
+            button (screen,"Draw a card",150,615,100,50,green,bright_green,0,0,20,handplayer2)
 
+        
         button (screen,"Boat info",1160,30,100,50,green,bright_green,0,0,15,boat_info)
         button (screen,"Back", 990,30,100,50,grey,bright_grey,0,0,20, program)
         if (boot2geel.hp != 0 or boot3geel1.hp != 0 or boot3geel2.hp != 0 or boot4geel.hp != 0) and (boot2rood.hp != 0 or boot3rood1.hp != 0 or boot3rood2.hp != 0 or boot4rood.hp != 0):

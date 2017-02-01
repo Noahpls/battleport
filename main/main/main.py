@@ -969,24 +969,25 @@ def hp_menu_(boot):
         if turnplayer1 == True:
             if aanvalszetten > 0:
                 for bootje in [boot2geel, boot3geel1, boot3geel2, boot4geel]:
-                    if bootje.mode ==  "attacking" and boot.mode == "attacking":
-                        for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
-                            if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
-                                if boot.hp > 0:
-                                    if bootje.hp > 0:   
+                    if boot.hp > 0:
+                        if bootje.hp > 0:
+                            if bootje.mode ==  "attacking" and boot.mode == "attacking":
+                                for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
+                                    if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
                                         if bootje.aanvallen < 1:
                                             button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
                                         else:
                                             button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                         #vGOEDv
                         for i in[1-(bootje.length+bootje.range),bootje.range]:
-                            if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
-                                if boot.hp > 0:
+                            if boot.hp > 0:
                                     if bootje.hp > 0:
-                                        if bootje.aanvallen < 1:
-                                            button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                                        else:
-                                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                                        if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                                
+                                            if bootje.aanvallen < 1:
+                                                button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                                            else:
+                                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                     elif bootje.mode == "attacking" and boot.mode == "defensive":
                         return False
                     elif bootje.mode == "defensive" and boot.mode == "attacking":
@@ -998,11 +999,11 @@ def hp_menu_(boot):
         else:
             if aanvalszetten > 0:
                 for bootje in [boot2rood, boot3rood1, boot3rood2, boot4rood]:
-                    if bootje.mode ==  "attacking" and boot.mode == "attacking":
-                        for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
-                            if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
-                                if boot.hp >0:
-                                    if bootje.hp > 0:   
+                    if boot.hp >0:
+                        if bootje.hp > 0:
+                            if bootje.mode ==  "attacking" and boot.mode == "attacking":
+                                for o in [-bootje.vierkantje.height, bootje.vierkantje.height]:
+                                    if (bootje.Y + o - 25 >= boot.Y >= bootje.Y or bootje.Y + o - 25 >= boot.Y + boot.vierkantje.height - 25 >= bootje.Y) and (bootje.X + o >= boot.X >= bootje.X - o):
                                         if bootje.aanvallen < 1:
                                             button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
                                             aanvalszetten = aanvalszetten - 1
@@ -1011,13 +1012,13 @@ def hp_menu_(boot):
                                             button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                         #vGOEDv
                         for i in[1-(bootje.length+bootje.range),bootje.range]:
-                            if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
-                                if boot.hp > 0:
+                            if boot.hp > 0:
                                     if bootje.hp > 0:
-                                        if bootje.aanvallen < 1:
-                                            button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
-                                        else:
-                                            button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
+                                        if boot.X == bootje.X and (bootje.Y - i *25 <= (boot.Y + (boot.length - 1 )*25) and  bootje.Y - i *25 >=  boot.Y ):
+                                            if bootje.aanvallen < 1:
+                                                button (screen,"Attack!",1045,240,160,40,grey,bright_grey,0,0,20,boot.damage,bootje.attack)
+                                            else:
+                                                button (screen,"Je hebt al aangevallen",1045,240,160,40,grey,grey,0,0,15)
                     elif bootje.mode == "attacking" and boot.mode == "defensive":
                         return False
                     elif bootje.mode == "defensive" and boot.mode == "attacking":

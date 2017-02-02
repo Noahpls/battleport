@@ -19,7 +19,7 @@ class bootje2():
         self.active = False
         self.pos= (self.X,self.Y)
         self.aanvallen = 0 
-        self.zetten = -40
+        self.zetten = 0
         self.movementbonus = 0
         self.rangebonus = 0
         self.vierkantje = pygame.Rect(self.X,self.Y,25, 25*self.length)
@@ -1103,10 +1103,10 @@ def overgangsscherm():
     screen = pygame.display.set_mode(size)
 
     screen.blit(boten, [0,0])
-    boot2rood.zetten = -40
-    boot3rood1.zetten = -40
-    boot3rood2.zetten = -40
-    boot4rood.zetten = -40
+    boot2rood.zetten = 0
+    boot3rood1.zetten = 0
+    boot3rood2.zetten = 0
+    boot4rood.zetten = 0
 
     boot2rood.aanvallen = 0
     boot3rood1.aanvallen = 0
@@ -1114,10 +1114,10 @@ def overgangsscherm():
     boot4rood.aanvallen = 0
 
 
-    boot2geel.zetten = -40
-    boot3geel1.zetten = -40
-    boot3geel2.zetten = -40
-    boot4geel.zetten = -40
+    boot2geel.zetten = 0
+    boot3geel1.zetten = 0
+    boot3geel2.zetten = 0
+    boot4geel.zetten = 0
 
     boot2geel.aanvallen = 0
     boot3geel1.aanvallen = 0
@@ -1455,7 +1455,7 @@ def highsccores_screen():
 
     #set a resolution
     screen = pygame.display.set_mode(size)
-    read_all()
+    
     #printing scores on screen
     '''highscore = download_scores()     
     
@@ -1472,11 +1472,11 @@ def highsccores_screen():
     
     #start PyGame
     pygame.init()'''
-
-
+    screen.blit(radar,[0,0])
+    read_all()
     while not process_events():
         # Clear Screen
-        screen.blit(radar,[0,0])
+        
         
         #TESTBUTTON
         button (screen,"Back",20,650,100,50,grey,bright_grey,0,0,20, program)
@@ -1569,17 +1569,17 @@ def create_table():
 def read_all():
     conn = sqlite3.connect('battleport.db')
     c = conn.cursor()
-    c.execute("SELECT * FROM scores ORDER BY won_percentage DESC")
+    c.execute("SELECT pname, games_won, games_played, round(won_percentage,2) FROM scores ORDER BY won_percentage DESC")
     for row in c.fetchall():
         naam = str(row[0])
         wins = str(row[1])
         games = str(row[2])
         percentage = str(row[3])
         global reps
-        hoogte_score = 50+(reps*50)
+        hoogte_score = 150+(reps*50)
         reps = reps + 1
-        button(screen,"Naam: "+naam+"   totaal aantal wins: "+wins+"   totaal aantal games: "+games+"   winstpercentage: "+percentage+"%",20,hoogte_score,1000,50,grey,grey,0,0,20)
-        print("Naam: "+naam+"   totaal aantal wins: "+wins+"   totaal aantal games: "+games+"   winstpercentage: "+percentage+"%")
+        button(screen,"Naam: "+naam+".    Totaal wins: "+wins+".    Totaal games: "+games+".    Winstpercentage: "+percentage+"%",150,hoogte_score,1000,50,grey,grey,0,0,20)
+        print("Naam: "+naam+".\tTotaal wins: "+wins+".\tTotaal games: "+games+".\tWinstpercentage: "+percentage+"%")
 
 def read_from_db():
     conn = sqlite3.connect('battleport.db')

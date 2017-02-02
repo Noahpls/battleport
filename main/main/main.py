@@ -4,6 +4,7 @@
 import pygame
 import math
 import sqlite3
+import random
 #####################################################################
 
 class bootje2():
@@ -166,7 +167,7 @@ class cardholder:
         self.Name = name
         self.id = id
         self.Desc = desc
-        self.Amount= amount
+        self.amount= amount
         self.simg = simg
         self.bimg = bimg
 
@@ -201,8 +202,8 @@ class Card:
         if self.Active:
             if self.Hover():
                 # pygame.blit(game.Display, pygame.image.load("images\\cards\\" + self.name + "hover.png"), [self.X, self.Y])
-                screen.blit(activecard.bimg, [540, 210])
-                screen.blit(activecard.simg, [self.X, self.Y])   
+                screen.blit(fmj_big, [540, 210])
+                screen.blit(fmj_small, [self.X, self.Y])   
                 self.Pressing = self.Click()
  
                 
@@ -216,7 +217,7 @@ class Card:
                         self.Deck.Remove_card(self.ID)
                         self.Pressed = False
             else:
-                screen.blit(activecard.simg, [self.X, self.Y])  
+                screen.blit(fmj_small, [self.X, self.Y])  
                        
 
         else:
@@ -237,8 +238,6 @@ class Deck:
         y = self.Y
         w = 50
         h = 100
-        activecard = carddraw()
-
         for card in self.Cards:
             if card == "":
                 self.Cards[i] = Card(x, y, w, h, name, desc, function, i, self)
@@ -246,12 +245,7 @@ class Deck:
             x = x + w + 25
             i += 1
 
-        for card in self.Cards:
-            if card == "":
-                self.Cards[i] = Card(x, y, w, h, name, desc, function, i, self)
-                break
-            x = x + w + 25
-            i += 1
+
 
     def Remove_card(self, element):
         del self.Cards[element]
@@ -1211,7 +1205,7 @@ def new_screen():
             button(screen, text.text,565,5,150,50, green,green,0,0,20)
         if turnplayer2 == True:
             button(screen, text2.text,565,5,150,50, green,green,0,0,20)
-        button (screen,"End game",1075,565,100,50,green,bright_green,0,0,20, eindscherm1)
+        #button (screen,"End game",1075,565,100,50,green,bright_green,0,0,20, eindscherm1)
         #Flip the screen
         pygame.display.flip()
         pygame.display.update()
